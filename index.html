@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>みんなの音鉄記録帳</title>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="normal.css">
+        <script src="memory.js"></script>
+    </head>
+    <body onload="setDefalt()">
+        <h1>みんなの音鉄記録帳</h1>
+        <div>このページは現在制作中です。<br>完成までしばらくお待ちください。</div>
+        <!-- <div>お問い合わせ等は<a href="https://discord.gg/aEgAAENXuu" target="_blank">こちら</a>(Discordサーバーに移動します)</div> -->
+        <br>
+        <div>鳴動記録(直近10件)</div>
+        <div id="recSpace">
+
+        </div>
+        <br>
+        <div id="addRec">
+            記録登録
+            <br>
+            <label>
+                日時
+                <input id="addRec_date" type="datetime-local">
+            </label>
+            <br>
+            <label>
+                遅れ
+                <input id="addRec_del" type="number" placeholder="例:3 +や分は不要">
+            </label>
+            <br>
+            <label>
+                路線
+                <select id="addRec_line" onchange="setSta(this)">
+                    <option value="-1_-1">-路線を選択-</option>
+                </select>
+            </label>
+            <br>
+            <label>
+                駅名
+                <select id="addRec_sta" onchange="setSta2(this)">
+                    <option value="-1">-駅を選択-</option>
+                </select>
+            </label>
+            <br>
+            <label>
+                記録
+                <input id="addRec_cho" type="text" placeholder="例:1.0c">
+            </label>
+            <br>
+            <label>
+                番線
+                <input id="addRec_trk" type="number" placeholder="例:2">
+            </label>
+            <br>
+            <label>
+                種別
+                <input id="addRec_trn" type="text" placeholder="例:各駅停車">
+            </label>
+            <br>
+            <label>
+                行先
+                <input id="addRec_for" type="text" placeholder="例:八王子 ～行などは不要">
+            </label>
+            <br>
+            <label>
+                備考
+                <input id="addRec_com" type="text" placeholder="例:無被り">
+            </label>
+            <br>
+            <button id="addRec_btn" type="button" onclick="recordData()">送信</button>
+        </div>
+    </body>
+</html>
