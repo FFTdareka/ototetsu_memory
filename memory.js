@@ -1,4 +1,4 @@
-const gasurl = 'https://script.google.com/macros/s/AKfycbzCciaHZ612ZuOB8rOUzBO7Ok3_Me-Mooa2zFPI8YYuGRZKZNwJkYp8AdutvE1BxYPC/exec';
+const gasurl = 'https://script.google.com/macros/s/AKfycbylB6SLlD6HHll1qWkRbGlCdSSPnu4oh35tnmYGRdsT6XWENNz_ebupLUxcvu9dzv6w/exec';
 const d = ['日付', '駅名', '路線名', '番線', '記録', '時刻', '種別', '行先', '備考'];
 const sc = [['山手線', 'jy'], ['横浜線', 'jh'], ['京浜東北線', 'jk'], ['埼京線', 'ja'], ['中央線', 'jc'], ['武蔵野線', 'jm'], ['中央・総武線各駅停車', 'jb'], ['両毛線', 'jrumu'], ['南武線', 'jn'], ['鶴見線', 'ji'], ['常磐線快速', 'jj'], ['成田支線', 'jnrts'], ['常磐線各駅停車', 'jl'], ['京葉線', 'je'], ['相模線', 'jsgm'], ['八高線', 'jhcku'], ['川越線', 'jkwge'], ['湘南新宿ライン', 'js'], ['上野東京ライン', 'jutl'], ['東海道線', 'jt'], ['伊東線', 'jt'], ['宇都宮線', 'ju'], ['横須賀線', 'jo'], ['総武快速線', 'jo'], ['中央本線', 'co'], ['総武本線', 'joh'], ['内房線', 'jucbu'], ['外房線', 'jstbu'], ['成田線', 'jnrt'], ['烏山線', 'jkrsym'], ['東金線', 'jtugn'], ['鹿島線', 'jksm'], ['日光線', 'jnku'], ['久留里線', 'jkrr'], ['常磐線', 'jjubn'], ['水戸線', 'jmt'], ['水郡線', 'jsign'], ['上越線', 'jjuet'], ['吾妻線', 'jagtm'], ['信越本線1', 'jsnet'], ['信越本線2', 'se'], ['小海線', 'jkum'], ['篠ノ井線', 'sn'], ['大糸線', 'jooit']];
 let setR;
@@ -254,4 +254,5 @@ function recordData() {
     }
 
 }
+
 
