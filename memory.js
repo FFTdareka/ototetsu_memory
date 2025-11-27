@@ -210,7 +210,7 @@ function recordData() {
         k = Number(station2);
         station = setR.sta[i][1][j][1][k];
         if (station == "その他") {
-            let station3 = document.getElementById("line").value;
+            let station3 = document.getElementById("station").value;
             if (station3.length == 0) {
                 error += "駅名が入力されていません。";
             } else {
@@ -254,3 +254,4 @@ function recordData() {
     }
 
 }
+
