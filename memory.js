@@ -6,9 +6,6 @@ fetch('staData.json')
 .then(res => res.json())
 .then(data => {
     setR = data;
-})
-
-function setDefalt() {
     let sLine = document.getElementById("addRec_line");
     let ls = setR.sta;
     for (var i = 0; i < ls.length; i++) {
@@ -23,7 +20,7 @@ function setDefalt() {
         sLine.appendChild(lg);
     }
     getRecord(10);
-}
+})
 
 function setSta(data) {
     let line = data.value.split("_");
@@ -255,4 +252,5 @@ function recordData() {
         };
         setRecord(data);
     }
+
 }
