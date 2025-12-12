@@ -153,7 +153,7 @@ function getRecord(n, p) {
             table.appendChild(tbody);
             document.getElementById('recSpace').innerHTML = "";
             document.getElementById('recSpace').appendChild(table);
-            document.getElementById('recStatus').innerText = `全${nor}件中${n * p + 1}～${n * p + data.length}件`;
+            document.getElementById('recStatus').innerText = `全${nor}件中${n * (p - 1) + 1}～${n * (p - 1) + data.length}件`;
         } else if (data.status == 'no record') {
             console.log('データがありません');
         }
@@ -257,6 +257,7 @@ function recordData() {
     }
 
 }
+
 
 
 
