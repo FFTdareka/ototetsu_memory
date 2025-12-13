@@ -25,6 +25,8 @@ fetch('staData.json')
 })
 
 function setSta(data) {
+    let l = document.getElementById("line");
+    let s = document.getElementById("station");
     let line = data.value.split("_");
     let i = Number(line[0]);
     let j = Number(line[1]);
@@ -45,12 +47,12 @@ function setSta(data) {
             input.placeholder = "例:横浜線";
             document.getElementById("addRec").children[5].appendChild(input);
         } else {
-            document.getElementById("line").remove();
-            document.getElementById("station").remove();
+            if (l) l.remove();
+            if (s) s.remove();
         }
     } else {
-        document.getElementById("line").remove();
-        document.getElementById("station").remove();
+        if (l) l.remove();
+        if (s) s.remove();
     }
 }
 
@@ -97,8 +99,18 @@ function setRecord(data) {
     .then(res => res.text())
     .then(data => {
         alert(data);
+        document.getElementById('addRec_date').value = "";
+        document.getElementById('addRec_del').value = "";
+        document.getElementById('addRec_line').value = "-1_-1";
+        document.getElementById('addRec_sta').value = "-1";
+        document.getElementById('addRec_cho').value = "";
+        document.getElementById('addRec_trk').value = "";
+        document.getElementById('addRec_trn').value = "";
+        document.getElementById('addRec_for').value = "";
+        document.getElementById('addRec_com').value = "";
+        setSta({value: "-1_-1"});
         getRecord(10, 1);
-        document.getElementById("addRec_btn").disabled = false;
+        document.getElementById('addRec_btn').disabled = false;
     });
 }
 
@@ -158,6 +170,7 @@ function getRecord(n, p) {
             document.getElementById('recStatus').innerText = `全${nor}件中${n * (p - 1) + 1}～${n * (p - 1) + data.length}件`;
         } else if (data.status == 'no record') {
             console.log('データがありません');
+            document.getElementById('recStatus').innerText = "データがありません。";
         }
 
     })
@@ -259,6 +272,7 @@ function recordData() {
     }
 
 }
+
 
 
 
