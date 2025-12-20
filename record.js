@@ -1,0 +1,74 @@
+const gasurl = 'https://script.google.com/macros/s/AKfycbwqzKR7fZPX28vHp7s8-JWejLY4ztBtBtam3wsTMV_Cz5viPVKUgmi54xU1bvrGsm1C/exec';
+let d;
+let sc;
+let setR;
+fetch('staData.json')
+.then(res => res.json())
+.then(data => {
+    setR = data;
+    d = setR.d;
+    sc = setR.line;
+    getRecord(10, 1);
+})
+
+function getRecord(n, p) {
+    document.getElementById('recStatus').innerText = "読み込み中...";
+    document.getElementById('recSpace').innerHTML = "";
+    fetch(`${gasurl}?nor=${n}&page=${p}`)
+    .then(res => res.json())
+    .then(data => {
+        if (data.status == 'success') {
+            nor = data.nor;
+            data = data.body;
+            console.log(data);
+            let table = document.createElement('table');
+            table.id = 'record';
+            let thead = document.createElement('thead');
+            let trh = document.createElement('tr');
+            for (var i = 0; i < d.length; i++) {
+                th = document.createElement('th');
+                th.innerText = d[i];
+                trh.appendChild(th);
+            }
+            thead.appendChild(trh);
+            table.appendChild(thead);
+            let tbody = document.createElement('tbody');
+            for (var i = 0; i < data.length; i++) {
+                var trb = document.createElement('tr');
+                date = data[i].date;
+                sta = data[i].station;
+                line = data[i].line;
+                trk = data[i].track;
+                cho = data[i].chorus;
+                time = data[i].time;
+                del = data[i].delay;
+                if (del == 0) del = ""; else del = `+${del}`;
+                trn = data[i].train;
+                bfor = data[i].for;
+                com = data[i].comment;
+                let dt = [date, sta, line, trk, cho, time, trn, bfor, com];
+                console.log(dt);
+                for (var j = 0; j < d.length; j++) {
+                    var td = document.createElement('td');
+                    td.innerText = dt[j];
+                    if (j == 2) for (var k = 0; k < sc.length; k++) if (dt[j] == sc[k][0]) td.classList.add(sc[k][1]);
+                    if (j == 5 && del != 0) {
+                        delE = document.createElement("span");
+                        delE.innerText = del;
+                        delE.classList.add("delay");
+                        td.appendChild(delE);
+                    }
+                    trb.appendChild(td);
+                }
+                tbody.appendChild(trb);
+            }
+            table.appendChild(tbody);
+            document.getElementById('recSpace').appendChild(table);
+            document.getElementById('recStatus').innerText = `全${nor}件中${n * (p - 1) + 1}～${n * (p - 1) + data.length}件`;
+        } else if (data.status == 'no record') {
+            console.log('データがありません');
+            document.getElementById('recStatus').innerText = "データがありません。";
+        }
+
+    })
+}
