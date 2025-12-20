@@ -2,6 +2,8 @@ const gasurl = 'https://script.google.com/macros/s/AKfycbwqzKR7fZPX28vHp7s8-JWej
 let d;
 let sc;
 let setR;
+let nowN = 0;
+let nowP = 0;
 fetch('staData.json')
 .then(res => res.json())
 .then(data => {
@@ -9,11 +11,15 @@ fetch('staData.json')
     d = setR.d;
     sc = setR.line;
     getRecord(10, 1);
+    nowN = 10;
+    nowP = 1;
 })
 
 function getRecord(n, p) {
     document.getElementById('recStatus').innerText = "読み込み中...";
     document.getElementById('recSpace').innerHTML = "";
+    document.getElementById('back').disabled = true;
+    document.getElementById('next').disabled = true;
     fetch(`${gasurl}?nor=${n}&page=${p}`)
     .then(res => res.json())
     .then(data => {
@@ -65,6 +71,8 @@ function getRecord(n, p) {
             table.appendChild(tbody);
             document.getElementById('recSpace').appendChild(table);
             document.getElementById('recStatus').innerText = `全${nor}件中${n * (p - 1) + 1}～${n * (p - 1) + data.length}件`;
+            if (p > 1) document.getElementById('back').disabled = false;
+            if (nor > n * p) document.getElementById('next').disabled = false;
         } else if (data.status == 'no record') {
             console.log('データがありません');
             document.getElementById('recStatus').innerText = "データがありません。";
