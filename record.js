@@ -1,4 +1,4 @@
-const gasurl = 'https://script.google.com/macros/s/AKfycbwqzKR7fZPX28vHp7s8-JWejLY4ztBtBtam3wsTMV_Cz5viPVKUgmi54xU1bvrGsm1C/exec';
+const gasurl = 'https://script.google.com/macros/s/AKfycbxhGhszlPrTWLcxhY5bavu3KQGoL84fXcX3AiFWEmL4wEPt6PmaLI0bfb3Qq6omSz3i/exec';
 let d;
 let sc;
 let setR;
