@@ -73,6 +73,8 @@ function getRecord(n, p) {
             document.getElementById('recStatus').innerText = `全${nor}件中${n * (p - 1) + 1}～${n * (p - 1) + data.length}件`;
             if (p > 1) document.getElementById('back').disabled = false;
             if (nor > n * p) document.getElementById('next').disabled = false;
+            nowN = n;
+            nowP = p;
         } else if (data.status == 'no record') {
             console.log('データがありません');
             document.getElementById('recStatus').innerText = "データがありません。";
