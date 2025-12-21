@@ -12,6 +12,10 @@
     color: #ff0000;
 }
 
+#minrec, #maxrec {
+    width: 3em;
+}
+
 .jy {
     /*山手線*/
     color: #ffffff;
