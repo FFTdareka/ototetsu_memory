@@ -19,12 +19,24 @@
         </div>
         <br>
         <div>鳴動記録 <span id="recStatus"></span></div>
+        <div>
+            フィルタ　
+            <label>
+                最低鳴動コーラス 
+                <input id="minrec" type="number">c　
+            </label>
+            <label>
+                最大鳴動コーラス
+                <input id="maxrec" type="number">c　
+            </label>
+            <button id="filter" type="button" onclick="setFilter()">適用</button>
+        </div>
         <div id="recSpace">
 
         </div>
         <div>
-            <button id="back" type="button" onclick="getRecord(nowN, nowP - 1)" disabled>前へ</button>
-            <button id="next" type="button" onclick="getRecord(nowN, nowP + 1)" disabled>次へ</button>
+            <button id="back" type="button" onclick="getRecord(nowN, nowP - 1, nowO)" disabled>前へ</button>
+            <button id="next" type="button" onclick="getRecord(nowN, nowP + 1, nowO)" disabled>次へ</button>
         </div>
         <div>
             <a href="https://fftdareka.github.io/ototetsu_memory/">トップページへ</a>

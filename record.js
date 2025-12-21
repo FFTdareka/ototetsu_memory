@@ -1,26 +1,31 @@
-const gasurl = 'https://script.google.com/macros/s/AKfycbzPTqPfNLbzqjehd5o206qWb5e0I3OXbeJij_S0o5RUYmG4F9Sj4gGSvkY7ESR3vabV/exec';
+const gasurl = 'https://script.google.com/macros/s/AKfycby8Md3sMVUI2ul47tZETgmUVy49IdzOMfxlTk8QDgIo7fd9NPhfX69LUc0WL1S4BOo/exec';
 let d;
 let sc;
 let setR;
 let nowN = 0;
 let nowP = 0;
+let nowO = {
+    filter: {}
+}
 fetch('staData.json')
 .then(res => res.json())
 .then(data => {
     setR = data;
     d = setR.d;
     sc = setR.line;
-    getRecord(10, 1);
+    getRecord(10, 1, {filter: {}});
     nowN = 10;
     nowP = 1;
+    nowO = {filter: {}};
 })
 
-function getRecord(n, p) {
+function getRecord(n, p, o) {
     document.getElementById('recStatus').innerText = "読み込み中...";
     document.getElementById('recSpace').innerHTML = "";
     document.getElementById('back').disabled = true;
     document.getElementById('next').disabled = true;
-    fetch(`${gasurl}?nor=${n}&page=${p}`)
+    let opt = JSON.stringify(o);
+    fetch(`${gasurl}?nor=${n}&page=${p}&opt=${opt}`)
     .then(res => res.json())
     .then(data => {
         if (data.status == 'success') {
@@ -75,10 +80,24 @@ function getRecord(n, p) {
             if (nor > n * p) document.getElementById('next').disabled = false;
             nowN = n;
             nowP = p;
+            nowO = o;
         } else if (data.status == 'no record') {
             console.log('データがありません');
             document.getElementById('recStatus').innerText = "データがありません。";
         }
 
     })
+}
+
+function setFilter() {
+    let opt = {
+        filter: {}
+    };
+    let minrec = document.getElementById("minrec").value;
+    let maxrec = document.getElementById("maxrec").value;
+    if (minrec != "") opt.filter.minrec = Number(minrec);
+    if (maxrec != "") opt.filter.maxrec = Number(maxrec);
+    getRecord(nowN, 1, opt);
+    nowP = 1;
+    nowO = opt;
 }
