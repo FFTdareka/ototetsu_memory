@@ -1,4 +1,4 @@
-const gasurl = 'https://script.google.com/macros/s/AKfycbz7aCz2JIDV4eQiPF0FLv4YJRY3PnuFq1pcbGS0Weh7KfzxCkqlb77azIeco9-D0ose/exec';
+const gasurl = 'https://script.google.com/macros/s/AKfycbyWYTwOlG_6m5n7XNZnfjlMAuvfqol_aocrQVRsS9wnFF3vHl2u-BCMKIfY-8WN9Mli/exec';
 let d;
 let sc;
 let setR;
@@ -95,8 +95,25 @@ function setFilter() {
     };
     let minrec = document.getElementById("minrec").value;
     let maxrec = document.getElementById("maxrec").value;
-    if (minrec != "") opt.filter.minrec = Number(minrec);
+    let startdate = document.getElementById("startdate").value;
+    let enddate = document.getElementById("enddate").value;
+    let sdate, stime, edate, etime;
     if (maxrec != "") opt.filter.maxrec = Number(maxrec);
+    if (minrec != "") opt.filter.minrec = Number(minrec);
+    if (startdate != "") {
+        startdate = new Date(startdate);
+        sdate = `${startdate.getFullYear()}/${startdate.getMonth() + 1}/${startdate.getDate()}`;
+        stime = `${startdate.getHours()}:${startdate.getMinutes().toString().padStart(2, "0")}`;
+        opt.filter.sdate = sdate;
+        opt.filter.stime = stime;
+    }
+    if (enddate != "") {
+        enddate = new Date(enddate);
+        edate = `${enddate.getFullYear()}/${enddate.getMonth() + 1}/${enddate.getDate()}`;
+        etime = `${enddate.getHours()}:${enddate.getMinutes().toString().padStart(2, "0")}`;
+        opt.filter.edate = edate;
+        opt.filter.etime = etime;
+    }
     getRecord(nowN, 1, opt);
     nowP = 1;
     nowO = opt;
