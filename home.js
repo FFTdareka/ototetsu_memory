@@ -123,7 +123,6 @@ function getRecord(n, p) {
         if (data.status == 'success') {
             nor = data.nor;
             data = data.body;
-            console.log(data);
             let table = document.createElement('table');
             table.id = 'record';
             let thead = document.createElement('thead');
@@ -150,7 +149,6 @@ function getRecord(n, p) {
                 bfor = data[i].for;
                 com = data[i].comment;
                 let dt = [date, sta, line, trk, cho, time, trn, bfor, com];
-                console.log(dt);
                 for (var j = 0; j < d.length; j++) {
                     var td = document.createElement('td');
                     td.innerText = dt[j];
@@ -169,7 +167,6 @@ function getRecord(n, p) {
             document.getElementById('recSpace').appendChild(table);
             document.getElementById('recStatus').innerText = `全${nor}件中${n * (p - 1) + 1}～${n * (p - 1) + data.length}件`;
         } else if (data.status == 'no record') {
-            console.log('データがありません');
             document.getElementById('recStatus').innerText = "データがありません。";
         }
 
@@ -272,11 +269,3 @@ function recordData() {
     }
 
 }
-
-
-
-
-
-
-
-

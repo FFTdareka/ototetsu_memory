@@ -7,6 +7,7 @@ let nowP = 0;
 let nowO = {
     filter: {}
 }
+
 fetch('staData.json')
 .then(res => res.json())
 .then(data => {
@@ -31,7 +32,6 @@ function getRecord(n, p, o) {
         if (data.status == 'success') {
             nor = data.nor;
             data = data.body;
-            console.log(data);
             let table = document.createElement('table');
             table.id = 'record';
             let thead = document.createElement('thead');
@@ -58,7 +58,6 @@ function getRecord(n, p, o) {
                 bfor = data[i].for;
                 com = data[i].comment;
                 let dt = [date, sta, line, trk, cho, time, trn, bfor, com];
-                console.log(dt);
                 for (var j = 0; j < d.length; j++) {
                     var td = document.createElement('td');
                     td.innerText = dt[j];
@@ -82,7 +81,6 @@ function getRecord(n, p, o) {
             nowP = p;
             nowO = o;
         } else if (data.status == 'no record') {
-            console.log('データがありません');
             document.getElementById('recStatus').innerText = "データがありません。";
         }
 
