@@ -222,3 +222,50 @@
     color: #ffffff;
     background-color: #9370db;
 }
+
+.tmg {
+    /*東京メトロ銀座線*/
+    color: #ffffff;
+    background-color: #f39700;
+}
+
+.tmm {
+    /*東京メトロ丸ノ内線*/
+    color: #ffffff;
+    background-color: #e60012;
+}
+.tmh {
+    /*東京メトロ日比谷線*/
+    color: #ffffff;
+    background-color: #9caeb7;
+}
+.tmt {
+    /*東京メトロ東西線*/
+    color: #ffffff;
+    background-color: #00a7db;
+}
+.tmc {
+    /*東京メトロ千代田線*/
+    color: #ffffff;
+    background-color: #009944;
+}
+.tmy {
+    /*東京メトロ有楽町線*/
+    color: #ffffff;
+    background-color: #d7c447;
+}
+.tmz {
+    /*東京メトロ半蔵門線*/
+    color: #ffffff;
+    background-color: #9b7cb6;
+}
+.tmn {
+    /*東京メトロ南北線*/
+    color: #ffffff;
+    background-color: #00ada9;
+}
+.tmf {
+    /*東京メトロ副都心線*/
+    color: #ffffff;
+    background-color: #bb641d;
+}
