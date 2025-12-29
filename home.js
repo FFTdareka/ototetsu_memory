@@ -219,7 +219,7 @@ function recordData() {
         let lineData = line2.split("_");
         i = Number(lineData[0]);
         j = Number(lineData[1]);
-        line = setR.sta[i][1][j][0];
+        line = setR.sta[i][1][j][3] || setR.sta[i][1][j][0];
         line4 = setR.sta[i][1][j][2];
         if (line == "その他") {
             let line3 = document.getElementById("line").value;
