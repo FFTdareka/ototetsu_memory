@@ -37,7 +37,7 @@ function setSta(data) {
         for (var k = 0; k < staData.length; k++) {
             var lg = document.createElement("optgroup");
             lg.value = staData[k][0];
-            for (var k2 = 0; k < staData[k][1].length; k2++) {
+            for (var k2 = 0; k2 < staData[k][1].length; k2++) {
                 var le = document.createElement("option");
                 le.value = `${k}_${k2}`;
                 le.innerText = staData[k][1][k2];
