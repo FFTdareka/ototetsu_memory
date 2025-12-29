@@ -37,11 +37,14 @@ function setSta(data) {
         for (var k = 0; k < staData.length; k++) {
             var lg = document.createElement("optgroup");
             lg.value = staData[k][0];
-            for (var k2 = 0; k < staData[k][1].length; k2++) {}
-            var le = document.createElement("option");
-            le.value = `${k}_${k2}`;
-            le.innerText = staData[k][1][k2];
-            sSta.appendChild(le);
+            for (var k2 = 0; k < staData[k][1].length; k2++) {
+                var le = document.createElement("option");
+                le.value = `${k}_${k2}`;
+                le.innerText = staData[k][1][k2];
+                lg.appendChild(le);
+            }
+            sSta.appendChild(lg);
+
         }
         if (setR.sta[i][1][j][0] == "その他") {
             let input = document.createElement("input");
