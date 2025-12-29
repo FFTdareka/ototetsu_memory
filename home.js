@@ -31,13 +31,16 @@ function setSta(data) {
     let i = Number(line[0]);
     let j = Number(line[1]);
     let sSta = document.getElementById("addRec_sta");
-    sSta.innerHTML = '<option value="-1">-駅を選択-</option>';
+    sSta.innerHTML = '<option value="-1_-1">-駅を選択-</option>';
     if (i != -1 && j != -1) {
         let staData = setR.sta[i][1][j][1];
         for (var k = 0; k < staData.length; k++) {
+            var lg = document.createElement("optgroup");
+            lg.value = staData[k][0];
+            for (var k2 = 0; k < staData[k][1].length; k2++) {}
             var le = document.createElement("option");
-            le.value = k;
-            le.innerText = staData[k];
+            le.value = `${k}_${k2}`;
+            le.innerText = staData[k][1][k2];
             sSta.appendChild(le);
         }
         if (setR.sta[i][1][j][0] == "その他") {
@@ -57,12 +60,14 @@ function setSta(data) {
 }
 
 function setSta2(data) {
-    let k = Number(data.value);
-    if (k != -1) {
+    let sta = data.value.split("_");
+    let k = Number(sta[0]);
+    let k2 = Number(sta[1]);
+    if (k != -1 && k2 != -1) {
         let line = document.getElementById("addRec").children[5].children[0].value.split("_");
         let i = Number(line[0]);
         let j = Number(line[1]);
-        if (setR.sta[i][1][j][1][k] == "その他") {
+        if (setR.sta[i][1][j][1][k][1][k2] == "その他") {
             let input = document.createElement("input");
             input.id = "station";
             input.type = "text";
@@ -81,7 +86,7 @@ function setRecord(data) {
         {
             'date': '2025/10/24',
             'station': '淵野辺',
-            'line': '横浜線',
+            'line': '横浜線_横浜線',
             'track': '2',
             'chorus': '1.0c',
             'time': '8:10',
@@ -102,7 +107,7 @@ function setRecord(data) {
         document.getElementById('addRec_date').value = "";
         document.getElementById('addRec_del').value = "";
         document.getElementById('addRec_line').value = "-1_-1";
-        document.getElementById('addRec_sta').value = "-1";
+        document.getElementById('addRec_sta').value = "-1_-1";
         document.getElementById('addRec_cho').value = "";
         document.getElementById('addRec_trk').value = "";
         document.getElementById('addRec_trn').value = "";
@@ -139,7 +144,7 @@ function getRecord(n, p) {
                 var trb = document.createElement('tr');
                 date = data[i].date;
                 sta = data[i].station;
-                line = data[i].line;
+                line = data[i].line.split("_");
                 trk = data[i].track;
                 cho = data[i].chorus;
                 time = data[i].time;
@@ -148,11 +153,11 @@ function getRecord(n, p) {
                 trn = data[i].train;
                 bfor = data[i].for;
                 com = data[i].comment;
-                let dt = [date, sta, line, trk, cho, time, trn, bfor, com];
+                let dt = [date, sta, line[0], trk, cho, time, trn, bfor, com];
                 for (var j = 0; j < d.length; j++) {
                     var td = document.createElement('td');
                     td.innerText = dt[j];
-                    if (j == 2) for (var k = 0; k < sc.length; k++) if (dt[j] == sc[k][0]) td.classList.add(sc[k][1]);
+                    if (j == 2) for (var k = 0; k < sc.length; k++) if (line[1] == sc[k][0]) td.classList.add(sc[k][1]);
                     if (j == 5 && del != 0) {
                         delE = document.createElement("span");
                         delE.innerText = del;
@@ -179,12 +184,14 @@ function recordData() {
     let i;
     let j;
     let k;
+    let k2;
     let date;
     let time;
     let date2 = document.getElementById("addRec_date").value;
     let delay = document.getElementById("addRec_del").value;
     let line;
     let line2 = document.getElementById("addRec_line").value;
+    let line4;
     let station;
     let station2 = document.getElementById("addRec_sta").value;
     let track = document.getElementById("addRec_trk").value;
@@ -210,20 +217,24 @@ function recordData() {
         i = Number(lineData[0]);
         j = Number(lineData[1]);
         line = setR.sta[i][1][j][0];
+        line4 = setR.sta[i][1][j][2];
         if (line == "その他") {
             let line3 = document.getElementById("line").value;
             if (line3.length == 0) {
                 error += "路線が入力されていません。";
             } else {
                 line = line3;
+                line4 = line3;
             }
         }
     }
-    if (station2 == "-1") {
+    if (station2 == "-1_-1") {
         error += "駅名が選択されていません。";
     } else {
-        k = Number(station2);
-        station = setR.sta[i][1][j][1][k];
+        let staD = station2.split("_");
+        k = Number(staD[0]);
+        k2 = Number(staD[1]);
+        station = setR.sta[i][1][j][1][k][1][k2];
         if (station == "その他") {
             let station3 = document.getElementById("station").value;
             if (station3.length == 0) {
@@ -256,7 +267,7 @@ function recordData() {
         let data = {
             'date': date,
             'station': station,
-            'line': line,
+            'line': `${line}_${line4}`,
             'track': track,
             'chorus': chorus,
             'time': time,

@@ -48,7 +48,7 @@ function getRecord(n, p, o) {
                 var trb = document.createElement('tr');
                 date = data[i].date;
                 sta = data[i].station;
-                line = data[i].line;
+                line = data[i].line.split("_");
                 trk = data[i].track;
                 cho = data[i].chorus;
                 time = data[i].time;
@@ -57,11 +57,11 @@ function getRecord(n, p, o) {
                 trn = data[i].train;
                 bfor = data[i].for;
                 com = data[i].comment;
-                let dt = [date, sta, line, trk, cho, time, trn, bfor, com];
+                let dt = [date, sta, line[0], trk, cho, time, trn, bfor, com];
                 for (var j = 0; j < d.length; j++) {
                     var td = document.createElement('td');
                     td.innerText = dt[j];
-                    if (j == 2) for (var k = 0; k < sc.length; k++) if (dt[j] == sc[k][0]) td.classList.add(sc[k][1]);
+                    if (j == 2) for (var k = 0; k < sc.length; k++) if (line[1] == sc[k][0]) td.classList.add(sc[k][1]);
                     if (j == 5 && del != 0) {
                         delE = document.createElement("span");
                         delE.innerText = del;
