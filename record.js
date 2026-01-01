@@ -1,4 +1,4 @@
-const gasurl = 'https://script.google.com/macros/s/AKfycbypDjfMods0t3A1tcPOUq91AI4GZpCtuiEXeAvKJgvmacFrMCYoNhjwXUZZpbL3iwTH/exec';
+const gasurl = 'https://script.google.com/macros/s/AKfycbzAhLzy97zGbMkB1ZDoDOm-kgr7mErYWbPq7bhdZz2V7mvZAcRptkGA_tOS_Ote4hjO/exec';
 let d;
 let sc;
 let setR;
@@ -96,7 +96,9 @@ function setFilter() {
     let ssta = document.getElementById("selectsta").value;
     let startdate = document.getElementById("startdate").value;
     let enddate = document.getElementById("enddate").value;
+    let re = document.getElementById("reactive").value;
     let sdate, stime, edate, etime;
+    opt.filter.re = re;
     if (maxrec != "") opt.filter.maxrec = Number(maxrec);
     if (minrec != "") opt.filter.minrec = Number(minrec);
     if (ssta != "") opt.filter.sta = ssta;
