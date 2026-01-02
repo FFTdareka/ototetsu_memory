@@ -120,3 +120,12 @@ function setFilter() {
     nowP = 1;
     nowO = opt;
 }
+
+function clearFilter() {
+    document.getElementById("minrec").value = "";
+    document.getElementById("maxrec").value = "";
+    document.getElementById("selectsta").value = "";
+    document.getElementById("startdate").value = "";
+    document.getElementById("enddate").value = "";
+    document.getElementById("reactive").value = "b";
+}
