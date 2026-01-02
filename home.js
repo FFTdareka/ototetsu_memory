@@ -1,28 +1,27 @@
-const gasurl = 'https://script.google.com/macros/s/AKfycbzAhLzy97zGbMkB1ZDoDOm-kgr7mErYWbPq7bhdZz2V7mvZAcRptkGA_tOS_Ote4hjO/exec';
 let d;
 let sc;
 let setR;
 fetch('staData.json')
-.then(res => res.json())
-.then(data => {
-    setR = data;
-    d = setR.d;
-    sc = setR.line;
-    let sLine = document.getElementById("addRec_line");
-    let ls = setR.sta;
-    for (var i = 0; i < ls.length; i++) {
-        var lg = document.createElement("optgroup");
-        lg.label = ls[i][0];
-        for (var j = 0; j < ls[i][1].length; j++) {
-            var le = document.createElement("option");
-            le.value = `${i}_${j}`;
-            le.innerText = ls[i][1][j][0];
-            lg.appendChild(le);
+    .then(res => res.json())
+    .then(data => {
+        setR = data;
+        d = setR.d;
+        sc = setR.line;
+        let sLine = document.getElementById("addRec_line");
+        let ls = setR.sta;
+        for (var i = 0; i < ls.length; i++) {
+            var lg = document.createElement("optgroup");
+            lg.label = ls[i][0];
+            for (var j = 0; j < ls[i][1].length; j++) {
+                var le = document.createElement("option");
+                le.value = `${i}_${j}`;
+                le.innerText = ls[i][1][j][0];
+                lg.appendChild(le);
+            }
+            sLine.appendChild(lg);
         }
-        sLine.appendChild(lg);
-    }
-    getRecord(10, 1);
-})
+        getRecord(10, 1);
+    })
 
 function setSta(data) {
     let l = document.getElementById("line");
@@ -67,7 +66,8 @@ function setSta2(data) {
     let k = Number(sta[0]);
     let k2 = Number(sta[1]);
     if (k != -1 && k2 != -1) {
-        let line = document.getElementById("addRec").children[5].children[0].value.split("_");
+        let line = document.getElementById("addRec").children[5].children[0].value
+            .split("_");
         let i = Number(line[0]);
         let j = Number(line[1]);
         if (setR.sta[i][1][j][1][k][1][k2] == "その他") {
@@ -99,86 +99,109 @@ function setRecord(data) {
             'comment': '無被り'
         }
     */
-    fetch(gasurl, {
-        'method': 'POST',
-        'Content-Type': 'application/x-www-form-urlencoded',
-        'body': JSON.stringify(data)
-    })
-    .then(res => res.text())
-    .then(data => {
-        alert(data);
-        document.getElementById('addRec_date').value = "";
-        document.getElementById('addRec_del').value = "";
-        document.getElementById('addRec_line').value = "-1_-1";
-        document.getElementById('addRec_sta').value = "-1_-1";
-        document.getElementById('addRec_cho').value = "";
-        document.getElementById('addRec_trk').value = "";
-        document.getElementById('addRec_trn').value = "";
-        document.getElementById('addRec_for').value = "";
-        document.getElementById('addRec_com').value = "";
-        setSta({value: "-1_-1"});
-        getRecord(10, 1);
-        document.getElementById('addRec_btn').disabled = false;
-    });
+    fetch('staData.json')
+        .then(res => res.json())
+        .then(g => {
+            fetch(g.gas, {
+                    'method': 'POST',
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'body': JSON.stringify(data)
+                })
+                .then(res => res.text())
+                .then(data => {
+                    alert(data);
+                    document.getElementById('addRec_date').value = "";
+                    document.getElementById('addRec_del').value = "";
+                    document.getElementById('addRec_line').value =
+                        "-1_-1";
+                    document.getElementById('addRec_sta').value =
+                        "-1_-1";
+                    document.getElementById('addRec_cho').value = "";
+                    document.getElementById('addRec_trk').value = "";
+                    document.getElementById('addRec_trn').value = "";
+                    document.getElementById('addRec_for').value = "";
+                    document.getElementById('addRec_com').value = "";
+                    setSta({
+                        value: "-1_-1"
+                    });
+                    getRecord(10, 1);
+                    document.getElementById('addRec_btn').disabled =
+                        false;
+                });
+        });
 }
 
 function getRecord(n, p) {
     document.getElementById('recStatus').innerText = "読み込み中...";
     document.getElementById('recSpace').innerHTML = "";
-    fetch(`${gasurl}?nor=${n}&page=${p}`)
-    .then(res => res.json())
-    .then(data => {
-        if (data.status == 'success') {
-            nor = data.nor;
-            data = data.body;
-            let table = document.createElement('table');
-            table.id = 'record';
-            let thead = document.createElement('thead');
-            let trh = document.createElement('tr');
-            for (var i = 0; i < d.length; i++) {
-                th = document.createElement('th');
-                th.innerText = d[i];
-                trh.appendChild(th);
-            }
-            thead.appendChild(trh);
-            table.appendChild(thead);
-            let tbody = document.createElement('tbody');
-            for (var i = 0; i < data.length; i++) {
-                var trb = document.createElement('tr');
-                date = data[i].date;
-                sta = data[i].station;
-                line = data[i].line.split("_");
-                trk = data[i].track;
-                cho = data[i].chorus;
-                time = data[i].time;
-                del = data[i].delay;
-                if (del == 0) del = ""; else del = `+${del}`;
-                trn = data[i].train;
-                bfor = data[i].for;
-                com = data[i].comment;
-                let dt = [date, sta, line[0], trk, cho, time, trn, bfor, com];
-                for (var j = 0; j < d.length; j++) {
-                    var td = document.createElement('td');
-                    td.innerText = dt[j];
-                    if (j == 2) for (var k = 0; k < sc.length; k++) if (line[1] == sc[k][0]) td.classList.add(sc[k][1]);
-                    if (j == 5 && del != 0) {
-                        delE = document.createElement("span");
-                        delE.innerText = del;
-                        delE.classList.add("delay");
-                        td.appendChild(delE);
+    fetch('staData.json')
+        .then(res => res.json())
+        .then(g => {
+            fetch(`${g.gas}?nor=${n}&page=${p}`)
+                .then(res => res.json())
+                .then(data => {
+                    if (data.status == 'success') {
+                        nor = data.nor;
+                        data = data.body;
+                        let table = document.createElement('table');
+                        table.id = 'record';
+                        let thead = document.createElement('thead');
+                        let trh = document.createElement('tr');
+                        for (var i = 0; i < d.length; i++) {
+                            th = document.createElement('th');
+                            th.innerText = d[i];
+                            trh.appendChild(th);
+                        }
+                        thead.appendChild(trh);
+                        table.appendChild(thead);
+                        let tbody = document.createElement('tbody');
+                        for (var i = 0; i < data.length; i++) {
+                            var trb = document.createElement('tr');
+                            date = data[i].date;
+                            sta = data[i].station;
+                            line = data[i].line.split("_");
+                            trk = data[i].track;
+                            cho = data[i].chorus;
+                            time = data[i].time;
+                            del = data[i].delay;
+                            if (del == 0) del = "";
+                            else del = `+${del}`;
+                            trn = data[i].train;
+                            bfor = data[i].for;
+                            com = data[i].comment;
+                            let dt = [date, sta, line[0], trk, cho,
+                                time, trn, bfor, com
+                            ];
+                            for (var j = 0; j < d.length; j++) {
+                                var td = document.createElement('td');
+                                td.innerText = dt[j];
+                                if (j == 2)
+                                    for (var k = 0; k < sc.length; k++)
+                                        if (line[1] == sc[k][0]) td.classList
+                                            .add(sc[k][1]);
+                                if (j == 5 && del != 0) {
+                                    delE = document.createElement(
+                                        "span");
+                                    delE.innerText = del;
+                                    delE.classList.add("delay");
+                                    td.appendChild(delE);
+                                }
+                                trb.appendChild(td);
+                            }
+                            tbody.appendChild(trb);
+                        }
+                        table.appendChild(tbody);
+                        document.getElementById('recSpace').appendChild(
+                            table);
+                        document.getElementById('recStatus').innerText =
+                            `全${nor}件中${n * (p - 1) + 1}～${n * (p - 1) + data.length}件`;
+                    } else if (data.status == 'no record') {
+                        document.getElementById('recStatus').innerText =
+                            "データがありません。";
                     }
-                    trb.appendChild(td);
-                }
-                tbody.appendChild(trb);
-            }
-            table.appendChild(tbody);
-            document.getElementById('recSpace').appendChild(table);
-            document.getElementById('recStatus').innerText = `全${nor}件中${n * (p - 1) + 1}～${n * (p - 1) + data.length}件`;
-        } else if (data.status == 'no record') {
-            document.getElementById('recStatus').innerText = "データがありません。";
-        }
 
-    })
+                });
+        });
 }
 
 function recordData() {
@@ -207,8 +230,10 @@ function recordData() {
         error += "日付が選択されていません。";
     } else {
         let date3 = new Date(date2);
-        date = `${date3.getFullYear()}/${date3.getMonth() + 1}/${date3.getDate()}`;
-        time = `${date3.getHours()}:${date3.getMinutes().toString().padStart(2, "0")}`;
+        date =
+            `${date3.getFullYear()}/${date3.getMonth() + 1}/${date3.getDate()}`;
+        time =
+            `${date3.getHours()}:${date3.getMinutes().toString().padStart(2, "0")}`;
     }
     if (delay.length == 0) {
         delay = "0";
