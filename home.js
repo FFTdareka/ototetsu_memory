@@ -252,7 +252,7 @@ function recordData() {
                 error += "路線が入力されていません。";
             } else {
                 line = line3;
-                line4 = line3;
+                line4 = "その他";
             }
         }
     }
