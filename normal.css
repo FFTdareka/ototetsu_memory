@@ -40,6 +40,12 @@
     background-color: #00ac9a;
 }
 
+.jso {
+    /*相鉄・JR直通線*/
+    color: #ffffff;
+    background-color: #000080;
+}
+
 .jc,
 .jm {
     /*中央線快速、青梅線、五日市線、武蔵野線*/
@@ -268,4 +274,9 @@
     /*東京メトロ副都心線*/
     color: #ffffff;
     background-color: #bb641d;
+}
+.twr {
+    /*東京臨海高速鉄道りんかい線*/
+    color: #ffffff;
+    background-color: #00418e;
 }
