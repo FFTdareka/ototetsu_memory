@@ -16,14 +16,40 @@
     width: 3em;
 }
 
+.jsy {
+    /*山形新幹線*/
+    color: #ffffff;
+    background-color: #f36221;
+}
+
+.jsa {
+    /*秋田新幹線*/
+    color: #ffffff;
+    background-color: #ed4399;
+}
+
+
+.jsj {
+    /*上越新幹線*/
+    color: #ffffff;
+    background-color: #f58d79;
+}
+
+.jshr {
+    /*北陸新幹線*/
+    color: #ffffff;
+    background-color: #6a3d98;
+}
+
 .jy {
     /*山手線*/
     color: #ffffff;
     background-color: #89c85e;
 }
 
-.jh {
-    /*横浜線*/
+.jh,
+.jshd {
+    /*横浜線、北海道新幹線*/
     color: #ffffff;
     background-color: #9acd32;
 }
@@ -211,8 +237,9 @@
     background-color: #00aaee;
 }
 
-.jkum {
-    /*小海線*/
+.jkum,
+.jst {
+    /*小海線、東北新幹線*/
     color: #ffffff;
     background-color: #41934c;
 }
