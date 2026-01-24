@@ -21,7 +21,25 @@ fetch('staData.json')
             sLine.appendChild(lg);
         }
         getRecord(10, 1);
-    })
+    });
+
+function iframe_display() {
+	$("iframe").on("load", function() {
+		try {
+			$(this).height(0);
+			$(this).height(this.contentWindow.document.documentElement.scrollHeight);
+		} catch (e) {
+		}
+	});
+	$("iframe").trigger("load");
+}
+
+$(window).load(function() {
+	iframe_display();
+});
+$(window).resize(function() {
+	iframe_display();
+});
 
 function setSta(data) {
     let l = document.getElementById("line");
