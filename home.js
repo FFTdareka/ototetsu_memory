@@ -26,12 +26,10 @@ fetch('staData.json')
 window.onload = () => {
     let ifr = document.getElementsByTagName("iframe");
     for (var i = 0; i < ifr.length; i++) {
-        ifr[i].onload = () => {
-            try {
-                const contentHeight = ifr[i].contentWindow.document.body.scrollHeight;
-                ifr[i].style.height = contentHeight + 'px';
-            } catch (e) {
-            }
+        try {
+            let contentHeight = ifr[i].contentWindow.document.body.scrollHeight;
+            ifr[i].style.height = contentHeight + 'px';
+        } catch (e) {
         }
     }
 };
