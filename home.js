@@ -137,7 +137,7 @@ function getRecord(n, p) {
     fetch('staData.json')
         .then(res => res.json())
         .then(g => {
-            fetch(`${g.gas}?nor=${n}&page=${p}`)
+            fetch(`${g.gas}?type=rec&nor=${n}&page=${p}`)
                 .then(res => res.json())
                 .then(data => {
                     if (data.status == 'success') {
@@ -214,7 +214,8 @@ function getNews(n, e) {
                     .then(res => res.json())
                     .then(data => {
                         if (data.status == 'success') {
-                            let ns = data.news;
+                            let ns = data.body;
+                            if (n > data.nor) n = data.nor;
                             for (var i = 0; i < n; i++) {
                                 var g = document.createElement("div");
                                 var t = document.createElement("div");
