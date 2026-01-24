@@ -43,8 +43,6 @@ function wline(data) {
     let line = data.value.split("_");
     let i = Number(line[0]);
     let j = Number(line[1]);
-    let sSta = document.getElementById("addRec_sta");
-    sSta.innerHTML = '<option value="-1_-1">-駅を選択-</option>';
     if (i != -1 && j != -1) {
         if (setR.sta[i][1][j][0] == "その他") {
             let input = document.createElement("input");
