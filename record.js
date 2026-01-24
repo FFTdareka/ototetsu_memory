@@ -14,17 +14,19 @@ fetch('staData.json')
         d = setR.d;
         sc = setR.line;
         let sLine = document.getElementById("selectline");
-        let ls = setR.sta;
-        for (var i = 0; i < ls.length; i++) {
-            var lg = document.createElement("optgroup");
-            lg.label = ls[i][0];
-            for (var j = 0; j < ls[i][1].length; j++) {
-                var le = document.createElement("option");
-                le.value = `${i}_${j}`;
-                le.innerText = ls[i][1][j][0];
-                lg.appendChild(le);
+        if(sLine) {
+            let ls = setR.sta;
+            for (var i = 0; i < ls.length; i++) {
+                var lg = document.createElement("optgroup");
+                lg.label = ls[i][0];
+                for (var j = 0; j < ls[i][1].length; j++) {
+                    var le = document.createElement("option");
+                    le.value = `${i}_${j}`;
+                    le.innerText = ls[i][1][j][0];
+                    lg.appendChild(le);
+                }
+                sLine.appendChild(lg);
             }
-            sLine.appendChild(lg);
         }
         getRecord(10, 1, {
             filter: {}
@@ -35,6 +37,28 @@ fetch('staData.json')
             filter: {}
         };
     })
+
+function wline(data) {
+    let l = document.getElementById("selectline2");
+    let line = data.value.split("_");
+    let i = Number(line[0]);
+    let j = Number(line[1]);
+    let sSta = document.getElementById("addRec_sta");
+    sSta.innerHTML = '<option value="-1_-1">-駅を選択-</option>';
+    if (i != -1 && j != -1) {
+        if (setR.sta[i][1][j][0] == "その他") {
+            let input = document.createElement("input");
+            input.id = "selectline2";
+            input.type = "text";
+            input.placeholder = "例:横浜線";
+            document.getElementById("sline").appendChild(input);
+        } else {
+            if (l) l.remove();
+        }
+    } else {
+        if (l) l.remove();
+    }
+}
 
 function getRecord(n, p, o) {
     document.getElementById('recStatus').innerText = "読み込み中...";
@@ -126,6 +150,7 @@ function setFilter() {
     let minrec = document.getElementById("minrec").value;
     let maxrec = document.getElementById("maxrec").value;
     let ssta = document.getElementById("selectsta").value;
+    let sli = document.getElementById("selectline").value;
     let startdate = document.getElementById("startdate").value;
     let enddate = document.getElementById("enddate").value;
     let re = document.getElementById("reactive").value;
@@ -133,6 +158,21 @@ function setFilter() {
     opt.filter.re = re;
     if (maxrec != "") opt.filter.maxrec = Number(maxrec);
     if (minrec != "") opt.filter.minrec = Number(minrec);
+    if (sli != "-1_-1") {
+        let lineData = sli.split("_");
+        i = Number(lineData[0]);
+        j = Number(lineData[1]);
+        line = setR.sta[i][1][j][3] || setR.sta[i][1][j][0];
+        if (line == "その他") {
+            let line2 = document.getElementById("selectline2").value;
+            if (line2) {
+                line = line2;
+                opt.filter.line = line;
+            }
+        } else {
+            opt.filter.line = line;
+        }
+    }
     if (ssta != "") opt.filter.sta = ssta;
     if (startdate != "") {
         startdate = new Date(startdate);
