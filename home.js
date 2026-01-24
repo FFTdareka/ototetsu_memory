@@ -24,7 +24,7 @@ fetch('staData.json')
     });
 
 function iframe_display() {
-	$("iframe").on("load", function() {
+	$("iframe").on("load", () => {
 		try {
 			$(this).height(0);
 			$(this).height(this.contentWindow.document.documentElement.scrollHeight);
@@ -34,10 +34,10 @@ function iframe_display() {
 	$("iframe").trigger("load");
 }
 
-$(window).load(function() {
+$(window).on("load", () => {
 	iframe_display();
 });
-$(window).resize(function() {
+$(window).resize( () => {
 	iframe_display();
 });
 
