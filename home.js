@@ -204,6 +204,37 @@ function getRecord(n, p) {
         });
 }
 
+function getNews(n, e) {
+    let el = document.getElementById(e);
+    if (el) {
+        fetch('staData.json')
+            .then(res => res.json())
+            .then(g => {
+                fetch(`${g.gas}?type=news`)
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.status == 'success') {
+                            let ns = data.news;
+                            for (var i = 0; i < n; i++) {
+                                var g = document.createElement("div");
+                                var t = document.createElement("div");
+                                t.innerText = ns[i][0];
+                                t.style = "font-weight: bold;";
+                                g.appendChild(t);
+                                var s = document.createElement("div");
+                                s.innerText = ns[i][1];
+                                g.appendChild(s);
+                                var p = document.createElement("div");
+                                p.innerText = `執筆者:${ns[i][2]}`;
+                                g.appendChild(p);
+                                el.appendChild(g);
+                            }
+                        }
+                    })
+            })
+    }
+}
+
 function recordData() {
     let er = document.getElementById("error");
     if (er) er.remove();
