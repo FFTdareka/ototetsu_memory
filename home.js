@@ -230,7 +230,6 @@ function getNews(n, e) {
                                 g.appendChild(p);
                                 el.appendChild(g);
                             }
-                            el.appendChild(document.createElement("br"));
                         }
                     })
             })
