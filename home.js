@@ -24,7 +24,7 @@ fetch('staData.json')
     });
 
 window.onload = () => {
-    let ifr = document.getElementsByClassName('ifr');
+    let ifr = document.getElementsByTagName("iframe");
     ifr.forEach(iframe => {
         iframe.onload = () => {
                 try {
