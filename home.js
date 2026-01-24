@@ -215,7 +215,7 @@ function getNews(n, e) {
                     .then(data => {
                         if (data.status == 'success') {
                             let ns = data.body;
-                            if (n > data.nor) n = data.nor;
+                            if (n > data.nor || n == -1) n = data.nor;
                             for (var i = 0; i < n; i++) {
                                 var g = document.createElement("div");
                                 var t = document.createElement("div");
@@ -230,6 +230,7 @@ function getNews(n, e) {
                                 g.appendChild(p);
                                 el.appendChild(g);
                             }
+                            el.appendChild(document.createElement("br"));
                         }
                     })
             })
