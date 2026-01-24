@@ -6,6 +6,18 @@
         <link rel="icon" href="favicon.ico">
         <link rel="stylesheet" href="normal.css">
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script>
+            window.onload = () => {
+                let ifr = document.getElementsByTagName("iframe");
+                for (var i = 0; i < ifr.length; i++) {
+                    try {
+                        let contentHeight = ifr[i].contentWindow.document.body.scrollHeight;
+                        ifr[i].style.height = contentHeight + 'px';
+                    } catch (e) {
+                    }
+                }
+            };
+        </script>
     </head>
     <body>
         <h1><span onclick="location.href = 'https:\/\/fftdareka.github.io\/ototetsu_memory\/';">みんなの音鉄記録帳</span> 概要</h1>
