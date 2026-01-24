@@ -67,7 +67,7 @@ function getRecord(n, p, o) {
     fetch('staData.json')
         .then(res => res.json())
         .then(g => {
-            fetch(`${g.gas}?nor=${n}&page=${p}&opt=${opt}`)
+            fetch(`${g.gas}?type=rec&nor=${n}&page=${p}&opt=${opt}`)
                 .then(res => res.json())
                 .then(data => {
                     if (data.status == 'success') {
