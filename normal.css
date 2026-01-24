@@ -12,6 +12,10 @@
     color: red;
 }
 
+.b{
+    font-weight: bold;
+}
+
 .p {
     margin-left: 1em;
 }
