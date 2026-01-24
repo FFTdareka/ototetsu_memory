@@ -25,15 +25,15 @@ fetch('staData.json')
 
 window.onload = () => {
     let ifr = document.getElementsByTagName("iframe");
-    ifr.forEach(iframe => {
-        iframe.onload = () => {
-                try {
-                    const contentHeight = iframe.contentWindow.document.body.scrollHeight;
-                    iframe.style.height = contentHeight + 'px';
-                } catch (e) {
-                }
+    for (var i = 0; i < ifr.length; i++) {
+        ifr[i].onload = () => {
+            try {
+                const contentHeight = ifr[i].contentWindow.document.body.scrollHeight;
+                ifr[i].style.height = contentHeight + 'px';
+            } catch (e) {
             }
-    });
+        }
+    }
 };
 
 function setSta(data) {
