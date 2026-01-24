@@ -23,23 +23,18 @@ fetch('staData.json')
         getRecord(10, 1);
     });
 
-function iframe_display() {
-	$("iframe").on("load", () => {
-		try {
-			$(this).height(0);
-			$(this).height(this.contentWindow.document.documentElement.scrollHeight);
-		} catch (e) {
-		}
-	});
-	$("iframe").trigger("load");
-}
-
-$(window).on("load", () => {
-	iframe_display();
-});
-$(window).resize( () => {
-	iframe_display();
-});
+window.onload = () => {
+    let ifr = document.getElementsByClassName('ifr');
+    ifr.forEach(iframe => {
+        iframe.onload = () => {
+                try {
+                    const contentHeight = iframe.contentWindow.document.body.scrollHeight;
+                    iframe.style.height = contentHeight + 'px';
+                } catch (e) {
+                }
+            }
+    });
+};
 
 function setSta(data) {
     let l = document.getElementById("line");
