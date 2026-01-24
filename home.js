@@ -23,17 +23,6 @@ fetch('staData.json')
         getRecord(10, 1);
     });
 
-window.onload = () => {
-    let ifr = document.getElementsByTagName("iframe");
-    for (var i = 0; i < ifr.length; i++) {
-        try {
-            let contentHeight = ifr[i].contentWindow.document.body.scrollHeight;
-            ifr[i].style.height = contentHeight + 'px';
-        } catch (e) {
-        }
-    }
-};
-
 function setSta(data) {
     let l = document.getElementById("line");
     let s = document.getElementById("station");
