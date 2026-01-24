@@ -11,14 +11,14 @@
     </head>
     <body>
         <h1><span onclick="location.href = 'https:\/\/fftdareka.github.io\/ototetsu_memory\/';">みんなの音鉄記録帳</span> 鳴動記録閲覧</h1>
-        <div><span style="color: red;">初めて利用する方は必ず見ること</span>　使い方は<a href="how-to-use.html">こちら</a></div>
+        <div><span class="im">初めて利用する方は必ず見ること</span>　使い方は<a href="how-to-use.html">こちら</a></div>
         <div>お問い合わせ等は<a href="https://discord.gg/aEgAAENXuu" target="_blank">こちら</a>(Discordサーバーに移動します)</div>
         <br>
         <iframe src="jre_press.html" width="100%" scrolling="no" frameborder="0" style="border: none"></iframe>
         <br>
         <br>
         <div>
-            フィルタ　<button id="filter" type="button" onclick="setFilter()">適用</button>　<button id="clear" type="button" onclick="clearFilter()">クリア</button>
+            フィルタ　<button id="filter" type="button" onclick="setFilter()">適用</button><button id="clear" type="button" onclick="clearFilter()">クリア</button>
             <br>
             <label>
                 期間指定
@@ -28,6 +28,13 @@
             <label>
                 駅名指定 
                 <input id="selectsta" type="text">駅
+            </label>
+            <br>
+            <label>
+                路線指定 
+                <select id="selectline">
+                    <option value="-1_-1">-路線を選択-</option>
+                </select>
             </label>
             <br>
             <label>
