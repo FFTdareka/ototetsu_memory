@@ -169,7 +169,7 @@ input:focus, select:focus {
     border: 1px dotted #ccc;
 }
 
-#newsStatus, #recStatus {
+#newsStatus div, #recStatus {
     font-size: 0.9em;
     color: #666;
     margin-left: 10px;
