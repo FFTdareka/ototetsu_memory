@@ -64,8 +64,8 @@ a:hover {
     border-collapse: collapse;
 }
 
-#record td,
-#record th {
+td,
+th {
     border: 1px solid #000000;
     text-align: center;
 }
