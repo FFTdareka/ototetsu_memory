@@ -1,29 +1,3 @@
-let d;
-let sc;
-let setR;
-fetch('staData.json')
-    .then(res => res.json())
-    .then(data => {
-        setR = data;
-        d = setR.d;
-        sc = setR.line;
-        let sLine = document.getElementById("addRec_line");
-        let ls = setR.sta;
-        for (var i = 0; i < ls.length; i++) {
-            var lg = document.createElement("optgroup");
-            lg.label = ls[i][0];
-            for (var j = 0; j < ls[i][1].length; j++) {
-                var le = document.createElement("option");
-                le.value = `${i}_${j}`;
-                le.innerText = ls[i][1][j][0];
-                lg.appendChild(le);
-            }
-            sLine.appendChild(lg);
-        }
-        getNews();
-        getRecord(10, 1);
-    });
-
 function setSta(data) {
     let l = document.getElementById("line");
     let s = document.getElementById("station");
