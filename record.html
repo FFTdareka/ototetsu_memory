@@ -30,7 +30,7 @@
         <br>
         <h2>フィルタ</h2>
         <div>
-            <button id="filter" type="button" onclick="setFilter()">適用</button> <button id="clear" type="button" onclick="clearFilter()">クリア</button>
+            <button id="filter" type="button" onclick="setFilter()">適用</button>　<button id="clear" type="button" onclick="clearFilter()">クリア</button>
             <br>
             <label>
                 期間指定
@@ -50,7 +50,7 @@
             </label>
             <br>
             <label>
-                最低鳴動コーラス 
+                最小鳴動コーラス 
                 <input id="minrec" type="number">c
             </label>
             <br>
@@ -68,7 +68,6 @@
                 </select>
             </label>
         </div>
-        <br>
         <h2>鳴動記録</h2>
         <span id="recStatus"></span>
         <div id="recSpace">
@@ -78,6 +77,7 @@
             <button id="back" type="button" onclick="getRecord(nowN, nowP - 1, nowO)" disabled>前へ</button>
             <button id="next" type="button" onclick="getRecord(nowN, nowP + 1, nowO)" disabled>次へ</button>
         </div>
+        <br>
         <div>
             <a href="https://fftdareka.github.io/ototetsu_memory/">トップページへ</a>
         </div>
