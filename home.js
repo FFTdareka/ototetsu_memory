@@ -41,7 +41,7 @@ function setSta2(data) {
     let k = Number(sta[0]);
     let k2 = Number(sta[1]);
     if (k != -1 && k2 != -1) {
-        let line = document.getElementById("addRec").children[5].children[0].value
+        let line = document.getElementById("addRec").children[4].children[0].value
             .split("_");
         let i = Number(line[0]);
         let j = Number(line[1]);
