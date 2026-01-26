@@ -19,6 +19,7 @@ function getNews(n = 0, e = "newsSpace") {
                                     el.appendChild(br);
                                 }
                                 var g = document.createElement("div");
+                                g.classList.add("news");
                                 var t = document.createElement("div");
                                 t.innerText = ns[i][0];
                                 t.style = "font-weight: bold;";
