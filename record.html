@@ -37,6 +37,15 @@
         <br>
         <iframe src="jre_press.html" width="100%" scrolling="no" frameborder="0" style="border: none"></iframe>
         <br>
+        <h2>鳴動記録</h2>
+        <span id="recStatus"></span>
+        <div id="recSpace">
+
+        </div>
+        <div>
+            <button id="back" type="button" onclick="getRecord(nowN, nowP - 1, nowO)" disabled>前へ</button>
+            <button id="next" type="button" onclick="getRecord(nowN, nowP + 1, nowO)" disabled>次へ</button>
+        </div>
         <h2>フィルタ</h2>
         <div>
             <button id="filter" type="button" onclick="setFilter()">適用</button>　<button id="clear" type="button" onclick="clearFilter()">クリア</button>
@@ -76,15 +85,6 @@
                     <option value="f">打ち返し除く</option>
                 </select>
             </label>
-        </div>
-        <h2>鳴動記録</h2>
-        <span id="recStatus"></span>
-        <div id="recSpace">
-
-        </div>
-        <div>
-            <button id="back" type="button" onclick="getRecord(nowN, nowP - 1, nowO)" disabled>前へ</button>
-            <button id="next" type="button" onclick="getRecord(nowN, nowP + 1, nowO)" disabled>次へ</button>
         </div>
         <br>
         <div>
