@@ -14,6 +14,18 @@
         <link rel="apple-touch-icon-precomposed" href="favicon.ico">
         <link rel="stylesheet" href="normal.css">
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script>
+            window.onload = () => {
+                let ifr = document.getElementsByTagName("iframe");
+                for (var i = 0; i < ifr.length; i++) {
+                    try {
+                        let contentHeight = ifr[i].contentWindow.document.body.scrollHeight;
+                        ifr[i].style.height = contentHeight + 'px';
+                    } catch (e) {
+                    }
+                }
+            };
+        </script>
     </head>
     <body>
         <h1><span onclick="location.href = 'https:\/\/fftdareka.github.io\/ototetsu_memory\/';">みんなの音鉄記録帳</span> 姉妹wiki・連携先リスト</h1>
@@ -24,7 +36,7 @@
         <br>
         <h2>姉妹wiki一覧</h2>
         <h3>制作会社別</h3>
-        <table>
+        <table class="wiki">
             <thead>
                 <tr>
                     <th>wiki名</th>
@@ -46,7 +58,7 @@
             </tbody>
         </table>
         <h3>エリア別</h3>
-        <table>
+        <table class="wiki">
             <thead>
                 <tr>
                     <th>wiki名</th>
@@ -128,7 +140,7 @@
             </tbody>
         </table>
         <h3>その他</h3>
-        <table>
+        <table class="wiki">
             <thead>
                 <tr>
                     <th>wiki名</th>
@@ -175,7 +187,7 @@
             </tbody>
         </table>
         <h2>連携先一覧</h2>
-        <table>
+        <table class="wiki">
             <thead>
                 <tr>
                     <th>wiki名</th>
