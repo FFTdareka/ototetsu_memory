@@ -14,7 +14,8 @@ function getNews(n = 0, e = "newsSpace") {
                             if (n > data.nor || n == -1) n = data.nor;
                             for (var i = 0; i < n; i++) {
                                 if (i > 0) {
-                                    var br = document.createElement("br");
+                                    var br = document.createElement(
+                                        "br");
                                     el.appendChild(br);
                                 }
                                 var g = document.createElement("div");
@@ -24,12 +25,14 @@ function getNews(n = 0, e = "newsSpace") {
                                 g.appendChild(t);
                                 var txt = ns[i][1].split("\\n");
                                 var s = document.createElement("div");
-                                for(var j = 0; j < txt.length; j++) {
+                                for (var j = 0; j < txt.length; j++) {
                                     if (j > 0) {
-                                        var br = document.createElement("br");
+                                        var br = document.createElement(
+                                            "br");
                                         s.appendChild(br);
                                     }
-                                    var sp = document.createElement("span");
+                                    var sp = document.createElement(
+                                        "span");
                                     sp.innerText = txt[j];
                                     s.appendChild(sp);
                                 }
@@ -38,9 +41,12 @@ function getNews(n = 0, e = "newsSpace") {
                                 p.innerText = `執筆者:${ns[i][2]}`;
                                 g.appendChild(p);
                                 el.appendChild(g);
-                                document.getElementById('newsStatus').innerText = "";
+                                document.getElementById('newsStatus').innerText =
+                                    "";
                             }
-                            if (n == 0) document.getElementById('newsStatus').innerText = "ニュースはありません。";
+                            if (n == 0) document.getElementById(
+                                    'newsStatus').innerText =
+                                "ニュースはありません。";
                         }
                     })
             })

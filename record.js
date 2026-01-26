@@ -14,7 +14,7 @@ fetch('staData.json')
         d = setR.d;
         sc = setR.line;
         let sLine = document.getElementById("selectline");
-        if(sLine) {
+        if (sLine) {
             let ls = setR.sta;
             for (var i = 0; i < ls.length; i++) {
                 var lg = document.createElement("optgroup");
@@ -58,11 +58,15 @@ function wline(data) {
     }
 }
 
-function getRecord(n, p, o = {filter: {}}) {
+function getRecord(n, p, o = {
+    filter: {}
+}) {
     document.getElementById('recStatus').innerText = "読み込み中...";
     document.getElementById('recSpace').innerHTML = "";
-    document.getElementById('back').disabled = true;
-    document.getElementById('next').disabled = true;
+    if (document.getElementById('back')) document.getElementById('back').disabled =
+        true;
+    if (document.getElementById('next')) document.getElementById('next').disabled =
+        true;
     let opt = JSON.stringify(o);
     fetch('staData.json')
         .then(res => res.json())
@@ -125,9 +129,11 @@ function getRecord(n, p, o = {filter: {}}) {
                             table);
                         document.getElementById('recStatus').innerText =
                             `全${nor}件中${n * (p - 1) + 1}～${n * (p - 1) + data.length}件`;
-                        if (p > 1) document.getElementById('back').disabled =
+                        if (p > 1 && document.getElementById('back'))
+                            document.getElementById('back').disabled =
                             false;
-                        if (nor > n * p) document.getElementById('next')
+                        if (nor > n * p && document.getElementById(
+                                'next')) document.getElementById('next')
                             .disabled = false;
                         nowN = n;
                         nowP = p;
