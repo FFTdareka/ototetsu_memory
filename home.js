@@ -235,7 +235,9 @@ function getNews(n, e) {
                                         var br = document.createElement("br");
                                         s.appendChild(br);
                                     }
-                                    s.innerText += txt[j];
+                                    var sp = document.createElement("span");
+                                    sp.innerText = txt[j];
+                                    s.appendChild(sp);
                                 }
                                 g.appendChild(s);
                                 var p = document.createElement("div");
