@@ -230,7 +230,7 @@ function getNews(n, e) {
                                 g.appendChild(t);
                                 var txt = ns[i][1].split("\n");
                                 var s = document.createElement("div");
-                                for(var j = 0; j > txt.length; j++) {
+                                for(var j = 0; j < txt.length; j++) {
                                     if (j > 0) {
                                         var br = document.createElement("br");
                                         s.appendChild(br);
