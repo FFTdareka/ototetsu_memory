@@ -33,6 +33,16 @@ h2 {
     margin-bottom: 20px;
 }
 
+h3 {
+    border-left: 6px solid #007ac0;
+    padding: 5px 15px;
+    background: #f5f7f8;
+    border-radius: 0 4px 4px 0;
+    border-bottom: 1px solid #666;
+    margin-top: 30px;
+    margin-bottom: 15px;
+}
+
 a {
     color: #007ac0;
     text-decoration: none;
