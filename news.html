@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>ニュース - みんなの音鉄記録帳</title>
+        <meta charset="UTF-8">
+        <link rel="icon" href="favicon.ico">
+        <link rel="stylesheet" href="normal.css">
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="news.js"></script>
+        <script>
+            window.onload = () => {
+                let ifr = document.getElementsByTagName("iframe");
+                for (var i = 0; i < ifr.length; i++) {
+                    try {
+                        let contentHeight = ifr[i].contentWindow.document.body.scrollHeight;
+                        ifr[i].style.height = contentHeight + 'px';
+                    } catch (e) {
+                    }
+                }
+            };
+            getNews(-1);
+        </script>
+    </head>
+    <body>
+        <h1><span onclick="location.href = 'https:\/\/fftdareka.github.io\/ototetsu_memory\/';">みんなの音鉄記録帳</span> ニュース</h1>
+        <div><span class="im b">初めて利用する方は必ず見ること</span>　使い方は<a href="how-to-use.html">こちら</a></div>
+        <div>お問い合わせ等は<a href="https://discord.gg/aEgAAENXuu" target="_blank">こちら</a>(Discordサーバーに移動します)</div>
+        <br>
+        <iframe src="jre_press.html" width="100%" scrolling="no" frameborder="0" style="border: none"></iframe>
+        <br>
+        <br>
+        <h2>最新のニュース</h2>
+        <span id="newsStatus"></span>
+        <div id="newsSpace">
+
+        </div>
+        <br>
+        <div>
+            <a href="https://fftdareka.github.io/ototetsu_memory/">トップページへ</a>
+        </div>
+    </body>
+</html>

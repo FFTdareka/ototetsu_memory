@@ -58,7 +58,7 @@ function wline(data) {
     }
 }
 
-function getRecord(n, p, o) {
+function getRecord(n, p, o = {filter: {}}) {
     document.getElementById('recStatus').innerText = "読み込み中...";
     document.getElementById('recSpace').innerHTML = "";
     document.getElementById('back').disabled = true;
