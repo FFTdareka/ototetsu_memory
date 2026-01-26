@@ -13,7 +13,7 @@ fetch('staData.json')
         setR = data;
         d = setR.d;
         sc = setR.line;
-        let sLine = document.getElementById("selectline");
+        let sLine = document.getElementById("selectline") || document.getElementById("addRec_line");
         if (sLine) {
             let ls = setR.sta;
             for (var i = 0; i < ls.length; i++) {
