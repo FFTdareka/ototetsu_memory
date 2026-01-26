@@ -135,7 +135,7 @@ input:focus, select:focus {
     box-shadow: none;
 }
 
-#addRec_btn:disabled, :hover:disabled, :active:disabled {
+#addRec_btn:disabled, #addRec_btn:hover:disabled, #addRec_btn:active:disabled {
     background-color: #888;
     box-shadow: 0 4px 0 #666;
     transform: none;
