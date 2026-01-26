@@ -228,7 +228,7 @@ function getNews(n, e) {
                                 t.innerText = ns[i][0];
                                 t.style = "font-weight: bold;";
                                 g.appendChild(t);
-                                var txt = ns[i][1].split("\n");
+                                var txt = ns[i][1].split("\\n");
                                 var s = document.createElement("div");
                                 for(var j = 0; j < txt.length; j++) {
                                     if (j > 0) {
