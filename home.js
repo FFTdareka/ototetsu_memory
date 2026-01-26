@@ -25,7 +25,7 @@ function setSta(data) {
             input.id = "line";
             input.type = "text";
             input.placeholder = "例:横浜線";
-            document.getElementById("addRec").children[5].appendChild(input);
+            document.getElementById("addRec").children[4].appendChild(input);
         } else {
             if (l) l.remove();
             if (s) s.remove();
@@ -50,7 +50,7 @@ function setSta2(data) {
             input.id = "station";
             input.type = "text";
             input.placeholder = "例:淵野辺";
-            document.getElementById("addRec").children[7].appendChild(input);
+            document.getElementById("addRec").children[6].appendChild(input);
         } else {
             document.getElementById("station").remove();
         }
