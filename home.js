@@ -207,6 +207,8 @@ function getRecord(n, p) {
 function getNews(n, e) {
     let el = document.getElementById(e);
     if (el) {
+        document.getElementById('newsStatus').innerText = "読み込み中...";
+        document.getElementById('newsSpace').innerHTML = "";
         fetch('staData.json')
             .then(res => res.json())
             .then(g => {
@@ -229,7 +231,9 @@ function getNews(n, e) {
                                 p.innerText = `執筆者:${ns[i][2]}`;
                                 g.appendChild(p);
                                 el.appendChild(g);
+                                document.getElementById('newsStatus').innerText = "";
                             }
+                            if (n == 0) document.getElementById('newsStatus').innerText = "ニュースはありません。";
                         }
                     })
             })
