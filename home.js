@@ -84,7 +84,7 @@ function setRecord(data) {
                 })
                 .then(res => res.text())
                 .then(data => {
-                    alert(data);
+                    alert(`${data}`);
                     document.getElementById('addRec_date').value = "";
                     document.getElementById('addRec_del').value = "";
                     document.getElementById('addRec_line').value =
