@@ -59,8 +59,9 @@
 }
 
 .jc,
-.jm {
-    /*中央線快速、青梅線、五日市線、武蔵野線*/
+.jm,
+.ohh {
+    /*中央線快速、青梅線、五日市線、武蔵野線、箱根登山線*/
     color: #ffffff;
     background-color: #f15a22;
 }
@@ -292,4 +293,59 @@
     /*東京臨海高速鉄道りんかい線*/
     color: #ffffff;
     background-color: #00418e;
+}
+.oho, .ot, .oe {
+    /*小田急小田原線、小田急多摩線、小田急江ノ島線*/
+    color: #ffffff;
+    background-color: #2288cc;
+}
+.tqty {
+    /*東急東横線*/
+    color: #ffffff;
+    background-color: #da0442;
+}
+.tqmg {
+    /*東急目黒線*/
+    color: #ffffff;
+    background-color: #009cd2;
+}
+.tqsh {
+    /*東急新横浜線*/
+    color: #ffffff;
+    background-color: #890d84;
+}
+.tqdt {
+    /*東急田園都市線*/
+    color: #ffffff;
+    background-color: #20a288;
+}
+.tqom {
+    /*東急大井町線*/
+    color: #ffffff;
+    background-color: #f18c43;
+}
+.tqik {
+    /*東急池上線*/
+    color: #ffffff;
+    background-color: #ee86a7;
+}
+.tqtm {
+    /*東急多摩川線*/
+    color: #ffffff;
+    background-color: #ae0378;
+}
+.tqkd {
+    /*東急こどもの国線*/
+    color: #ffffff;
+    background-color: #0068b7;
+}
+.tqsg {
+    /*東急世田谷線*/
+    color: #ffffff;
+    background-color: #fcc70d;
+}
+.mm {
+    /*横浜高速鉄道みなとみらい線*/
+    color: #ffffff;
+    background-color: #09357f;
 }
