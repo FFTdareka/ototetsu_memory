@@ -125,7 +125,8 @@
 }
 
 .jt,
-.ju {
+.ju,
+.jtksk {
     /*東海道線、伊東線、高崎線、宇都宮線*/
     color: #ffffff;
     background-color: #f68b1e;
