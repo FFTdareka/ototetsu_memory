@@ -60,8 +60,8 @@ function getRecord(n, p, o = {
     filter: {},
     sort: {}
 }) {
-    if (o.hasOwnProperty("filter")) o.filter = {};
-    if (o.hasOwnProperty("sort")) o.sort = {};
+    if (!o.hasOwnProperty("filter")) o.filter = {};
+    if (!o.hasOwnProperty("sort")) o.sort = {};
     document.getElementById('recStatus').innerText = "読み込み中...";
     document.getElementById('recSpace').innerHTML = "";
     if (document.getElementById('back')) document.getElementById('back').disabled =
