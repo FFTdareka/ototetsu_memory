@@ -29,7 +29,7 @@ fetch('staData.json')
                 sLine.appendChild(lg);
             }
         }
-        if (location.href == "https:\/\/fftdareka.github.io\/ototetsu_memory\/" || "https:\/\/fftdareka.github.io\/ototetsu_memory\/index.html") op = { filter: {}, sort: {id: "d"}}; else op = { filter: {}, sort: {}};
+        if (location.href == "https:\/\/fftdareka.github.io\/ototetsu_memory\/" || location.href == "https:\/\/fftdareka.github.io\/ototetsu_memory\/index.html") op = { filter: {}, sort: {id: "d"}}; else op = { filter: {}, sort: {}};
         getRecord(10, 1, op);
         nowN = 10;
         nowP = 1;
