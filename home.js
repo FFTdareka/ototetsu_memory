@@ -99,7 +99,7 @@ function setRecord(data) {
                     setSta({
                         value: "-1_-1"
                     });
-                    getRecord(10, 1);
+                    getRecord(10, 1, { filter: {}, sort: {id: "d"}});
                     document.getElementById('addRec_btn').disabled =
                         false;
                 });

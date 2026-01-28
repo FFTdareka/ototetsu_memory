@@ -4,7 +4,8 @@ let setR;
 let nowN = 0;
 let nowP = 0;
 let nowO = {
-    filter: {}
+    filter: {},
+    sort: {}
 }
 
 fetch('staData.json')
@@ -28,14 +29,11 @@ fetch('staData.json')
                 sLine.appendChild(lg);
             }
         }
-        getRecord(10, 1, {
-            filter: {}
-        });
+        if (location.href == "https:\/\/fftdareka.github.io\/ototetsu_memory\/" || "https:\/\/fftdareka.github.io\/ototetsu_memory\/index.html") op = { filter: {}, sort: {id: "d"}}; else op = { filter: {}, sort: {}};
+        getRecord(10, 1, op);
         nowN = 10;
         nowP = 1;
-        nowO = {
-            filter: {}
-        };
+        nowO = op;
     })
 
 function wline(data) {
@@ -59,8 +57,11 @@ function wline(data) {
 }
 
 function getRecord(n, p, o = {
-    filter: {}
+    filter: {},
+    sort: {}
 }) {
+    if (o.hasOwnProperty("filter")) o.filter = {};
+    if (o.hasOwnProperty("sort")) o.sort = {};
     document.getElementById('recStatus').innerText = "読み込み中...";
     document.getElementById('recSpace').innerHTML = "";
     if (document.getElementById('back')) document.getElementById('back').disabled =
@@ -149,7 +150,8 @@ function getRecord(n, p, o = {
 
 function setFilter() {
     let opt = {
-        filter: {}
+        filter: {},
+        sort: {}
     };
     let minrec = document.getElementById("minrec").value;
     let maxrec = document.getElementById("maxrec").value;
