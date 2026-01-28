@@ -60,20 +60,6 @@ function setSta2(data) {
 }
 
 function setRecord(data) {
-    /*
-        {
-            'date': '2025/10/24',
-            'station': '淵野辺',
-            'line': '横浜線_横浜線',
-            'track': '2',
-            'chorus': '1.0c',
-            'time': '8:10',
-            'delay': '0',
-            'train': '各駅停車',
-            'for': '八王子',
-            'comment': '無被り'
-        }
-    */
     fetch('staData.json')
         .then(res => res.json())
         .then(g => {
@@ -179,6 +165,11 @@ function recordData() {
     }
     if (chorus.length == 0) {
         error += "記録が入力されていません。"
+    } else {
+        while (chorus.includes("c")) chorus.replace("c", "");
+        ch = chorus.split("+");
+        for (i = 0; i < ch.length; i++) ch[i] += "c";
+        chorus = ch.join("+");
     }
     if (train.length == 0) {
         error += "種別が入力されていません。";
