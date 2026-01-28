@@ -37,6 +37,7 @@ function setSta(data) {
 }
 
 function setSta2(data) {
+    let s = document.getElementById("station");
     let sta = data.value.split("_");
     let k = Number(sta[0]);
     let k2 = Number(sta[1]);
@@ -52,10 +53,10 @@ function setSta2(data) {
             input.placeholder = "例:淵野辺";
             document.getElementById("addRec").children[6].appendChild(input);
         } else {
-            document.getElementById("station").remove();
+            if (s) s.remove();
         }
     } else {
-        document.getElementById("station").remove();
+        if (s) s.remove();
     }
 }
 
