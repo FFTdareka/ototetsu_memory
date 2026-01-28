@@ -167,8 +167,8 @@ function recordData() {
     if (chorus.length == 0) {
         error += "記録が入力されていません。"
     } else {
-        while (chorus.includes("c")) chorus.replace("c", "");
-        while (chorus.includes("C")) chorus.replace("C", "");
+        while (chorus.includes("c")) chorus = chorus.replace("c", "");
+        while (chorus.includes("C")) chorus = chorus.replace("C", "");
         ch = chorus.split("+");
         for (i = 0; i < ch.length; i++) ch[i] += "c";
         chorus = ch.join("+");
