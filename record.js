@@ -228,6 +228,6 @@ function clearFilter() {
 function clearSort() {
     document.getElementById("srank1").value = "";
     document.getElementById("s1v").value = "";
-    document.getElementById("srank2").value = "-1_-1";
+    document.getElementById("srank2").value = "";
     document.getElementById("s2v").value = "";
 }
