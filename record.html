@@ -50,7 +50,7 @@
         <button id="filter" type="button" onclick="setFilter()">適用</button>
         <h2>フィルタ</h2>
         <div id="filterSpace">
-            <button id="clear" type="button" onclick="clearFilter()">クリア</button>
+            <button id="clearF" type="button" onclick="clearFilter()">クリア</button>
             <br>
             <label>
                 期間指定
@@ -90,13 +90,16 @@
         </div>
         <h2>ソート</h2>
         <div id="sortSpace">
+            <button id="clearS" type="button" onclick="clearSort()">クリア</button>
             <label>
                 第一優先
                 <select id="srank1">
+                    <option value="">-種類を選択-</option>
                     <option value="dates">日付</option>
                     <option value="records">鳴動記録</option>
                 </select>
                 <select id="s1v">
+                    <option value="">-条件を選択-</option>
                     <option value="d">降順(大きい順)</option>
                     <option value="u">昇順(小さい順)</option>
                 </select>
@@ -104,10 +107,12 @@
             <label>
                 第二優先
                 <select id="srank2">
+                    <option value="">-種類を選択-</option>
                     <option value="dates">日付</option>
                     <option value="records">鳴動記録</option>
                 </select>
                 <select id="s2v">
+                    <option value="">-条件を選択-</option>
                     <option value="d">降順(大きい順)</option>
                     <option value="u">昇順(小さい順)</option>
                 </select>

@@ -224,3 +224,10 @@ function clearFilter() {
     document.getElementById("enddate").value = "";
     document.getElementById("reactive").value = "b";
 }
+
+function clearSort() {
+    document.getElementById("srank1").value = "";
+    document.getElementById("s1v").value = "";
+    document.getElementById("srank2").value = "-1_-1";
+    document.getElementById("s2v").value = "";
+}
