@@ -5,7 +5,10 @@ let nowN = 0;
 let nowP = 0;
 let nowO = {
     filter: {},
-    sort: {}
+    sort: {
+        data: {},
+        rank: []
+    }
 }
 
 fetch('staData.json')
@@ -29,7 +32,7 @@ fetch('staData.json')
                 sLine.appendChild(lg);
             }
         }
-        if (location.href == "https:\/\/fftdareka.github.io\/ototetsu_memory\/" || location.href == "https:\/\/fftdareka.github.io\/ototetsu_memory\/index.html") op = { filter: {}, sort: {id: "d"}}; else op = { filter: {}, sort: {}};
+        if (location.href == "https:\/\/fftdareka.github.io\/ototetsu_memory\/" || location.href == "https:\/\/fftdareka.github.io\/ototetsu_memory\/index.html") op = { filter: {}, sort: {data: {ids: "d"}, rank: ["ids"]}}; else op = { filter: {}, sort: {data: {}, rank: []}};
         getRecord(10, 1, op);
         nowN = 10;
         nowP = 1;
@@ -151,7 +154,10 @@ function getRecord(n, p, o = {
 function setFilter() {
     let opt = {
         filter: {},
-        sort: {}
+        sort: {
+            data: {},
+            rank: []
+        }
     };
     let minrec = document.getElementById("minrec").value;
     let maxrec = document.getElementById("maxrec").value;
@@ -198,6 +204,12 @@ function setFilter() {
         opt.filter.edate = edate;
         opt.filter.etime = etime;
     }
+    let srank = [document.getElementById("srank1").value, document.getElementById("srank2").value].filter(Boolean);
+    let s1v = document.getElementById("s1v").value;
+    let s2v = document.getElementById("s2v").value;
+    if (srank[0] && s1v != "") opt.sort.data[srank[0]] = s1v;
+    if (srank[1] && s2v != "") opt.sort.data[srank[1]] = s2v;
+    for (var fi = 0; fi < srank.length; fi++) if (srank[fi] != "") opt.sort.rank[fi] = srank[fi]; else break;
     getRecord(nowN, 1, opt);
     nowP = 1;
     nowO = opt;

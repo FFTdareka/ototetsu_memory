@@ -46,9 +46,11 @@
             <button id="back" type="button" onclick="getRecord(nowN, nowP - 1, nowO)" disabled>前へ</button>
             <button id="next" type="button" onclick="getRecord(nowN, nowP + 1, nowO)" disabled>次へ</button>
         </div>
+        <br>
+        <button id="filter" type="button" onclick="setFilter()">適用</button>
         <h2>フィルタ</h2>
         <div id="filterSpace">
-            <button id="filter" type="button" onclick="setFilter()">適用</button>　<button id="clear" type="button" onclick="clearFilter()">クリア</button>
+            <button id="clear" type="button" onclick="clearFilter()">クリア</button>
             <br>
             <label>
                 期間指定
@@ -83,6 +85,31 @@
                     <option value="b">どちらも</option>
                     <option value="t">打ち返しのみ</option>
                     <option value="f">打ち返し除く</option>
+                </select>
+            </label>
+        </div>
+        <h2>ソート</h2>
+        <div id="sortSpace">
+            <label>
+                第一優先
+                <select id="srank1">
+                    <option value="dates">日付</option>
+                    <option value="records">鳴動記録</option>
+                </select>
+                <select id="s1v">
+                    <option value="d">降順(大きい順)</option>
+                    <option value="u">昇順(小さい順)</option>
+                </select>
+            </label>
+            <label>
+                第二優先
+                <select id="srank2">
+                    <option value="dates">日付</option>
+                    <option value="records">鳴動記録</option>
+                </select>
+                <select id="s2v">
+                    <option value="d">降順(大きい順)</option>
+                    <option value="u">昇順(小さい順)</option>
                 </select>
             </label>
         </div>
