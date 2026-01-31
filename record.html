@@ -46,9 +46,9 @@
             <button id="back" type="button" onclick="getRecord(nowN, nowP - 1, nowO)" disabled>前へ</button>
             <button id="next" type="button" onclick="getRecord(nowN, nowP + 1, nowO)" disabled>次へ</button>
         </div>
-        <br>
+        <h2>検索機能</h2>
         <button id="filter" type="button" onclick="setFilter()">適用</button>
-        <h2>フィルタ</h2>
+        <h3>フィルタ</h3>
         <div id="filterSpace">
             <button id="clearF" type="button" onclick="clearFilter()">クリア</button>
             <br>
@@ -88,9 +88,10 @@
                 </select>
             </label>
         </div>
-        <h2>ソート</h2>
+        <h3>ソート</h3>
         <div id="sortSpace">
             <button id="clearS" type="button" onclick="clearSort()">クリア</button>
+            <br>
             <label>
                 第一優先
                 <select id="srank1">
