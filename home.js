@@ -86,7 +86,7 @@ function setRecord(data) {
                     setSta({
                         value: "-1_-1"
                     });
-                    getRecord(10, 1, { filter: {}, sort: {id: "d"}});
+                    getRecord(10, 1, { filter: {}, sort: {data: {id: "d"}, rank: []}});
                     document.getElementById('addRec_btn').disabled =
                         false;
                 });
