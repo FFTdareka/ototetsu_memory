@@ -180,11 +180,12 @@ function setFilter() {
             if (line2) {
                 line = line2;
                 opt.filter.line = line;
+                if (line == "信越本線") opt.filter.lnum = "n";
             }
         } else {
             opt.filter.line = line;
+            if (line == "信越本線") opt.filter.lnum = Number(setR.sta[i][1][j][2].replace("信越本線", ""));
         }
-        if (line == "信越本線") opt.filter.lnum = Number(setR.sta[i][1][j][2].replace("信越本線", ""));
     }
     if (ssta != "") opt.filter.sta = ssta;
     if (startdate != "") {
