@@ -65,7 +65,7 @@ function getRecord(n, p, o = {
 }) {
     if (!o.hasOwnProperty("filter")) o.filter = {};
     if (!o.hasOwnProperty("sort")) o.sort = {};
-    document.getElementById('recStatus').innerText = "読み込み中...";
+    document.getElementById('recStatus').innerText = "読み込み中... (30秒以上かかることがあります)";
     document.getElementById('recSpace').innerHTML = "";
     if (document.getElementById('back')) document.getElementById('back').disabled =
         true;
@@ -184,6 +184,7 @@ function setFilter() {
         } else {
             opt.filter.line = line;
         }
+        if (line == "信越本線") opt.filter.lnum = Number(setR.sta[i][1][j][2].replace("信越本線", ""));
     }
     if (ssta != "") opt.filter.sta = ssta;
     if (startdate != "") {
