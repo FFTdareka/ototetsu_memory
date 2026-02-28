@@ -52,9 +52,8 @@
     background-color: #00ac9a;
 }
 
-.jso,
-.so {
-    /*相鉄・JR直通線、相鉄新横浜線*/
+.jso{
+    /*相鉄・JR直通線*/
     color: #ffffff;
     background-color: #000080;
 }
@@ -350,4 +349,9 @@
     /*横浜高速鉄道みなとみらい線*/
     color: #ffffff;
     background-color: #09357f;
+}
+.so {
+    /*相鉄新横浜線*/
+    color: #ffffff;
+    background-color: #2561a7;
 }
