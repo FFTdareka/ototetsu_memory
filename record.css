@@ -52,8 +52,9 @@
     background-color: #00ac9a;
 }
 
-.jso {
-    /*相鉄・JR直通線*/
+.jso,
+.so {
+    /*相鉄・JR直通線、相鉄新横浜線*/
     color: #ffffff;
     background-color: #000080;
 }

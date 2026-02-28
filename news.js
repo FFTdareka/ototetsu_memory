@@ -43,7 +43,7 @@ function getNews(n = 0, e = "newsSpace") {
                                 g.appendChild(p);
                                 el.appendChild(g);
                                 document.getElementById('newsStatus').innerText =
-                                    "";
+                                    `全${data.nor}件`;
                             }
                             if (n == 0) document.getElementById(
                                     'newsStatus').innerText =

@@ -65,7 +65,7 @@ function getRecord(n, p, o = {
 }) {
     if (!o.hasOwnProperty("filter")) o.filter = {};
     if (!o.hasOwnProperty("sort")) o.sort = {};
-    document.getElementById('recStatus').innerText = "読み込み中... (30秒以上かかることがあります)";
+    document.getElementById('recStatus').innerText = "読み込み中...";
     document.getElementById('recSpace').innerHTML = "";
     if (document.getElementById('back')) document.getElementById('back').disabled =
         true;
