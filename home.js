@@ -169,6 +169,8 @@ function recordData() {
     } else {
         while (chorus.includes("c")) chorus = chorus.replace("c", "");
         while (chorus.includes("C")) chorus = chorus.replace("C", "");
+        while (chorus.includes("C")) chorus = chorus.replace("ｃ", "");
+        while (chorus.includes("C")) chorus = chorus.replace("Ｃ", "");
         ch = chorus.split("+");
         for (i = 0; i < ch.length; i++) ch[i] += "c";
         chorus = ch.join("+");
