@@ -3,7 +3,7 @@ let check,addButton;
 document.addEventListener("DOMContentLoaded", () => {
     check = document.getElementById("addRec_chk");
     addButton = document.getElementById('addRec_btn');
-    check.addEventListener("change", check.checked ? addButton.disabled = false : addButton.disabled = true);
+    check.addEventListener("change", () => check.checked ? addButton.disabled = false : addButton.disabled = true);
 })
 
 
