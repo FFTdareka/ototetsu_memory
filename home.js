@@ -93,6 +93,7 @@ function setRecord(data) {
                     document.getElementById('addRec_for').value = "";
                     document.getElementById('addRec_com').value = "";
                     check.checked = false;
+                    addButton.disabled = true;
                     setSta({
                         value: "-1_-1"
                     });
