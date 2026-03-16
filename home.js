@@ -92,6 +92,7 @@ function setRecord(data) {
                     document.getElementById('addRec_trn').value = "";
                     document.getElementById('addRec_for').value = "";
                     document.getElementById('addRec_com').value = "";
+                    check.checked = false;
                     setSta({
                         value: "-1_-1"
                     });
