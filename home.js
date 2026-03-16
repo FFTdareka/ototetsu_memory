@@ -1,3 +1,7 @@
+let check = document.getElementById("addRec_chk");
+let addButton = document.getElementById('addRec_btn');
+check.addEventListener("change", check.checked ? addButton.disabled = false : addButton.disabled = true);
+
 function setSta(data) {
     let l = document.getElementById("line");
     let s = document.getElementById("station");
@@ -87,8 +91,7 @@ function setRecord(data) {
                         value: "-1_-1"
                     });
                     getRecord(10, 1, { filter: {}, sort: {data: {ids: "d"}, rank: ["ids"]}});
-                    document.getElementById('addRec_btn').disabled =
-                        false;
+                    addButton.disabled = false;
                 });
         });
 }
@@ -115,6 +118,9 @@ function recordData() {
     let tfor = document.getElementById("addRec_for").value;
     let comment = document.getElementById("addRec_com").value;
     let error = "エラー:";
+    if (!check.checked) {
+        error += "確認欄がチェックされていません。";
+    }
     if (date2.length == 0) {
         error += "日付が選択されていません。";
     } else {
@@ -188,7 +194,7 @@ function recordData() {
         err.style = "color: red;";
         document.getElementById("addRec").appendChild(err);
     } else {
-        document.getElementById("addRec_btn").disabled = true;
+        addButton.disabled = true;
         let data = {
             'date': date,
             'station': station,

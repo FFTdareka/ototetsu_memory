@@ -35,7 +35,7 @@
     <body>
         <h1 onclick="location.href = 'https:\/\/fftdareka.github.io\/ototetsu_memory\/';">みんなの音鉄記録帳</h1>
         <div><span class="im b">初めて利用する方は必ず見ること</span>　使い方は<a href="how-to-use.html">こちら</a></div>
-        <div>お問い合わせ等は<a href="https://discord.gg/aEgAAENXuu" target="_blank">こちら</a>(Discordサーバーに移動します)</div>
+        <div>お問い合わせ等は<a href="https://discord.gg/ejfQ997N" target="_blank">こちら</a>(Discordサーバーに移動します)</div>
         <div>姉妹wiki・連携先は<a href="wiki_list.html">こちら</a></div>
         <br>
         <iframe src="jre_press.html" width="100%" scrolling="no" frameborder="0" style="border: none"></iframe>
@@ -52,7 +52,7 @@
         <div>更新情報等はtwitter公式アカウント <a href="https://x.com/ototetsu_memory/" target="_blank">@Ototetsu_Memory</a>（twitterに移動します）や、ハッシュタグ #みんなの音鉄記録帳 でも発信を行います！フォローお願いします！</div>
         <h2>最近入力された鳴動記録</h2>
         <span id="recStatus"></span>
-        <div id="recSpace">
+        <div id="recSpace" style="overflow-x: auto;">
 
         </div>
         <br>
@@ -108,7 +108,11 @@
                 <input id="addRec_com" type="text" placeholder="例:無被り 簡潔に">
             </label>
             <br>
-            <button id="addRec_btn" type="button" onclick="recordData()">送信</button>
+            <label>
+                確認
+                <input id="addRec_chk" type="checkbox"><span style="font-weight: normal;">使い方を確認し、その通りに記録入力を行いました。</span>
+            </label>
+            <button id="addRec_btn" type="button" onclick="recordData()" disabled>送信</button>
             <br>
             <br>
             <div><span class="im">姉妹wiki・連携先からの広告募集中！</span>　掲示したいものがあったらDiscordにて連絡ください！</div>
