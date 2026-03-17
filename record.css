@@ -355,3 +355,13 @@
     color: #ffffff;
     background-color: #2561a7;
 }
+.ko {
+    /*京王京王線、京王新線、京王相模原線、京王競馬場線、京王動物園線、京王高尾線*/
+    color: #ffffff;
+    background-color: #dd0076;
+}
+.in {
+    /*京王井の頭線*/
+    color: #ffffff;
+    background-color: #000088;
+}
