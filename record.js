@@ -225,6 +225,8 @@ function clearFilter() {
     document.getElementById("startdate").value = "";
     document.getElementById("enddate").value = "";
     document.getElementById("reactive").value = "b";
+    let l = document.getElementById("selectline2");
+    if (l) l.remove();
 }
 
 function clearSort() {
