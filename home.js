@@ -98,7 +98,6 @@ function setRecord(data) {
                         value: "-1_-1"
                     });
                     getRecord(10, 1, { filter: {}, sort: {data: {ids: "d"}, rank: ["ids"]}});
-                    addButton.disabled = false;
                 });
         });
 }
