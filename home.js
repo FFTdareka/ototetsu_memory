@@ -1,8 +1,14 @@
 let check,addButton;
+let f = {
+    same: () => {
+        return document.getElementById("addRec_func_same").checked;
+    }
+};
 
 document.addEventListener("DOMContentLoaded", () => {
     check = document.getElementById("addRec_chk");
     addButton = document.getElementById('addRec_btn');
+    check.checked ? addButton.disabled = false : addButton.disabled = true;
     check.addEventListener("change", () => check.checked ? addButton.disabled = false : addButton.disabled = true);
 })
 
@@ -81,19 +87,19 @@ function setRecord(data) {
                 .then(res => res.text())
                 .then(data => {
                     alert(`${data}`);
-                    document.getElementById('addRec_date').value = "";
-                    document.getElementById('addRec_del').value = "";
-                    document.getElementById('addRec_line').value =
-                        "-1_-1";
-                    document.getElementById('addRec_sta').value =
-                        "-1_-1";
+                    document.getElementById('addRec_sta').value = "-1_-1";
                     document.getElementById('addRec_cho').value = "";
                     document.getElementById('addRec_trk').value = "";
-                    document.getElementById('addRec_trn').value = "";
-                    document.getElementById('addRec_for').value = "";
                     document.getElementById('addRec_com').value = "";
                     check.checked = false;
                     addButton.disabled = true;
+                    if (!(f.same())) {
+                        document.getElementById('addRec_date').value = "";
+                        document.getElementById('addRec_del').value = "";
+                        document.getElementById('addRec_line').value = "-1_-1";
+                        document.getElementById('addRec_trn').value = "";
+                        document.getElementById('addRec_for').value = "";
+                    }
                     setSta({
                         value: "-1_-1"
                     });
