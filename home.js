@@ -99,10 +99,10 @@ function setRecord(data) {
                         document.getElementById('addRec_line').value = "-1_-1";
                         document.getElementById('addRec_trn').value = "";
                         document.getElementById('addRec_for').value = "";
+                        setSta({
+                            value: "-1_-1"
+                        });
                     }
-                    setSta({
-                        value: "-1_-1"
-                    });
                     getRecord(10, 1, { filter: {}, sort: {data: {ids: "d"}, rank: ["ids"]}});
                 });
         });
