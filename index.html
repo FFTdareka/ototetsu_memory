@@ -115,7 +115,11 @@
             <br>
             <label>
                 機能
-                <input id="addRec_func_same" type="checkbox"><span style="font-weight: normal; font-size: 17.5px;">同一電車連続記録モード</span>
+                <select id="addRec_mode">
+                    <option value="normal">通常モード</option>
+                    <option value="sameT">同一電車連続記録モード</option>
+                    <option value="sameS">同一路線・駅連続記録モード</option>
+                </select>
             </label>
             <button id="addRec_btn" type="button" onclick="recordData()" disabled>送信</button>
             <br>

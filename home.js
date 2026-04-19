@@ -1,9 +1,5 @@
 let check,addButton;
-let f = {
-    same: () => {
-        return document.getElementById("addRec_func_same").checked;
-    }
-};
+let mode = document.getElementById("addRec_mode");
 
 document.addEventListener("DOMContentLoaded", () => {
     check = document.getElementById("addRec_chk");
@@ -87,16 +83,22 @@ function setRecord(data) {
                 .then(res => res.text())
                 .then(data => {
                     alert(`${data}`);
-                    document.getElementById('addRec_sta').value = "-1_-1";
                     document.getElementById('addRec_cho').value = "";
                     document.getElementById('addRec_trk').value = "";
                     document.getElementById('addRec_com').value = "";
                     check.checked = false;
                     addButton.disabled = true;
-                    if (!(f.same())) {
+                    if (mode.value == "sameT") {
+                        document.getElementById('addRec_sta').value = "-1_-1";
+                    } else if (mdoe.value == "sameS") {
+                        document.getElementById('addRec_del').value = "";
+                        document.getElementById('addRec_trn').value = "";
+                        document.getElementById('addRec_for').value = "";
+                    } else {
                         document.getElementById('addRec_date').value = "";
                         document.getElementById('addRec_del').value = "";
                         document.getElementById('addRec_line').value = "-1_-1";
+                        document.getElementById('addRec_sta').value = "-1_-1";
                         document.getElementById('addRec_trn').value = "";
                         document.getElementById('addRec_for').value = "";
                         setSta({
