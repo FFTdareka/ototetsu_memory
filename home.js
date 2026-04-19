@@ -90,7 +90,7 @@ function setRecord(data) {
                     addButton.disabled = true;
                     if (mode.value == "sameT") {
                         document.getElementById('addRec_sta').value = "-1_-1";
-                    } else if (mdoe.value == "sameS") {
+                    } else if (mode.value == "sameS") {
                         document.getElementById('addRec_del').value = "";
                         document.getElementById('addRec_trn').value = "";
                         document.getElementById('addRec_for').value = "";
