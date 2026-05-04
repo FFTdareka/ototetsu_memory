@@ -33,7 +33,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     trn = data.train;
                     bfor = data.for;
                     com = data.comment;
-                    let dt = [date, sta, line[0], trk, cho, time, trn, bfor, com];
+                    rid = data.ID;
+                    let dt = [date, sta, line[0], trk, cho, time, trn, bfor, com, "URLをコピー"];
                     let rDatas = document.createElement("span");
                     for (var j = 0; j < d.length; j++) {
                         rd = document.createElement("span");
@@ -47,7 +48,15 @@ document.addEventListener("DOMContentLoaded", () => {
                             delE = document.createElement("span");
                             delE.innerText = del;
                             delE.classList.add("delay");
+                            delE.classList.add("data");
                             rData.appendChild(delE);
+                        }
+                        if (j == 9) {
+                            rData.addEventListener("click", () => {
+                                navigator.clipboard.writeText(`https://fftdareka.github.io/share.html?id=${rid}`);
+                                alert("共有URLをコピーしました。");
+                            })
+                            rData.classList.add("url");
                         }
                         rd.appendChild(rData);
                         rDatas.appendChild(rd);

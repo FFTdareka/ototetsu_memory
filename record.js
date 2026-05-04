@@ -107,9 +107,8 @@ function getRecord(n, p, o = {
                             trn = data[i].train;
                             bfor = data[i].for;
                             com = data[i].comment;
-                            let dt = [date, sta, line[0], trk, cho,
-                                time, trn, bfor, com
-                            ];
+                            rid = data[i].ID;
+                            let dt = [date, sta, line[0], trk, cho, time, trn, bfor, com, "URLをコピー"];
                             for (var j = 0; j < d.length; j++) {
                                 var td = document.createElement('td');
                                 td.innerText = dt[j];
@@ -123,6 +122,13 @@ function getRecord(n, p, o = {
                                     delE.innerText = del;
                                     delE.classList.add("delay");
                                     td.appendChild(delE);
+                                }
+                                if (j == 9) {
+                                    td.addEventListener("click", () => {
+                                        navigator.clipboard.writeText(`https://fftdareka.github.io/share.html?id=${rid}`);
+                                        alert("共有URLをコピーしました。");
+                                    })
+                                    td.classList.add("url");
                                 }
                                 trb.appendChild(td);
                             }
