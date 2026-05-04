@@ -125,7 +125,7 @@ function getRecord(n, p, o = {
                                 }
                                 if (j == 9) {
                                     td.addEventListener("click", () => {
-                                        navigator.clipboard.writeText(`https://fftdareka.github.io/share.html?id=${rid}`);
+                                        navigator.clipboard.writeText(`https://fftdareka.github.io/ototetsu_memory/share.html?id=${rid}`);
                                         alert("共有URLをコピーしました。");
                                     })
                                     td.classList.add("url");
