@@ -37,7 +37,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     let rDatas = document.createElement("span");
                     let br = document.createElement("br");
                     for (var j = 0; j < d.length; j++) {
-                        rDatas.innerText += `${d[j]}:`;
+                        rd = document.createElement("span");
+                        rd.innerText = `${d[j]}:`;
                         var rData = document.createElement('span');
                         rData.innerText = dt[j];
                         if (j == 2)
@@ -48,7 +49,8 @@ document.addEventListener("DOMContentLoaded", () => {
                             delE.classList.add("delay");
                             rData.appendChild(delE);
                         }
-                        rDatas.appendChild(rData);
+                        rd.appendChild(rData);
+                        rDatas.appendChild(rd);
                         rDatas.appendChild(br);
                     }
                     document.getElementById("recSpace").appendChild(rDatas);
