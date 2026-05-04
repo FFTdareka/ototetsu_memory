@@ -15,6 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
         .then(res => res.json())
         .then(g => {
             d = g.d;
+            sc = g.line;
             fetch(`${g.gas}?type=rec&nor=1&page=1&opt=${opt}`)
             .then(res => res.json())
             .then(data => {
