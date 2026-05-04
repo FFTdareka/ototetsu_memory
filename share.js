@@ -35,7 +35,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     com = data.comment;
                     let dt = [date, sta, line[0], trk, cho, time, trn, bfor, com];
                     let rDatas = document.createElement("span");
-                    let br = document.createElement("br");
                     for (var j = 0; j < d.length; j++) {
                         rd = document.createElement("span");
                         rd.innerText = `${d[j]}:`;
@@ -51,7 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         }
                         rd.appendChild(rData);
                         rDatas.appendChild(rd);
-                        rDatas.appendChild(br);
+                        rDatas.appendChild(document.createElement("br"));
                     }
                     document.getElementById("recSpace").appendChild(rDatas);
                     document.getElementById("recStatus").innerText = "";
