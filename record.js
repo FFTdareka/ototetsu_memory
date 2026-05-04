@@ -124,6 +124,9 @@ function getRecord(n, p, o = {
                                     delE.classList.add("delay");
                                     td.appendChild(delE);
                                 }
+                                if (j == 8 && dt[j].length > 10) {
+                                    td.innerText = `${dt[j].slice(0, 10)}...`;
+                                }
                                 if (j == 9) {
                                     td.addEventListener("click", (e) => {
                                         navigator.clipboard.writeText(`https://fftdareka.github.io/ototetsu_memory/share.html?id=${e.target.parentElement.id}`);
