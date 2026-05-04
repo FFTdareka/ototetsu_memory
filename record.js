@@ -144,7 +144,7 @@ function getRecord(n, p, o = {
                         nowO = o;
                     } else if (data.status == 'no record') {
                         document.getElementById('recStatus').innerText =
-                            "データがありません。";
+                            "指定した鳴動記録のデータがありません。";
                     }
 
                 });

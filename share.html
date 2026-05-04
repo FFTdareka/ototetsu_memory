@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>鳴動記録共有 - みんなの音鉄記録帳</title>
+        <meta charset="UTF-8">
+        <meta name="description" content="「みんなの音鉄記録帳」は、日本全国の発車メロディーが流れる駅の鳴動記録を、皆様の情報提供によって記録するサイトです。コーラス数が固定でない限り、収録（密着・非密着）・未収録、放送被り、鳴動数、乗降促進問わず、どの駅のどの記録も記録ができます。" />
+        <meta property="og:title" content="鳴動記録共有 - みんなの音鉄記録帳">
+        <meta property="og:description" content="「みんなの音鉄記録帳」は、日本全国の発車メロディーが流れる駅の鳴動記録を、皆様の情報提供によって記録するサイトです。コーラス数が固定でない限り、収録（密着・非密着）・未収録、放送被り、鳴動数、乗降促進問わず、どの駅のどの記録も記録ができます。">
+        <meta property="og:url" content="https://fftdareka.github.io/ototetsu_memory/share.html">
+        <meta property="og:image" content="https://fftdareka.github.io/ototetsu_memory/favicon.ico">
+        <meta property="og:type" content="website">
+        <meta property="og:site_name" content="みんなの音鉄記録帳">
+        <link rel="icon" href="favicon.ico">
+        <link rel="apple-touch-icon-precomposed" href="favicon.ico">
+        <link rel="stylesheet" href="normal.css">
+        <link rel="stylesheet" href="record.css">
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="share.js"></script>
+        <script>
+            window.onload = () => {
+                let ifr = document.getElementsByTagName("iframe");
+                for (var i = 0; i < ifr.length; i++) {
+                    try {
+                        let contentHeight = ifr[i].contentWindow.document.body.scrollHeight;
+                        ifr[i].style.height = contentHeight + 'px';
+                    } catch (e) {
+                    }
+                }
+            };
+        </script>
+    </head>
+    <body>
+        <h1><span onclick="location.href = 'https:\/\/fftdareka.github.io\/ototetsu_memory\/';">みんなの音鉄記録帳</span> 鳴動記録共有</h1>
+        <div><span class="im b">初めて利用する方は必ず見ること</span>　使い方は<a href="how-to-use.html">こちら</a></div>
+        <div>お問い合わせ等は<a href="https://discord.gg/ejfQ997N" target="_blank">こちら</a>(Discordサーバーに移動します)</div>
+        <div>姉妹wiki・連携先は<a href="wiki_list.html">こちら</a></div>
+        <br>
+        <iframe src="jre_press.html" width="100%" scrolling="no" frameborder="0" style="border: none"></iframe>
+        <br>
+        <h2>鳴動記録</h2>
+        <span id="recStatus"></span>
+        <div id="recSpace">
+
+        </div>
+        <br>
+        <div>
+            <a href="https://fftdareka.github.io/ototetsu_memory/">トップページへ</a>
+        </div>
+    </body>
+</html>
