@@ -108,6 +108,7 @@ function getRecord(n, p, o = {
                             bfor = data[i].for;
                             com = data[i].comment;
                             rid = data[i].ID;
+                            trb.id = rid;
                             let dt = [date, sta, line[0], trk, cho, time, trn, bfor, com, "コピー"];
                             for (var j = 0; j < d.length; j++) {
                                 var td = document.createElement('td');
@@ -124,8 +125,8 @@ function getRecord(n, p, o = {
                                     td.appendChild(delE);
                                 }
                                 if (j == 9) {
-                                    td.addEventListener("click", () => {
-                                        navigator.clipboard.writeText(`https://fftdareka.github.io/ototetsu_memory/share.html?id=${rid}`);
+                                    td.addEventListener("click", (e) => {
+                                        navigator.clipboard.writeText(`https://fftdareka.github.io/ototetsu_memory/share.html?id=${e.target.parentElement.id}`);
                                         alert("共有URLをコピーしました。");
                                     })
                                     td.classList.add("url");
