@@ -170,6 +170,15 @@ input:focus, select:focus {
     border: 1px dotted #ccc;
 }
 
+#recSpace span span {
+    font-weight: bold;
+    font-size: 23px;
+}
+
+#recSpace span span span.data {
+    font-weight: normal;
+}
+
 #newsStatus, #recStatus {
     font-size: 0.9em;
     color: #666;

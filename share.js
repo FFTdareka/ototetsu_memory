@@ -39,6 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         rd = document.createElement("span");
                         rd.innerText = `${d[j]}:`;
                         var rData = document.createElement('span');
+                        rData.classList.add("data");
                         rData.innerText = dt[j];
                         if (j == 2)
                             for (var k = 0; k < sc.length; k++) if (line[1] == sc[k][0]) rData.classList.add(sc[k][1]);
