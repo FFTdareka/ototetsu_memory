@@ -4,8 +4,11 @@ const id = params.get("id");
 document.addEventListener("DOMContentLoaded", () => {
     if (id != null) {
         opt = JSON.stringify({
-            sid: id,
-            eid: id
+            filter: {
+                sid: id,
+                eid: id
+            },
+            sort: {}
         });
         document.getElementById('recStatus').innerText = "読み込み中...";
         fetch('staData.json')
