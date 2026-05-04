@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     bfor = data.for;
                     com = data.comment;
                     rid = data.ID;
-                    let dt = [date, sta, line[0], trk, cho, time, trn, bfor, com, "URLをコピー"];
+                    let dt = [date, sta, line[0], trk, cho, time, trn, bfor, com, "コピー"];
                     let rDatas = document.createElement("span");
                     for (var j = 0; j < d.length; j++) {
                         rd = document.createElement("span");
@@ -53,7 +53,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         }
                         if (j == 9) {
                             rData.addEventListener("click", () => {
-                                navigator.clipboard.writeText(`https://fftdareka.github.io/share.html?id=${rid}`);
+                                navigator.clipboard.writeText(`https://fftdareka.github.io/ototetsu_memory/share.html?id=${rid}`);
                                 alert("共有URLをコピーしました。");
                             })
                             rData.classList.add("url");
