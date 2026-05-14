@@ -11,7 +11,7 @@ let nowO = {
     }
 }
 
-fetch('json/staData.json')
+fetch('data/staData.json')
     .then(res => res.json())
     .then(data => {
         setR = data;
