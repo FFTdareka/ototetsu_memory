@@ -72,7 +72,7 @@ function setSta2(data) {
 }
 
 function setRecord(data) {
-    fetch('staData.json')
+    fetch('data/staData.json')
         .then(res => res.json())
         .then(g => {
             fetch(g.gas, {

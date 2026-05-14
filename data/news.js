@@ -3,7 +3,7 @@ function getNews(n = 0, e = "newsSpace") {
     if (el) {
         document.getElementById('newsStatus').innerText = "読み込み中...";
         document.getElementById('newsSpace').innerHTML = "";
-        fetch('staData.json')
+        fetch('data/staData.json')
             .then(res => res.json())
             .then(g => {
                 fetch(`${g.gas}?type=news`)

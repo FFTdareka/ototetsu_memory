@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
             sort: {}
         });
         document.getElementById('recStatus').innerText = "読み込み中...";
-        fetch('staData.json')
+        fetch('data/staData.json')
         .then(res => res.json())
         .then(g => {
             d = g.d;
