@@ -42,6 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
                             s.appendChild(br);
                         }
                         var sp = document.createElement("span");
+                        sp.classList.add("data");
                         sp.innerText = log[i];
                         s.appendChild(sp);
                     }
@@ -72,7 +73,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     rd2.innerText = "履歴";
                     rd2.appendChild(document.createElement("br"));
                     var rData2 = document.createElement('span');
-                    rData2.classList.add("data");
                     rData2.appendChild(s);
                     rd2.appendChild(rData2);
                     rDatas.appendChild(rd2);
