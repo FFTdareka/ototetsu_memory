@@ -109,7 +109,6 @@ function getRecord(n, p, o = {
                             com = data[i].comment;
                             rid = data[i].ID;
                             trb.id = rid;
-                            let dt = [date, sta, line[0], trk, cho, time, trn, bfor, com, "コピー"];
                             let dt = [date, sta, line[0], trk, cho, time, trn, bfor, com];
                             for (var j = 0; j < d.length; j++) {
                                 var td = document.createElement('td');
