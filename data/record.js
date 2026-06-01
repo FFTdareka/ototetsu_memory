@@ -115,12 +115,8 @@ function getRecord(n, p, o = {
                                 td.innerText = dt[j];
                                 if (j == 2)
                                     for (var k = 0; k < sc.length; k++)
-                                        if (line[1] == sc[k][0]) td.classList
-                                            .add(sc[k][1]);
                                         if (line[1] == sc[k][0]) td.classList.add(sc[k][1]);
                                 if (j == 5 && del != 0) {
-                                    delE = document.createElement(
-                                        "span");
                                     delE = document.createElement("span");
                                     delE.innerText = del;
                                     delE.classList.add("delay");
@@ -129,14 +125,6 @@ function getRecord(n, p, o = {
                                 if (j == 8 && dt[j].length > 10) {
                                     td.innerText = `${dt[j].slice(0, 10)}...`;
                                 }
-                                if (j == 9) {
-                                    td.addEventListener("click", (e) => {
-                                        navigator.clipboard.writeText(`https://fftdareka.github.io/ototetsu_memory/share.html?id=${e.target.parentElement.id}`);
-                                        alert("共有URLをコピーしました。");
-                                    })
-                                    td.classList.add("url");
-                                }
-                                trb.appendChild(td);
                             }
                             var td2 = document.createElement('td');
                             td2.innerText = "コピー";
@@ -149,25 +137,15 @@ function getRecord(n, p, o = {
                             tbody.appendChild(trb);
                         }
                         table.appendChild(tbody);
-                        document.getElementById('recSpace').appendChild(
-                            table);
                         document.getElementById('recSpace').appendChild(table);
                         document.getElementById('recStatus').innerText =
                             `全${nor}件中${n * (p - 1) + 1}～${n * (p - 1) + data.length}件`;
-                        if (p > 1 && document.getElementById('back'))
-                            document.getElementById('back').disabled =
-                            false;
-                        if (nor > n * p && document.getElementById(
-                                'next')) document.getElementById('next')
-                            .disabled = false;
-                            document.getElementById('back').disabled = false;
+                        if (p > 1 && document.getElementById('back')) document.getElementById('back').disabled = false;
                         if (nor > n * p && document.getElementById('next')) document.getElementById('next').disabled = false;
                         nowN = n;
                         nowP = p;
                         nowO = o;
                     } else if (data.status == 'no record') {
-                        document.getElementById('recStatus').innerText =
-                            "指定した鳴動記録のデータがありません。";
                         document.getElementById('recStatus').innerText = "指定した鳴動記録のデータがありません。";
                     }
 
