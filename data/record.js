@@ -125,6 +125,8 @@ function getRecord(n, p, o = {
                                 if (j == 8 && dt[j].length > 10) {
                                     td.innerText = `${dt[j].slice(0, 10)}...`;
                                 }
+                                
+                                trb.appendChild(td);
                             }
                             var td2 = document.createElement('td');
                             td2.innerText = "コピー";
