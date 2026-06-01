@@ -134,7 +134,10 @@ function getRecord(n, p, o = {
                             var td2 = document.createElement('td');
                             td2.innerText = "コピー";
                             td2.addEventListener("click", (e) => {
-                                navigator.clipboard.writeText(`https://fftdareka.github.io/ototetsu_memory/share.html?id=${e.target.parentElement.id}`);
+                                el = e.target.parentElement;
+                                elc = el.children;
+                                if (elc[5].children) elDate = `${elc[5].innerText}${elc[5].children[0].innerText}`; else elDate = `${elc[5].innerText}`;
+                                navigator.clipboard.writeText(`日付:${elc[0].innerText} ${elDate}\n場所:${elc[1].innerText}駅${elc[3].innerText}番線\n記録:${elc[4].innerText}\n列車:${elc[6].innerText} ${elc[7].innerText}\n\nhttps://fftdareka.github.io/ototetsu_memory/share.html?id=${el.id}`);
                                 alert("共有URLをコピーしました。");
                             })
                             td2.classList.add("url");
