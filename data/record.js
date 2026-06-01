@@ -136,7 +136,7 @@ function getRecord(n, p, o = {
                             td2.addEventListener("click", (e) => {
                                 el = e.target.parentElement;
                                 elc = el.children;
-                                if (elc[5].children) elDate = `${elc[5].innerText}${elc[5].children[0].innerText}`; else elDate = `${elc[5].innerText}`;
+                                if (elc[5].children[0]) elDate = `${elc[5].innerText}${elc[5].children[0].innerText}`; else elDate = `${elc[5].innerText}`;
                                 navigator.clipboard.writeText(`日付:${elc[0].innerText} ${elDate}\n場所:${elc[1].innerText}駅${elc[3].innerText}番線\n記録:${elc[4].innerText}\n列車:${elc[6].innerText} ${elc[7].innerText}\n\nhttps://fftdareka.github.io/ototetsu_memory/share.html?id=${el.id}`);
                                 alert("共有URLをコピーしました。");
                             })
