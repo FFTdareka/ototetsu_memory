@@ -1,5 +1,5 @@
 {
-    "gas": "https://script.google.com/macros/s/AKfycbx5FjTdQWDgQ0vo7JCA4_4_DK0L30FTBm_NJMwrvnr7zWpIIpoboL_UKahlKfDVIk5W/exec",
+    "gas": "https://script.google.com/macros/s/AKfycbyrN-sTOfdmvTrWzbnmWEL2zA0wsJNygLm5JKgzACPWS2KLbPbHNcRnkup4OAZzd8JL/exec",
     "sta": [
         [
             "新幹線",
@@ -2374,8 +2374,7 @@
         "時刻",
         "種別",
         "行先",
-        "備考",
-        "共有"
+        "備考"
     ],
     "line": [
         [

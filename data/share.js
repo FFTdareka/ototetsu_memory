@@ -34,11 +34,22 @@ document.addEventListener("DOMContentLoaded", () => {
                     bfor = data.for;
                     com = data.comment;
                     rid = data.ID;
-                    let dt = [date, sta, line[0], trk, cho, time, trn, bfor, com, "コピー"];
+                    log = data.log.split("\\n");
+                    var s = document.createElement("div");
+                    for (var i = 0; i < log.length; i++) {
+                        if (i > 0) {
+                            var br = document.createElement("br");
+                            s.appendChild(br);
+                        }
+                        var sp = document.createElement("span");
+                        sp.innerText = log[i];
+                        s.appendChild(sp);
+                    }
+                    let dt = [date, sta, line[0], trk, cho, time, trn, bfor, com];
                     let rDatas = document.createElement("span");
                     rDatas.id = rid;
                     for (var j = 0; j < d.length; j++) {
-                        rd = document.createElement("span");
+                        var rd = document.createElement("span");
                         rd.innerText = `${d[j]}:`;
                         var rData = document.createElement('span');
                         rData.classList.add("data");
@@ -52,17 +63,19 @@ document.addEventListener("DOMContentLoaded", () => {
                             delE.classList.add("data");
                             rData.appendChild(delE);
                         }
-                        if (j == 9) {
-                            rData.addEventListener("click", (e) => {
-                                navigator.clipboard.writeText(`https://fftdareka.github.io/ototetsu_memory/share.html?id=${e.target.parentElement.parentElement.id}`);
-                                alert("共有URLをコピーしました。");
-                            })
-                            rData.classList.add("url");
-                        }
                         rd.appendChild(rData);
                         rDatas.appendChild(rd);
                         rDatas.appendChild(document.createElement("br"));
                     }
+                    rDatas.appendChild(document.createElement("br"));
+                    var rd2 = document.createElement('span');
+                    rd2.innerText = "履歴";
+                    rd2.appendChild(document.createElement("br"));
+                    var rData2 = document.createElement('span');
+                    rData2.classList.add("data");
+                    rData2.appendChild(s);
+                    rd2.appendChild(rData2);
+                    rDatas.appendChild(rd2);
                     document.getElementById("recSpace").appendChild(rDatas);
                     document.getElementById("recStatus").innerText = "";
                 } else if (data.status == 'no record') document.getElementById('recStatus').innerText = "指定した鳴動記録のデータがありません。";
