@@ -90,6 +90,9 @@ function getRecord(n, p, o = {
                             th.innerText = d[i];
                             trh.appendChild(th);
                         }
+                        var th2 = document.createElement('th');
+                        th2.innerText = "共有";
+                        trh.appendChild(th2);
                         thead.appendChild(trh);
                         table.appendChild(thead);
                         let tbody = document.createElement('tbody');
