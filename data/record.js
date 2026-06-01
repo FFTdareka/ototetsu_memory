@@ -136,7 +136,7 @@ function getRecord(n, p, o = {
                             td2.addEventListener("click", (e) => {
                                 el = e.target.parentElement;
                                 elc = el.children;
-                                navigator.clipboard.writeText(`日付:${elc[0].innerText} ${elc[5].innerText}\n場所:${elc[1].innerText}駅${elc[3].innerText}番線\n記録:${elc[4].innerText}\n列車:${elc[6].innerText} ${elc[7].innerText}\n\nhttps://fftdareka.github.io/ototetsu_memory/share.html?id=${el.id}`);
+                                navigator.clipboard.writeText(`日付:${elc[0].innerText} ${elc[5].innerText}\n場所:${elc[1].innerText}駅${elc[3].innerText}番線\n記録:${elc[4].innerText}\n列車:${elc[6].innerText} ${elc[7].innerText}行\n\nhttps://fftdareka.github.io/ototetsu_memory/share.html?id=${el.id}`);
                                 alert("共有URLをコピーしました。");
                             })
                             td2.classList.add("url");
