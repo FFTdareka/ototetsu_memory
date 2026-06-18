@@ -138,6 +138,7 @@ function getRecord(n, p, o = {
                             var td2_a = document.createElement('a');
                             td2_a.href = `https://fftdareka.github.io/ototetsu_memory/share.html?id=${trb.id}`;
                             td2_a.innerText = "こちら";
+                            td2.appendChild(td2_a);
                             trb.appendChild(td2);
                             var td3 = document.createElement('td');
                             td3.innerText = "コピー";
@@ -147,7 +148,7 @@ function getRecord(n, p, o = {
                                 navigator.clipboard.writeText(`日付:${elc[0].innerText} ${elc[5].innerText}\n場所:${elc[1].innerText}駅${elc[3].innerText}番線\n記録:${elc[4].innerText}\n列車:${elc[6].innerText} ${elc[7].innerText}行\n\n#音鉄記録帳鳴動記録\n\nhttps://fftdareka.github.io/ototetsu_memory/share.html?id=${el.id}`);
                                 alert("共有URLをコピーしました。");
                             })
-                            td2.classList.add("url");
+                            td3.classList.add("url");
                             trb.appendChild(td3);
                             tbody.appendChild(trb);
                         }
