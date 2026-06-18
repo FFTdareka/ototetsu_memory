@@ -91,8 +91,11 @@ function getRecord(n, p, o = {
                             trh.appendChild(th);
                         }
                         var th2 = document.createElement('th');
-                        th2.innerText = "共有";
+                        th2.innerText = "詳細";
                         trh.appendChild(th2);
+                        var th3 = document.createElement('th');
+                        th3.innerText = "共有";
+                        trh.appendChild(th3);
                         thead.appendChild(trh);
                         table.appendChild(thead);
                         let tbody = document.createElement('tbody');
@@ -132,15 +135,20 @@ function getRecord(n, p, o = {
                                 trb.appendChild(td);
                             }
                             var td2 = document.createElement('td');
-                            td2.innerText = "コピー";
-                            td2.addEventListener("click", (e) => {
+                            var td2_a = document.createElement('a');
+                            td2_a.href = `https://fftdareka.github.io/ototetsu_memory/share.html?id=${trb.id}`;
+                            td2_a.innerText = "こちら";
+                            trb.appendChild(td2);
+                            var td3 = document.createElement('td');
+                            td3.innerText = "コピー";
+                            td3.addEventListener("click", (e) => {
                                 el = e.target.parentElement;
                                 elc = el.children;
-                                navigator.clipboard.writeText(`日付:${elc[0].innerText} ${elc[5].innerText}\n場所:${elc[1].innerText}駅${elc[3].innerText}番線\n記録:${elc[4].innerText}\n列車:${elc[6].innerText} ${elc[7].innerText}行\n\nhttps://fftdareka.github.io/ototetsu_memory/share.html?id=${el.id}`);
+                                navigator.clipboard.writeText(`日付:${elc[0].innerText} ${elc[5].innerText}\n場所:${elc[1].innerText}駅${elc[3].innerText}番線\n記録:${elc[4].innerText}\n列車:${elc[6].innerText} ${elc[7].innerText}行\n\n#音鉄記録帳鳴動記録\n\nhttps://fftdareka.github.io/ototetsu_memory/share.html?id=${el.id}`);
                                 alert("共有URLをコピーしました。");
                             })
                             td2.classList.add("url");
-                            trb.appendChild(td2);
+                            trb.appendChild(td3);
                             tbody.appendChild(trb);
                         }
                         table.appendChild(tbody);
