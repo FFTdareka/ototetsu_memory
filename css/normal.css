@@ -50,7 +50,8 @@ a,
     text-decoration: none;
 }
 
-a:hover {
+a:hover,
+.url:hover {
     text-decoration: underline;
 }
 
