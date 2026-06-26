@@ -86,10 +86,7 @@ function setRecord(data) {
                     notice.id = "notice";
                     notice.innerText = data;
                     document.getElementById("addRec").appendChild(notice);
-                    setTimeout(() => {
-                        document.getElementById("notice").classList.add("end");
-                        setTimeout(() => document.getElementById("notice").remove(), 500);
-                    }, 5000);
+                    setTimeout(() => document.getElementById("notice").remove(), 5000);
                     document.getElementById('addRec_cho').value = "";
                     document.getElementById('addRec_trk').value = "";
                     document.getElementById('addRec_com').value = "";
