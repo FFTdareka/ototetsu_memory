@@ -82,7 +82,14 @@ function setRecord(data) {
                 })
                 .then(res => res.text())
                 .then(data => {
-                    alert(`${data}`);
+                    let notice = document.createElement("div");
+                    notice.id = "notice";
+                    notice.innerText = data;
+                    document.getElementById("addRec").appendChild(notice);
+                    setTimeout(() => {
+                        document.getElementById("notice").classList.add("end");
+                        setTimeout(() => document.getElementById("notice").remove(), 500);
+                    }, 5000);
                     document.getElementById('addRec_cho').value = "";
                     document.getElementById('addRec_trk').value = "";
                     document.getElementById('addRec_com').value = "";
@@ -205,7 +212,6 @@ function recordData() {
         let err = document.createElement("div");
         err.id = "error";
         err.innerText = error;
-        err.style = "color: red;";
         document.getElementById("addRec").appendChild(err);
     } else {
         addButton.disabled = true;

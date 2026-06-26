@@ -65,6 +65,8 @@ function getRecord(n, p, o = {
 }) {
     if (!o.hasOwnProperty("filter")) o.filter = {};
     if (!o.hasOwnProperty("sort")) o.sort = {};
+    let sortButton = document.getElementById("filter");
+    if (sortButton) sortButton.disabled = true;
     document.getElementById('recStatus').innerText = "読み込み中...";
     document.getElementById('recSpace').innerHTML = "";
     if (document.getElementById('back')) document.getElementById('back').disabled =
@@ -164,6 +166,7 @@ function getRecord(n, p, o = {
                     } else if (data.status == 'no record') {
                         document.getElementById('recStatus').innerText = "指定した鳴動記録のデータがありません。";
                     }
+                    if (sortButton) sortButton.disabled = false;
 
                 });
         });
