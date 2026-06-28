@@ -184,6 +184,7 @@ function setFilter() {
     let maxrec = document.getElementById("maxrec").value;
     let ssta = document.getElementById("selectsta").value;
     let sli = document.getElementById("selectline").value;
+    let strack = document.getElementById("strack").value;
     let startdate = document.getElementById("startdate").value;
     let enddate = document.getElementById("enddate").value;
     let re = document.getElementById("reactive").value;
@@ -217,6 +218,7 @@ function setFilter() {
         }
     }
     if (ssta != "") opt.filter.sta = ssta;
+    if (strack != "") opt.filter.trk = strack;
     if (startdate != "") {
         startdate = new Date(startdate);
         sdate =
