@@ -218,7 +218,7 @@ function setFilter() {
         }
     }
     if (ssta != "") opt.filter.sta = ssta;
-    if (strack != "") opt.filter.trk = strack;
+    if (strack != "") opt.filter.strack = strack;
     if (startdate != "") {
         startdate = new Date(startdate);
         sdate =
