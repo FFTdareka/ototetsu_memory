@@ -187,8 +187,16 @@ function setFilter() {
     let startdate = document.getElementById("startdate").value;
     let enddate = document.getElementById("enddate").value;
     let re = document.getElementById("reactive").value;
+    let minre = document.getElementById("minrea").value;
+    let maxre = document.getElementById("maxrea").value;
     let sdate, stime, edate, etime;
-    opt.filter.re = re;
+    if (re == "s") opt.filter.re = {
+        type: re,
+        min: minre != "" ? minre : -1,
+        max: maxre != "" ? maxre : -1
+    }; else opt.filter.re = {
+        type: re
+    };
     if (maxrec != "") opt.filter.maxrec = Number(maxrec);
     if (minrec != "") opt.filter.minrec = Number(minrec);
     if (sli != "-1_-1") {

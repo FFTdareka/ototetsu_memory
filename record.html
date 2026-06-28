@@ -82,11 +82,13 @@
             <br>
             <label>
                 打ち返し
-                <select id="reactive">
+                <select id="reactive" onchange="this.value == 's' ? document.getElementById('selectRea').display = 'block' : document.getElementById('selectRea').display = 'none';">
                     <option value="b">どちらも</option>
                     <option value="t">打ち返しのみ</option>
                     <option value="f">打ち返し除く</option>
+                    <option value="s">回数を指定する</option>
                 </select>
+                <span id="selectRea" style="display: none;"><input id="minrea" type="number">回～<input id="maxrea" type="number">回</span>
             </label>
         </div>
         <h3>ソート</h3>
