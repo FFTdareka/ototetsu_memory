@@ -82,7 +82,7 @@
             <br>
             <label>
                 打ち返し
-                <select id="reactive" onchange="document.getElementById('reactive').value == 's' ? document.getElementById('selectRea').display = 'block' : document.getElementById('selectRea').display = 'none';">
+                <select id="reactive" onchange="selectReactive(this)">
                     <option value="b">どちらも</option>
                     <option value="t">打ち返しのみ</option>
                     <option value="f">打ち返し除く</option>
