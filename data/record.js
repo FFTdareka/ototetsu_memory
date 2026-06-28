@@ -264,7 +264,3 @@ function clearSort() {
     document.getElementById("srank2").value = "";
     document.getElementById("s2v").value = "";
 }
-
-function selectReactive(el) {
-    el.value == 's' ? document.getElementById('selectRea').display = 'block' : document.getElementById('selectRea').display = 'none';
-}
