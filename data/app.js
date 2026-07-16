@@ -14,6 +14,6 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-await function test(data) {
-    setDoc(doc(db, "record", data.id), data);
+export async function test(data) {
+    await setDoc(doc(db, "record", data.id), data);
 }
