@@ -13,7 +13,6 @@
         <link rel="icon" href="img/favicon.ico">
         <link rel="apple-touch-icon-precomposed" href="img/favicon.ico">
         <link rel="stylesheet" href="css/normal.css">
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script>
             window.onload = () => {
                 let ifr = document.getElementsByTagName("iframe");
@@ -28,7 +27,12 @@
         </script>
     </head>
     <body>
+        <script src="https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/12.16.0/firebase-analytics.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js"></script>
+        <script src="data/firebase.js"></script>
         <h1><span onclick="location.href = 'https:\/\/fftdareka.github.io\/ototetsu_memory\/';">みんなの音鉄記録帳</span> 概要</h1>
+        <div><span id="userStatus"></span>　<span id="login"></span></div>
         <iframe src="jre_press.html" width="100%" scrolling="no" frameborder="0" style="border: none"></iframe>
         <br>
         <br>
@@ -122,7 +126,6 @@
         <div>
             <a href="https://fftdareka.github.io/ototetsu_memory/">トップページへ</a>
         </div>
-        <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore-compat.js"></script>
+        <script src="login.js"></script>
     </body>
 </html>

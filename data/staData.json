@@ -1,5 +1,25 @@
 {
     "gas": "https://script.google.com/macros/s/AKfycbyXWSz2EWckuAOhVcIdUCyXeaJHmtjGU0nK-OAz4MQOnR_xNpvGzxBCWBHaxNEB9Uni/exec",
+    "firebase": {
+        "apiKey": "AIzaSyCx0xxbgLL3N2JPjU6NWnMycqoAYcCiMZg",
+        "authDomain": "ototetsu-memory.firebaseapp.com",
+        "projectId": "ototetsu-memory",
+        "storageBucket": "ototetsu-memory.firebasestorage.app",
+        "messagingSenderId": "93907965715",
+        "appId": "1:93907965715:web:e2df51223aa895253e6ce6",
+        "measurementId": "G-JJX9BB6553"
+    },
+    "d": [
+        "日付",
+        "駅名",
+        "路線名",
+        "番線",
+        "記録",
+        "時刻",
+        "種別",
+        "行先",
+        "備考"
+    ],
     "sta": [
         [
             "新幹線",
@@ -2363,17 +2383,6 @@
                 ]
             ]
         ]
-    ],
-    "d": [
-        "日付",
-        "駅名",
-        "路線名",
-        "番線",
-        "記録",
-        "時刻",
-        "種別",
-        "行先",
-        "備考"
     ],
     "line": [
         [
