@@ -8,7 +8,7 @@ fetch('data/staData.json')
     const app = initializeApp(f.firebase);
     getAnalytics(app);
     const auth = getAuth(app);
-    let userStatus = document.getElementById("useStatus");
+    let userStatus = document.getElementById("userStatus");
     let loginBtn = document.getElementById("login");
     onAuthStateChanged(auth, user => {
       if (user) {
