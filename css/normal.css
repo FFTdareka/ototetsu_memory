@@ -77,6 +77,45 @@ th {
     font-weight: bold;
 }
 
+#userStatus {
+    display: inline-block;
+    padding: 4px 12px;
+    font-size: 0.85em;
+    font-weight: bold;
+    color: #007ac0;
+    background-color: #e1f5fe;
+    border: 1px solid #007ac0;
+    border-radius: 15px;
+    vertical-align: middle;
+}
+
+#login {
+    display: inline-block;
+    margin-left: 10px;
+    padding: 6px 18px;
+    background-color: #007ac0;
+    color: #ffffff;
+    border: none;
+    border-radius: 20px;
+    font-size: 0.85em;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 3px 0 #005687;
+    transition: all 0.2s;
+    vertical-align: middle;
+}
+
+#login:hover {
+    background-color: #008be0;
+    transform: translateY(1px);
+    box-shadow: 0 2px 0 #005687;
+}
+
+#login:active {
+    transform: translateY(3px);
+    box-shadow: none;
+}
+
 #addRec, #filterSpace, #sortSpace {
     background: #ffffff;
     padding: 25px;
