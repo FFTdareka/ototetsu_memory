@@ -94,8 +94,8 @@ function loadUserdata(uid) {
 }
 
 function updateUser() {
-    let newNameE = document.getElementById(newName);
-    if(newNameE) {
+    let newNameE = document.getElementById("newName");
+    if (newNameE) {
         setDoc(doc(db, "user", uid), {
             name: newNameE.value
         }, { merge: true })
