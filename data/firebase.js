@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-analytics.js";
-import { getAuth, onAuthStateChanged, GoogleAuthProvider, signInWithRedirect, signOut, getRedirectResult } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
+import { getAuth, onAuthStateChanged, GoogleAuthPopup, signInWithRedirect, signOut } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
 
 let app,
     auth;
@@ -11,15 +11,6 @@ fetch('data/staData.json')
         app = initializeApp(f.firebase);
         getAnalytics(app);
         auth = getAuth(app);
-        getRedirectResult(auth)
-            .then(result => {
-                if (result) {
-                    console.log("リダイレクトログイン成功:", result.user);
-                }
-            })
-            .catch(error => {
-                console.error("リダイレクトログイン失敗:", error.code, error.message);
-            });
         status();
     });
 
@@ -43,7 +34,9 @@ function status() {
 
 function userLogin() {
     let provider = new GoogleAuthProvider();
-    signInWithRedirect(auth, provider);
+    signInWithPopup(auth, provider)
+        .then(result => console.log("ログイン成功:", result.user))
+        .catch(error => console.error("ログイン失敗:", error.code, error.message));
 }
 
 function userLogout() {
