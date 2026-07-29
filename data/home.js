@@ -84,6 +84,7 @@ function setRecord(data) {
                 .then(data => {
                     let notice = document.createElement("div");
                     notice.id = "notice";
+                    notice.classList.add("notice");
                     notice.innerText = data;
                     document.getElementById("addRec").appendChild(notice);
                     setTimeout(() => document.getElementById("notice").remove(), 5000);
