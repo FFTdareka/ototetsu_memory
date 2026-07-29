@@ -81,16 +81,13 @@ function loadUserdata(uid) {
             let userName = document.getElementById("userName");
             if (snap.exists()) {
                 let d = snap.data();
-                console.log("データ:", d);
                 userName.innerText = d.name || "匿名";
                 if (location.href == "https://fftdareka.github.io/ototetsu_memory/user.html") document.getElementById("userNameS").innerText = d.name || "匿名";
             } else {
-                console.log("データが存在しません");
             setDoc(doc(db, "user", uid), {
                 name: "匿名"
             }, { merge: true })
             .then(() => {
-                console.log("作成成功");
             })
             .catch(error => {
                 console.error("作成失敗:", error)
@@ -99,7 +96,7 @@ function loadUserdata(uid) {
                 if (location.href == "https://fftdareka.github.io/ototetsu_memory/user.html") document.getElementById("userNameS").innerText = "匿名";
             }
         })
-        .catch(er => console.error("読み込み失敗:", er));
+        .catch(er => console.error("読込失敗:", er));
 }
 
 function updateUser() {
@@ -109,7 +106,6 @@ function updateUser() {
             name: newNameE.value
         }, { merge: true })
         .then(() => {
-            console.log("更新成功");
             let noticeU = document.createElement("div");
             noticeU.id = "noticeU";
             noticeU.classList.add("notice");
@@ -126,7 +122,7 @@ function updateUser() {
             noticeU.innerText = "更新に失敗しました。";
             document.getElementById("setting").appendChild(noticeU);
             setTimeout(() => document.getElementById("noticeU").remove(), 5000);
-            console.error("保存失敗:", error)
+            console.error("更新失敗:", error)
         });
     }
 }
