@@ -32,6 +32,16 @@ function status() {
     });
 }
 
+getRedirectResult(auth)
+    .then(result => {
+        if (result) {
+            console.log("リダイレクトログイン成功:", result.user);
+        }
+    })
+    .catch(error => {
+        console.error("リダイレクトログイン失敗:", error.code, error.message);
+    });
+
 function userLogin() {
     let provider = new GoogleAuthProvider();
     signInWithRedirect(auth, provider);
