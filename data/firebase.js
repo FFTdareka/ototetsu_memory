@@ -65,11 +65,11 @@ function userLogout() {
     signOut(auth).then(() => {
         logoutStatus.innerText = "ログアウトが完了しました。";
         userSpace.appendChild(logoutStatus);
-        setTimeout(() => document.getElementById(logoutStatus).innerText = "", 5000);
+        setTimeout(() => document.getElementById("logoutStatus").remove(), 5000);
     }).catch((error) => {
         logoutStatus.innerText = "ログアウト中にエラーが発生しました。";
         userSpace.appendChild(logoutStatus);
-        setTimeout(() => document.getElementById(logoutStatus).innerText = "", 5000);
+        setTimeout(() => document.getElementById("logoutStatus").remove(), 5000);
     });
 }
 
