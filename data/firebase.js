@@ -45,11 +45,11 @@ function userLogout() {
     logoutStatus.id = "logoutStatus";
     logoutStatus.classList.add("notice");
     signOut(auth).then(() => {
-        logoutStatus.innerText("ログアウトが完了しました。");
+        logoutStatus.innerText = "ログアウトが完了しました。";
         userSpace.appendChild(logoutStatus);
         setTimeout(() => document.getElementById(logoutStatus).innerText = "", 5000);
     }).catch((error) => {
-        logoutStatus.innerText("ログアウト中にエラーが発生しました。");
+        logoutStatus.innerText = "ログアウト中にエラーが発生しました。";
         userSpace.appendChild(logoutStatus);
         setTimeout(() => document.getElementById(logoutStatus).innerText = "", 5000);
     });
