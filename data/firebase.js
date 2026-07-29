@@ -11,6 +11,15 @@ fetch('data/staData.json')
         app = initializeApp(f.firebase);
         getAnalytics(app);
         auth = getAuth(app);
+        getRedirectResult(auth)
+            .then(result => {
+                if (result) {
+                    console.log("リダイレクトログイン成功:", result.user);
+                }
+            })
+            .catch(error => {
+                console.error("リダイレクトログイン失敗:", error.code, error.message);
+            });
         status();
     });
 
@@ -31,16 +40,6 @@ function status() {
         }
     });
 }
-
-getRedirectResult(auth)
-    .then(result => {
-        if (result) {
-            console.log("リダイレクトログイン成功:", result.user);
-        }
-    })
-    .catch(error => {
-        console.error("リダイレクトログイン失敗:", error.code, error.message);
-    });
 
 function userLogin() {
     let provider = new GoogleAuthProvider();
