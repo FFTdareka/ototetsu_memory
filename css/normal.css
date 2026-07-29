@@ -89,7 +89,8 @@ th {
     vertical-align: middle;
 }
 
-#login {
+#login,
+#login2 {
     display: inline-block;
     margin-left: 10px;
     padding: 6px 18px;
