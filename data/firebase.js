@@ -79,7 +79,7 @@ function userLogout() {
     });
 }
 
-function loadUserdata(uid, tf = false) {
+function loadUserdata(uid = "guest", tf = false) {
     return getDoc(doc(db, "user", uid))
         .then(snap => {
             if (snap.exists()) {

@@ -67,7 +67,7 @@ document.addEventListener("DOMContentLoaded", () => {
                             rData.appendChild(delE);
                         }
                         if (j == 9) {
-                            rData.innerText = await loadUserdata(dt[j]);
+                            rData.innerText = await loadUserdata(dt[j] || "guest");
                         }
                         rd.appendChild(rData);
                         rDatas.appendChild(rd);
