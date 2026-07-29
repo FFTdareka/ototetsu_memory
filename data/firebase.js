@@ -7,12 +7,14 @@ let app,
 
 fetch('data/staData.json')
     .then(res => res.json())
-    .then(f => status(f));
+    .then(f => {
+        app = initializeApp(f.firebase);
+        getAnalytics(app);
+        auth = getAuth(app);
+        status();
+    });
 
-function status(f) {
-    app = initializeApp(f.firebase);
-    getAnalytics(app);
-    auth = getAuth(app);
+function status() {
     let userStatus = document.getElementById("userStatus");
     let loginBtn = document.getElementById("login");
     onAuthStateChanged(auth, user => {
