@@ -223,7 +223,8 @@ function recordData() {
             'delay': delay,
             'train': train,
             'for': tfor,
-            'comment': comment
+            'comment': comment,
+            'uid': localStorage.getItem('uid')
         };
         setRecord(data);
     }

@@ -34,6 +34,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     bfor = data.for;
                     com = data.comment;
                     rid = data.ID;
+                    ruid = data.uid;
                     log = data.log.split("\\n");
                     var s = document.createElement("div");
                     for (var i = 0; i < log.length; i++) {
@@ -46,7 +47,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         sp.innerText = log[i];
                         s.appendChild(sp);
                     }
-                    let dt = [date, sta, line[0], trk, cho, time, trn, bfor, com];
+                    let dt = [date, sta, line[0], trk, cho, time, trn, bfor, com, ruid];
                     let rDatas = document.createElement("span");
                     rDatas.id = rid;
                     for (var j = 0; j < d.length; j++) {
@@ -54,15 +55,19 @@ document.addEventListener("DOMContentLoaded", () => {
                         rd.innerText = `${d[j]}:`;
                         var rData = document.createElement('span');
                         rData.classList.add("data");
-                        rData.innerText = dt[j];
                         if (j == 2)
                             for (var k = 0; k < sc.length; k++) if (line[1] == sc[k][0]) rData.classList.add(sc[k][1]);
+                            rData.innerText = dt[j];
                         if (j == 5 && del != 0) {
                             delE = document.createElement("span");
                             delE.innerText = del;
                             delE.classList.add("delay");
                             delE.classList.add("data");
+                            rData.innerText = dt[j];
                             rData.appendChild(delE);
+                        }
+                        if (j == 9) {
+                            rData.innerText = loadUserdata(dt[j]);
                         }
                         rd.appendChild(rData);
                         rDatas.appendChild(rd);

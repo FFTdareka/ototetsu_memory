@@ -25,6 +25,7 @@ function status() {
     onAuthStateChanged(auth, user => {
         if (user) {
             uid = user.uid;
+            localStorage.setItem('uid', uid);
             userStatus.innerText = " としてログイン中";
             loginBtn.innerText = "ログアウト";
             loginBtn.removeEventListener("click", userLogin);
@@ -34,8 +35,11 @@ function status() {
                 sSpace.innerHTML = `<div id="nameS">現在の名前: <span id="userNameS"></span><br>新しい名前: <input id="newName" type="text" placeholder="名前を入力"></div><button id="updateBtn" type="button">更新</button>`;
                 document.getElementById("updateBtn").addEventListener("click", updateUser);
             }
-            loadUserdata(uid);
+            let uName = loadUserdata(uid, true);
+            userName.innerText = uName;
+            if (location.href == "https://fftdareka.github.io/ototetsu_memory/user.html") document.getElementById("userNameS").innerText = uName;
         } else {
+            localStorage.setItem('uid', '');
             userStatus.innerText = "未ログイン";
             userName.innerText = "";
             loginBtn.innerText = "ログイン";
@@ -75,26 +79,25 @@ function userLogout() {
     });
 }
 
-function loadUserdata(uid) {
+function loadUserdata(uid, tf = false) {
     getDoc(doc(db, "user", uid))
         .then(snap => {
             let userName = document.getElementById("userName");
             if (snap.exists()) {
                 let d = snap.data();
-                userName.innerText = d.name || "匿名";
-                if (location.href == "https://fftdareka.github.io/ototetsu_memory/user.html") document.getElementById("userNameS").innerText = d.name || "匿名";
-            } else {
+                return d.name || "匿名";
+            } else if (tf) {
             setDoc(doc(db, "user", uid), {
                 name: "匿名"
             }, { merge: true })
             .then(() => {
+                return "匿名"
             })
             .catch(error => {
                 console.error("作成失敗:", error)
             });
-                userName.innerText = "匿名";
-                if (location.href == "https://fftdareka.github.io/ototetsu_memory/user.html") document.getElementById("userNameS").innerText = "匿名";
-            }
+                return "匿名";
+            } else return "匿名";
         })
         .catch(er => console.error("読込失敗:", er));
 }
@@ -126,3 +129,5 @@ function updateUser() {
         });
     }
 }
+
+window.loadUserdata = loadUserdata();

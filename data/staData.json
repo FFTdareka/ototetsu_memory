@@ -1,5 +1,5 @@
 {
-    "gas": "https://script.google.com/macros/s/AKfycbyXWSz2EWckuAOhVcIdUCyXeaJHmtjGU0nK-OAz4MQOnR_xNpvGzxBCWBHaxNEB9Uni/exec",
+    "gas": "https://script.google.com/macros/s/AKfycbzZirj0uZ-Nb9FlKy6g59ehC46SnHGSVi9Ntcpg1y68PJI9uysKuf9Dxx6u8bruIqhD/exec",
     "firebase": {
         "apiKey": "AIzaSyCx0xxbgLL3N2JPjU6NWnMycqoAYcCiMZg",
         "authDomain": "ototetsu-memory.firebaseapp.com",
@@ -18,7 +18,8 @@
         "時刻",
         "種別",
         "行先",
-        "備考"
+        "備考",
+        "投稿者"
     ],
     "sta": [
         [
