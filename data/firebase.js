@@ -25,6 +25,7 @@ function status() {
         if (user) {
             userStatus.innerText = "ログイン中";
             loginBtn.innerText = "ログアウト";
+            loadUserdata(user.uid);
             loginBtn.removeEventListener("click", userLogin);
             loginBtn.addEventListener("click", userLogout);
         } else {
@@ -42,7 +43,6 @@ function userLogin() {
     signInWithPopup(auth, provider)
         .then(res => {
             console.log("ログイン成功:", res.user);
-            loadUserdata(res.user.uid);
         })
         .catch(er => console.error("ログイン失敗:", er.code, er.message));
 }
