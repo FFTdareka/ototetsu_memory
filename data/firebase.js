@@ -31,7 +31,7 @@ function status() {
             loginBtn.addEventListener("click", userLogout);
             if (location.href == "https://fftdareka.github.io/ototetsu_memory/user.html") {
                 let sSpace = document.getElementById("setting");
-                sSpace.innerHTML = `<div id="nameS">現在の名前: <span id="userNameS"></span><br>新しい名前: <input id="newName" type="text" placeholder="名前を入力"></div><button id="updateBtn" type="button" onclick="updateUser()" disabled>更新</button>`;
+                sSpace.innerHTML = `<div id="nameS">現在の名前: <span id="userNameS"></span><br>新しい名前: <input id="newName" type="text" placeholder="名前を入力"></div><button id="updateBtn" type="button" onclick="updateUser()">更新</button>`;
             }
             loadUserdata(uid);
         } else {
