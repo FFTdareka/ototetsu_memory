@@ -108,6 +108,7 @@ function updateUser() {
             document.getElementById("setting").appendChild(noticeU);
             setTimeout(() => document.getElementById("noticeU").remove(), 5000);
             document.getElementById("userNameS").innerText = newNameE.value;
+            document.getElementById("userName").innerText = newNameE.value;
         })
         .catch(error => {
             let noticeU = document.createElement("div");
