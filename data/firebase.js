@@ -18,11 +18,11 @@ fetch('data/staData.json')
         status();
     });
 
-async function status() {
+function status() {
     let userStatus = document.getElementById("userStatus");
     let userName = document.getElementById("userName");
     let loginBtn = document.getElementById("login");
-    onAuthStateChanged(auth, user => {
+    onAuthStateChanged(auth, async user => {
         if (user) {
             uid = user.uid;
             localStorage.setItem('uid', uid);
