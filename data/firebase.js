@@ -86,6 +86,15 @@ function loadUserdata(uid) {
                 if (location.href == "https://fftdareka.github.io/ototetsu_memory/user.html") document.getElementById("userNameS").innerText = d.name || "匿名";
             } else {
                 console.log("データが存在しません");
+            setDoc(doc(db, "user", uid), {
+                name: "匿名"
+            }, { merge: true })
+            .then(() => {
+                console.log("作成成功");
+            })
+            .catch(error => {
+                console.error("作成失敗:", error)
+            });
                 userName.innerText = "匿名";
                 if (location.href == "https://fftdareka.github.io/ototetsu_memory/user.html") document.getElementById("userNameS").innerText = "匿名";
             }
