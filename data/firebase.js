@@ -18,7 +18,7 @@ fetch('data/staData.json')
         status();
     });
 
-function status() {
+async function status() {
     let userStatus = document.getElementById("userStatus");
     let userName = document.getElementById("userName");
     let loginBtn = document.getElementById("login");
@@ -35,7 +35,7 @@ function status() {
                 sSpace.innerHTML = `<div id="nameS">現在の名前: <span id="userNameS"></span><br>新しい名前: <input id="newName" type="text" placeholder="名前を入力"></div><button id="updateBtn" type="button">更新</button>`;
                 document.getElementById("updateBtn").addEventListener("click", updateUser);
             }
-            let uName = loadUserdata(uid, true);
+            let uName = await loadUserdata(uid, true);
             userName.innerText = uName;
             if (location.href == "https://fftdareka.github.io/ototetsu_memory/user.html") document.getElementById("userNameS").innerText = uName;
         } else {

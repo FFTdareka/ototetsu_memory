@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
             sc = g.line;
             fetch(`${g.gas}?type=rec&nor=1&page=1&opt=${opt}`)
             .then(res => res.json())
-            .then(data => {
+            .then(async data => {
                 if (data.status == 'success') {
                     data = data.body[0];
                     date = data.date;
@@ -67,7 +67,7 @@ document.addEventListener("DOMContentLoaded", () => {
                             rData.appendChild(delE);
                         }
                         if (j == 9) {
-                            rData.innerText = loadUserdata(dt[j]);
+                            rData.innerText = await loadUserdata(dt[j]);
                         }
                         rd.appendChild(rData);
                         rDatas.appendChild(rd);
