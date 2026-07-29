@@ -80,27 +80,31 @@ function userLogout() {
 }
 
 function loadUserdata(uid, tf = false) {
-    getDoc(doc(db, "user", uid))
+    return getDoc(doc(db, "user", uid))
         .then(snap => {
-            let userName = document.getElementById("userName");
             if (snap.exists()) {
                 let d = snap.data();
                 return d.name || "匿名";
             } else if (tf) {
-            setDoc(doc(db, "user", uid), {
-                name: "匿名"
-            }, { merge: true })
-            .then(() => {
-                return "匿名"
-            })
-            .catch(error => {
-                console.error("作成失敗:", error)
-            });
+                return setDoc(doc(db, "user", uid), {
+                    name: "匿名"
+                }, { merge: true })
+                .then(() => "匿名")
+                .catch(error => {
+                    console.error("作成失敗:", error);
+                    throw error;
+                });
+            } else {
                 return "匿名";
-            } else return "匿名";
+            }
         })
-        .catch(er => console.error("読込失敗:", er));
+        .catch(er => {
+            console.error("読込失敗:", er);
+            throw er;
+        });
 }
+
+window.loadUserdata = loadUserdata;
 
 function updateUser() {
     let newNameE = document.getElementById("newName");
