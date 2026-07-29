@@ -31,7 +31,8 @@ function status() {
             loginBtn.addEventListener("click", userLogout);
             if (location.href == "https://fftdareka.github.io/ototetsu_memory/user.html") {
                 let sSpace = document.getElementById("setting");
-                sSpace.innerHTML = `<div id="nameS">現在の名前: <span id="userNameS"></span><br>新しい名前: <input id="newName" type="text" placeholder="名前を入力"></div><button id="updateBtn" type="button" onclick="updateUser()">更新</button>`;
+                sSpace.innerHTML = `<div id="nameS">現在の名前: <span id="userNameS"></span><br>新しい名前: <input id="newName" type="text" placeholder="名前を入力"></div><button id="updateBtn" type="button">更新</button>`;
+                document.getElementById("updateBtn").addEventListener("click", updateUser);
             }
             loadUserdata(uid);
         } else {
@@ -42,7 +43,8 @@ function status() {
             loginBtn.addEventListener("click", userLogin);
             if (location.href == "https://fftdareka.github.io/ototetsu_memory/user.html") {
                 let sSpace = document.getElementById("setting");
-                sSpace.innerHTML = `<span>このページはGoogleアカウントにログインした人のみ利用可能です。<br><span id="login2" onclick="userLogin()">ログインはこちら</span></div>`;
+                sSpace.innerHTML = `<span>このページはGoogleアカウントにログインした人のみ利用可能です。<br><span id="login2">ログインはこちら</span></div>`;
+                document.getElementById("login2").addEventListener("click", userLogin);
             }
         }
     });
