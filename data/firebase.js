@@ -129,7 +129,3 @@ function updateUser() {
         });
     }
 }
-
-window.loadUserdata = loadUserdata();
-window.getDoc = getDoc;
-window.doc = doc;

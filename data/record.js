@@ -87,7 +87,7 @@ function getRecord(n, p, o = {
                         table.id = 'record';
                         let thead = document.createElement('thead');
                         let trh = document.createElement('tr');
-                        for (var i = 0; i < d.length; i++) {
+                        for (var i = 0; i < d.length - 1; i++) {
                             th = document.createElement('th');
                             th.innerText = d[i];
                             trh.appendChild(th);
