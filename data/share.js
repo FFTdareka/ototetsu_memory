@@ -360,21 +360,7 @@ function delRec() {
                 .then(res => res.text())
                 .then(data => {
                     showNotice(data, "addRec", true);
-                    document.getElementById('addRec_cho').value = "";
-                    document.getElementById('addRec_trk').value = "";
-                    document.getElementById('addRec_com').value = "";
-                    check.checked = false;
-                    addButton.disabled = true;
-                    document.getElementById('addRec_date').value = "";
-                    document.getElementById('addRec_del').value = "";
-                    document.getElementById('addRec_line').value = "-1_-1";
-                    document.getElementById('addRec_sta').value = "-1_-1";
-                    document.getElementById('addRec_trn').value = "";
-                    document.getElementById('addRec_for').value = "";
-                    setSta({
-                        value: "-1_-1"
-                    });
+                    if (data == "送信が完了しました。") location.href = "https://fftdareka.github.io/ototetsu_memory/"
                 });
-                getRec1();
         });
 }
