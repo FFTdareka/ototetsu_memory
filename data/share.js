@@ -1,7 +1,7 @@
 const params = new URLSearchParams(window.location.search);
 const id = params.get("id");
 
-document.addEventListener("load", getRec1);
+document.addEventListener("DOMContentLoaded", getRec1);
 
 function getRec1() {
     document.getElementById("editRecBtn").innerText = "読込中...";
