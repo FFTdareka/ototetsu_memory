@@ -90,7 +90,8 @@ th {
 }
 
 #login,
-#login2 {
+#login2,
+#deleteBtn {
     display: inline-block;
     margin-left: 10px;
     padding: 6px 18px;
@@ -106,29 +107,27 @@ th {
     vertical-align: middle;
 }
 
-#login:hover {
+#login:hover,
+#deleteBtn:hover {
     background-color: #008be0;
     transform: translateY(1px);
     box-shadow: 0 2px 0 #005687;
 }
 
-#login:active {
+#login:active,
+#deleteBtn:active {
     transform: translateY(3px);
     box-shadow: none;
 }
 
-#login.redB {
-    background-color: #d32f2f;
-    box-shadow: 0 3px 0 #a02525;
+.redB {
+    background-color: #d32f2f !important;
+    box-shadow: 0 3px 0 #a02525 !important;
 }
 
-#login.redB:hover {
-    background-color: #e53935;
-    box-shadow: 0 2px 0 #a02525;
-}
-
-#login.redB:active {
-    box-shadow: none;
+.redB:hover {
+    background-color: #e53935 !important;
+    box-shadow: 0 2px 0 #a02525 !important;
 }
 
 #addRec, #filterSpace, #sortSpace {
