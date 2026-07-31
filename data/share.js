@@ -353,6 +353,7 @@ function editRecord(data) {
 
 function delRec() {
     if (!confirm("本当に記録を削除しますか？この操作は取り消せません。")) return;
+    document.getElementById("delRecBtn").disabled = true;
     fetch('data/staData.json')
         .then(res => res.json())
         .then(g => {
@@ -368,6 +369,7 @@ function delRec() {
                 .then(res => res.text())
                 .then(data => {
                     showNotice(data, "addRec", true);
+                    document.getElementById("delRecBtn").disabled = true;
                     if (data == "送信が完了しました。") location.href = "https://fftdareka.github.io/ototetsu_memory/"
                 });
         });
