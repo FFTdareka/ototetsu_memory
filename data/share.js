@@ -250,7 +250,8 @@ function editRec() {
             'for': tfor,
             'comment': comment,
             'uid': getUid(),
-            'edit': true
+            'edit': true,
+            'id': id
         };
         editRecord(data);
     }
@@ -319,6 +320,7 @@ function setSta2(data) {
 }
 
 function editRecord(data) {
+    document.getElementById("recSpace").innerHTML = "";
     fetch('data/staData.json')
         .then(res => res.json())
         .then(g => {
@@ -344,8 +346,8 @@ function editRecord(data) {
                     setSta({
                         value: "-1_-1"
                     });
+                    getRec1();
                 });
-                getRec1();
         });
 }
 
