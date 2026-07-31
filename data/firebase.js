@@ -150,5 +150,10 @@ function updateUser() {
     }
 }
 
+function getUid() {
+    return uid;
+}
+
 window.userDelete = userDelete;
 window.loadUserdata = loadUserdata;
+window.getUid = getUid;

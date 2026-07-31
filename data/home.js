@@ -219,9 +219,9 @@ function recordData() {
             'train': train,
             'for': tfor,
             'comment': comment,
-            'uid': localStorage.getItem('uid')
+            'uid': localStorage.getItem('uid'),
+            'edit': false
         };
         setRecord(data);
     }
-
 }

@@ -1,7 +1,7 @@
 fetch('data/staData.json')
     .then(res => res.json())
     .then(s => {
-        if (s.status && location.href == "https://fftdareka.github.io/ototetsu_memory/maint.html") location.href = "https://fftdareka.github.io/ototetsu_memory/"; else if (!s.status && location.href != "https://fftdareka.github.io/ototetsu_memory/maint.html") location.href = "https://fftdareka.github.io/ototetsu_memory/maint.html";
+        if (localStorage.getItem("debug") != "true") if (s.status && location.href == "https://fftdareka.github.io/ototetsu_memory/maint.html") location.href = "https://fftdareka.github.io/ototetsu_memory/"; else if (!s.status && location.href != "https://fftdareka.github.io/ototetsu_memory/maint.html") location.href = "https://fftdareka.github.io/ototetsu_memory/maint.html";
     });
 
 function showNotice(text, parentId, sd = true, noticeId = "") {
