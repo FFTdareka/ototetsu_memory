@@ -4,7 +4,7 @@ const id = params.get("id");
 document.addEventListener("DOMContentLoaded", getRec1());
 
 function getRec1() {
-    document.getElementById("addRec").style = "display: none;";
+    document.getElementById("addRec").style.display = "none";
     document.getElementById("editRecBtn").innerText = "読込中...";
     document.getElementById("editRecBtn").disabled = true;
     document.getElementById("editRecBtn").removeEventListener("click", editRec());
@@ -91,7 +91,7 @@ function getRec1() {
                     document.getElementById("recSpace").appendChild(rDatas);
                     document.getElementById("recStatus").innerText = "";
                     if (uid == getUid()) {
-                        document.getElementById("addRec").style = "display: block;";
+                        document.getElementById("addRec").style.display = "block";
                         document.getElementById("editRecBtn").innerText = "編集";
                         document.getElementById("editRecBtn").disabled = false;
                         document.getElementById("editRecBtn").addEventListener("click", editRec());
