@@ -82,12 +82,7 @@ function setRecord(data) {
                 })
                 .then(res => res.text())
                 .then(data => {
-                    let notice = document.createElement("div");
-                    notice.id = "notice";
-                    notice.classList.add("notice");
-                    notice.innerText = data;
-                    document.getElementById("addRec").appendChild(notice);
-                    setTimeout(() => document.getElementById("notice").remove(), 5000);
+                    showNotice(data, "addRec", true);
                     document.getElementById('addRec_cho').value = "";
                     document.getElementById('addRec_trk').value = "";
                     document.getElementById('addRec_com').value = "";
@@ -229,4 +224,13 @@ function recordData() {
         setRecord(data);
     }
 
+}
+
+function showNotice(text, parentId, sd = true, noticeId = "") {
+    let notice = document.createElement(sd ? "span": "div");
+    notice.id = `notice${noticeId}`;
+    notice.classList.add("notice");
+    notice.innerText = text;
+    document.getElementById(parentId).appendChild(notice);
+    setTimeout(() => document.getElementById(`notice${noticeId}`).remove(), 5000);
 }
