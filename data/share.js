@@ -1,7 +1,15 @@
 const params = new URLSearchParams(window.location.search);
 const id = params.get("id");
 
+let check, editButton
+
 document.addEventListener("DOMContentLoaded", getRec1);
+document.addEventListener("DOMContentLoaded", () => {
+    check = document.getElementById("addRec_chk");
+    editButton = document.getElementById('editRecbtn');
+    check.checked ? editButton.disabled = false : editButton.disabled = true;
+    check.addEventListener("change", () => check.checked ? editButton.disabled = false : editButton.disabled = true);
+})
 
 fetch('data/staData.json')
     .then(res => res.json())
@@ -154,7 +162,6 @@ function editRec() {
     let train = document.getElementById("addRec_trn").value;
     let tfor = document.getElementById("addRec_for").value;
     let comment = document.getElementById("addRec_com").value;
-    let check = document.getElementById("addRec_chk");
     let error = "エラー:";
     if (!check.checked) {
         error += "確認欄がチェックされていません。";
