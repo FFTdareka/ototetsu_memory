@@ -320,7 +320,6 @@ function setSta2(data) {
 }
 
 function editRecord(data) {
-    document.getElementById("recSpace").innerHTML = "";
     fetch('data/staData.json')
         .then(res => res.json())
         .then(g => {
@@ -346,6 +345,7 @@ function editRecord(data) {
                     setSta({
                         value: "-1_-1"
                     });
+                    document.getElementById("recSpace").innerHTML = "";
                     getRec1();
                 });
         });
