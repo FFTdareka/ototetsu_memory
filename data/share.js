@@ -6,7 +6,7 @@ let check, editButton;
 document.addEventListener("DOMContentLoaded", getRec1);
 document.addEventListener("DOMContentLoaded", () => {
     check = document.getElementById("addRec_chk");
-    editButton = document.getElementById('editRecbtn');
+    editButton = document.getElementById('editRecBtn');
     check.addEventListener("change", () => check.checked ? editButton.disabled = false : editButton.disabled = true);
 })
 
