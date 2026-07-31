@@ -1,7 +1,13 @@
 const params = new URLSearchParams(window.location.search);
 const id = params.get("id");
 
+document.addEventListener("load", getRec1);
+
 function getRec1() {
+    document.getElementById("editRecBtn").innerText = "読込中...";
+    document.getElementById("editRecBtn").disabled = true;
+    document.getElementById("editRecBtn").removeEventListener("click", editRec);
+    document.getElementById("addRec").style.display = "none";
     if (id != null) {
         opt = JSON.stringify({
             filter: {
@@ -87,7 +93,7 @@ function getRec1() {
                     if (uid == getUid()) {
                         document.getElementById("editRecBtn").innerText = "編集";
                         document.getElementById("editRecBtn").disabled = false;
-                        document.getElementById("editRecBtn").addEventListener("click", editRec());
+                        document.getElementById("editRecBtn").addEventListener("click", editRec);
                         document.getElementById("addRec").style.display = "block";
                     } else document.getElementById("editRecBtn").innerText = "編集権限なし";
                 } else if (data.status == 'no record') document.getElementById('recStatus').innerText = "指定した鳴動記録のデータがありません。";
@@ -301,12 +307,6 @@ function editRecord(data) {
                         value: "-1_-1"
                     });
                 });
-                document.getElementById("editRecBtn").innerText = "読込中...";
-                document.getElementById("editRecBtn").disabled = true;
-                document.getElementById("editRecBtn").removeEventListener("click", editRec());
-                document.getElementById("addRec").style.display = "none";
                 getRec1();
         });
 }
-
-document.addEventListener("load", getRec1());
