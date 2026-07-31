@@ -115,7 +115,7 @@ function getRec1() {
                     }
                     rDatas.appendChild(document.createElement("br"));
                     var rd2 = document.createElement('span');
-                    rd2.innerText = "履歴";
+                    rd2.innerText = "運営による編集履歴";
                     rd2.appendChild(document.createElement("br"));
                     var rData2 = document.createElement('span');
                     rData2.appendChild(s);
