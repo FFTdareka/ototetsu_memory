@@ -2,10 +2,6 @@ const params = new URLSearchParams(window.location.search);
 const id = params.get("id");
 
 function getRec1() {
-    document.getElementById("editRecBtn").innerText = "読込中...";
-    document.getElementById("editRecBtn").disabled = true;
-    document.getElementById("editRecBtn").removeEventListener("click", editRec());
-    document.getElementById("addRec").style.display = "none";
     if (id != null) {
         opt = JSON.stringify({
             filter: {
@@ -305,6 +301,10 @@ function editRecord(data) {
                         value: "-1_-1"
                     });
                 });
+                document.getElementById("editRecBtn").innerText = "読込中...";
+                document.getElementById("editRecBtn").disabled = true;
+                document.getElementById("editRecBtn").removeEventListener("click", editRec());
+                document.getElementById("addRec").style.display = "none";
                 getRec1();
         });
 }
