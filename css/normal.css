@@ -188,7 +188,7 @@ input:focus, select:focus {
     box-shadow: 0 2px 0 #005687;
 }
 
-#delRecbtn {
+#delRecBtn {
     display: block;
     width: 200px;
     margin: 20px auto 0;
@@ -204,7 +204,7 @@ input:focus, select:focus {
     transition: all 0.2s;
 }
 
-#delRecbtn:hover {
+#delRecBtn:hover {
     background-color: #a02525;
     transform: translateY(2px);
     box-shadow: 0 2px 0 #a02525;
