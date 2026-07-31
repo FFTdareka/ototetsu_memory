@@ -219,7 +219,7 @@ function recordData() {
             'train': train,
             'for': tfor,
             'comment': comment,
-            'uid': localStorage.getItem('uid'),
+            'uid': getUid(),
             'edit': false
         };
         setRecord(data);

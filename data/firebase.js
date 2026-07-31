@@ -25,7 +25,6 @@ function status() {
     onAuthStateChanged(auth, async user => {
         if (user) {
             uid = user.uid;
-            localStorage.setItem('uid', uid);
             userStatus.innerText = " としてログイン中";
             loginBtn.innerText = "ログアウト";
             loginBtn.classList.add("redB");
