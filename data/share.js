@@ -331,7 +331,7 @@ function editRecord(data) {
                 })
                 .then(res => res.text())
                 .then(data => {
-                    showNotice(data, "addRec", true);
+                    showNotice(data, "statusR", true);
                     document.getElementById('addRec_cho').value = "";
                     document.getElementById('addRec_trk').value = "";
                     document.getElementById('addRec_com').value = "";
