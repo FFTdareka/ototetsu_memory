@@ -1,15 +1,13 @@
 const params = new URLSearchParams(window.location.search);
 const id = params.get("id");
 
-document.addEventListener("DOMContentLoaded", getRec1(false));
+document.addEventListener("load", getRec1());
 
-function getRec1(tf = true) {
-    if (tf) {
-        document.getElementById("editRecBtn").innerText = "読込中...";
-        document.getElementById("editRecBtn").disabled = true;
-        document.getElementById("editRecBtn").removeEventListener("click", editRec());
-        document.getElementById("addRec").style.display = "none";
-    }
+function getRec1() {
+    document.getElementById("editRecBtn").innerText = "読込中...";
+    document.getElementById("editRecBtn").disabled = true;
+    document.getElementById("editRecBtn").removeEventListener("click", editRec());
+    document.getElementById("addRec").style.display = "none";
     if (id != null) {
         opt = JSON.stringify({
             filter: {
