@@ -35,6 +35,7 @@ function status() {
                 let sSpace = document.getElementById("setting");
                 sSpace.innerHTML = `<div id="nameS">現在の名前: <span id="userNameS"></span><br>新しい名前: <input id="newName" type="text" placeholder="名前を入力"></div><button id="updateBtn" type="button">更新</button><br><br><div id="delS">みんなの音鉄記録帳から退会される方はこちら　<button id="deleteBtn" class="redB" type="button">退会する</button></div>`;
                 document.getElementById("updateBtn").addEventListener("click", updateUser);
+                document.getElementById("deleteBtn").addEventListener("click", userDelete);
             }
             let uName = await loadUserdata(uid, true);
             userName.innerText = uName;
