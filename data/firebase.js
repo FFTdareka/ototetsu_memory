@@ -67,9 +67,9 @@ function userLogin() {
 
 function userLogout() {
     signOut(auth).then(() => {
-        showNotice("ログアウトが完了しました。", "user", false, "L");
+        showNotice("ログアウトが完了しました。", "user", true, "L");
     }).catch((error) => {
-        showNotice("ログアウト中にエラーが発生しました。", "user", false, "L");
+        showNotice("ログアウト中にエラーが発生しました。", "user", true, "L");
     });
 }
 
@@ -84,7 +84,7 @@ function userDelete() {
             return deleteUser(user);
         })
         .then(() => {
-            showNotice("退会が完了しました。", "setStatus", true, "D");
+            showNotice("退会が完了しました。これまでのご利用ありがとうございました。", "setStatus", true, "D");
         })
         .catch(error => {
             if (error.code === "auth/requires-recent-login") {
@@ -93,7 +93,7 @@ function userDelete() {
                     .then(() => deleteDoc(doc(db, "user", user.uid)))
                     .then(() => deleteUser(user))
                     .then(() => {
-                        showNotice("退会が完了しました。", "setStatus", true, "D");
+                        showNotice("退会が完了しました。これまでのご利用ありがとうございました。", "setStatus", true, "D");
                     })
                     .catch(err => {
                         console.error("退会失敗:", err);
