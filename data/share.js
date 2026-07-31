@@ -336,7 +336,7 @@ function editRecord(data) {
                     document.getElementById('addRec_trk').value = "";
                     document.getElementById('addRec_com').value = "";
                     check.checked = false;
-                    addButton.disabled = true;
+                    editButton.disabled = true;
                     document.getElementById('addRec_date').value = "";
                     document.getElementById('addRec_del').value = "";
                     document.getElementById('addRec_line').value = "-1_-1";
