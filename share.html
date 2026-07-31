@@ -48,6 +48,64 @@
 
         </div>
         <br>
+        <h2>記録編集</h2>
+        <div id="addRec" style="display: none;">
+            <label>
+                日時
+                <input id="addRec_date" type="datetime-local">
+            </label>
+            <br>
+            <label>
+                遅れ
+                <input id="addRec_del" type="number" placeholder="例:3">分
+            </label>
+            <br>
+            <label>
+                路線
+                <select id="addRec_line" onchange="setSta(this)">
+                    <option value="-1_-1">-路線を選択-</option>
+                </select>
+            </label>
+            <br>
+            <label>
+                駅名
+                <select id="addRec_sta" onchange="setSta2(this)">
+                    <option value="-1_-1">-駅を選択-</option>
+                </select>
+            </label>
+            <br>
+            <label>
+                記録
+                <input id="addRec_cho" type="text" placeholder="例:1.0">c
+            </label>
+            <br>
+            <label>
+                番線
+                <input id="addRec_trk" type="text" placeholder="例:2">
+            </label>
+            <br>
+            <label>
+                種別
+                <input id="addRec_trn" type="text" placeholder="例:各駅停車">
+            </label>
+            <br>
+            <label>
+                行先
+                <input id="addRec_for" type="text" placeholder="例:八王子">行
+            </label>
+            <br>
+            <label>
+                備考
+                <input id="addRec_com" type="text" placeholder="例:無被り 簡潔に">
+            </label>
+            <br>
+            <label>
+                確認
+                <input id="addRec_chk" type="checkbox"><span style="font-weight: normal; font-size: 17.5px;">使い方を確認し、その通りに記録入力を行いました。</span>
+            </label>
+        </div>
+        <button id="editRecBtn" type="button" disabled>読込中...</button>
+        <br>
         <div>
             <a href="https://fftdareka.github.io/ototetsu_memory/">トップページへ</a>
         </div>

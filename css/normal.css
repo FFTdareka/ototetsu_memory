@@ -164,7 +164,8 @@ input:focus, select:focus {
     box-shadow: 0 0 0 2px rgba(0,122,192,0.2);
 }
 
-#addRec_btn {
+#addRec_btn,
+#editRecBtn {
     display: block;
     width: 200px;
     margin: 20px auto 0;
@@ -180,18 +181,25 @@ input:focus, select:focus {
     transition: all 0.2s;
 }
 
-#addRec_btn:hover {
+#addRec_btn:hover,
+#editRecBtn:hover {
     background-color: #008be0;
     transform: translateY(2px);
     box-shadow: 0 2px 0 #005687;
 }
 
-#addRec_btn:active {
+#addRec_btn:active,
+#editRecBtn:active {
     transform: translateY(4px);
     box-shadow: none;
 }
 
-#addRec_btn:disabled, #addRec_btn:hover:disabled, #addRec_btn:active:disabled {
+#addRec_btn:disabled,
+#addRec_btn:hover:disabled,
+#addRec_btn:active:disabled,
+#editRecBtn:disabled,
+#editRecBtn:hover:disabled,
+#editRecBtn:active:disabled {
     background-color: #888;
     box-shadow: 0 4px 0 #666;
     transform: none;
