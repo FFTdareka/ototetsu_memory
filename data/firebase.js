@@ -144,12 +144,7 @@ function updateUser() {
             document.getElementById("userName").innerText = newNameE.value;
         })
         .catch(error => {
-            let noticeU = document.createElement("div");
-            noticeU.id = "noticeU";
-            noticeU.classList.add("notice");
-            noticeU.innerText = "更新に失敗しました。";
-            document.getElementById("setting").appendChild(noticeU);
-            setTimeout(() => document.getElementById("noticeU").remove(), 5000);
+            showNotice("更新に失敗しました。", "setting", false, "U");
             console.error("更新失敗:", error)
         });
     }
