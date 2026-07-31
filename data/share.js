@@ -30,6 +30,9 @@ function getRec1() {
     document.getElementById("editRecBtn").innerText = "読込中...";
     document.getElementById("editRecBtn").disabled = true;
     document.getElementById("editRecBtn").removeEventListener("click", editRec);
+    document.getElementById("delRecBtn").innerText = "読込中...";
+    document.getElementById("delRecBtn").disabled = true;
+    document.getElementById("delRecBtn").removeEventListener("click", delRec);
     document.getElementById("addRec").style.display = "none";
     if (id != null) {
         opt = JSON.stringify({
@@ -115,10 +118,15 @@ function getRec1() {
                     document.getElementById("recStatus").innerText = "";
                     if (uid == getUid()) {
                         document.getElementById("editRecBtn").innerText = "編集";
-                        document.getElementById("editRecBtn").disabled = false;
                         document.getElementById("editRecBtn").addEventListener("click", editRec);
+                        document.getElementById("delRecBtn").innerText = "削除";
+                        document.getElementById("delRecBtn").disabled = false;
+                        document.getElementById("delRecBtn").addEventListener("click", delRec);
                         document.getElementById("addRec").style.display = "block";
-                    } else document.getElementById("editRecBtn").innerText = "編集権限なし";
+                    } else {
+                        document.getElementById("editRecBtn").innerText = "編集権限なし";
+                        document.getElementById("delRecBtn").innerText = "削除権限なし";
+                    }
                 } else if (data.status == 'no record') document.getElementById('recStatus').innerText = "指定した鳴動記録のデータがありません。";
             })
         })
@@ -146,6 +154,7 @@ function editRec() {
     let train = document.getElementById("addRec_trn").value;
     let tfor = document.getElementById("addRec_for").value;
     let comment = document.getElementById("addRec_com").value;
+    let check = document.getElementById("addRec_chk");
     let error = "エラー:";
     if (!check.checked) {
         error += "確認欄がチェックされていません。";
@@ -311,6 +320,42 @@ function editRecord(data) {
                     'method': 'POST',
                     'Content-Type': 'application/x-www-form-urlencoded',
                     'body': JSON.stringify(data)
+                })
+                .then(res => res.text())
+                .then(data => {
+                    showNotice(data, "addRec", true);
+                    document.getElementById('addRec_cho').value = "";
+                    document.getElementById('addRec_trk').value = "";
+                    document.getElementById('addRec_com').value = "";
+                    check.checked = false;
+                    addButton.disabled = true;
+                    document.getElementById('addRec_date').value = "";
+                    document.getElementById('addRec_del').value = "";
+                    document.getElementById('addRec_line').value = "-1_-1";
+                    document.getElementById('addRec_sta').value = "-1_-1";
+                    document.getElementById('addRec_trn').value = "";
+                    document.getElementById('addRec_for').value = "";
+                    setSta({
+                        value: "-1_-1"
+                    });
+                });
+                getRec1();
+        });
+}
+
+function delRec() {
+    if (!confirm("本当に記録を削除しますか？この操作は取り消せません。")) return;
+    fetch('data/staData.json')
+        .then(res => res.json())
+        .then(g => {
+            fetch(g.gas, {
+                    'method': 'POST',
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'body': JSON.stringify({
+                        uid: getUid(),
+                        id: id,
+                        dele: true
+                    })
                 })
                 .then(res => res.text())
                 .then(data => {

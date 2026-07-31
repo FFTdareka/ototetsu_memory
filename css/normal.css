@@ -188,8 +188,31 @@ input:focus, select:focus {
     box-shadow: 0 2px 0 #005687;
 }
 
+#delRec_btn {
+    display: block;
+    width: 200px;
+    margin: 20px auto 0;
+    padding: 12px;
+    background-color: #d32f2f;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 0 #a02525;
+    transition: all 0.2s;
+}
+
+#delRec_btn:hover {
+    background-color: #a02525;
+    transform: translateY(2px);
+    box-shadow: 0 2px 0 #a02525;
+}
+
 #addRec_btn:active,
-#editRecBtn:active {
+#editRecBtn:active,
+#delRecBtn:active {
     transform: translateY(4px);
     box-shadow: none;
 }
@@ -199,7 +222,10 @@ input:focus, select:focus {
 #addRec_btn:active:disabled,
 #editRecBtn:disabled,
 #editRecBtn:hover:disabled,
-#editRecBtn:active:disabled {
+#editRecBtn:active:disabled,
+#delRecBtn:disabled,
+#delRecBtn:hover:disabled,
+#delRecBtn:active:disabled {
     background-color: #888;
     box-shadow: 0 4px 0 #666;
     transform: none;
