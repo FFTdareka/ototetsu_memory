@@ -1,3 +1,9 @@
+fetch('data/staData.json')
+    .then(res => res.json())
+    .then(s => {
+        /* if (s.status && location.href == "https://fftdareka.github.io/ototetsu_memory/maint.html") location.href = "https://fftdareka.github.io/ototetsu_memory/"; else */ if (!s.status && location.href != "https://fftdareka.github.io/ototetsu_memory/maint.html") location.href = "https://fftdareka.github.io/ototetsu_memory/maint.html";
+    });
+
 function showNotice(text, parentId, sd = true, noticeId = "") {
     let notice = document.createElement(sd ? "span": "div");
     notice.id = `notice${noticeId}`;
