@@ -1,8 +1,6 @@
 const params = new URLSearchParams(window.location.search);
 const id = params.get("id");
 
-document.addEventListener("load", getRec1());
-
 function getRec1() {
     document.getElementById("editRecBtn").innerText = "読込中...";
     document.getElementById("editRecBtn").disabled = true;
@@ -310,3 +308,5 @@ function editRecord(data) {
                 getRec1();
         });
 }
+
+document.addEventListener("load", getRec1());
