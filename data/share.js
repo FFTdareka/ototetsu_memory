@@ -1,13 +1,12 @@
 const params = new URLSearchParams(window.location.search);
 const id = params.get("id");
 
-let check, editButton
+let check, editButton;
 
 document.addEventListener("DOMContentLoaded", getRec1);
 document.addEventListener("DOMContentLoaded", () => {
     check = document.getElementById("addRec_chk");
     editButton = document.getElementById('editRecbtn');
-    check.checked ? editButton.disabled = false : editButton.disabled = true;
     check.addEventListener("change", () => check.checked ? editButton.disabled = false : editButton.disabled = true);
 })
 
