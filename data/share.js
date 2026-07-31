@@ -4,10 +4,10 @@ const id = params.get("id");
 document.addEventListener("DOMContentLoaded", getRec1());
 
 function getRec1() {
-    document.getElementById("addRec").style.display = "none";
     document.getElementById("editRecBtn").innerText = "読込中...";
     document.getElementById("editRecBtn").disabled = true;
     document.getElementById("editRecBtn").removeEventListener("click", editRec());
+    document.getElementById("addRec").style.display = "none";
     if (id != null) {
         opt = JSON.stringify({
             filter: {
@@ -91,10 +91,10 @@ function getRec1() {
                     document.getElementById("recSpace").appendChild(rDatas);
                     document.getElementById("recStatus").innerText = "";
                     if (uid == getUid()) {
-                        document.getElementById("addRec").style.display = "block";
                         document.getElementById("editRecBtn").innerText = "編集";
                         document.getElementById("editRecBtn").disabled = false;
                         document.getElementById("editRecBtn").addEventListener("click", editRec());
+                        document.getElementById("addRec").style.display = "block";
                     } else document.getElementById("editRecBtn").innerText = "編集権限なし";
                 } else if (data.status == 'no record') document.getElementById('recStatus').innerText = "指定した鳴動記録のデータがありません。";
             })
