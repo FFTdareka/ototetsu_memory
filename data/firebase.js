@@ -17,11 +17,11 @@ let uid;
 const app = initializeApp(setR.firebase);
 getAnalytics(app);
 const auth = getAuth(app);
-const db = initializeFirestore(app, {
+const db = initializeFirestore(app, {/*
   localCache: persistentLocalCache({
     tabManager: persistentMultipleTabManager(),
   }),
-});
+*/});
 
 // ===== Functions v2 の呼び出しURL =====
 // Firebase コンソール → Functions → setRecord の「呼び出しURL」を貼る
