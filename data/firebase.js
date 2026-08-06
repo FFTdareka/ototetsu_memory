@@ -6,7 +6,7 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
 import {
   doc, getDoc, setDoc, deleteDoc, initializeFirestore,
-  persistentLocalCache, persistentSingleTabManager, collection, query,
+  persistentLocalCache, persistentMultipleTabManager, collection, query,
   where, getDocs,
 } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
 import { setR } from "./staData.js";
@@ -19,7 +19,7 @@ getAnalytics(app);
 const auth = getAuth(app);
 const db = initializeFirestore(app, {
   localCache: persistentLocalCache({
-    tabManager: persistentSingleTabManager(),
+    tabManager: persistentMultipleTabManager(),
   }),
 });
 
