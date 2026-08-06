@@ -48,8 +48,8 @@
 
         </div>
         <div>
-            <button id="back" type="button" onclick="getRecord(nowN, nowP - 1, nowO)" disabled>前へ</button>
-            <button id="next" type="button" onclick="getRecord(nowN, nowP + 1, nowO)" disabled>次へ</button>
+            <button id="back" type="button" disabled>前へ</button>
+            <button id="next" type="button" disabled>次へ</button>
         </div>
         <h2>検索機能</h2>
         <button id="filter" type="button" onclick="setFilter()">適用</button>
@@ -69,7 +69,7 @@
             <br>
             <label id="sline">
                 路線指定 
-                <select id="selectline" onchange="wline(this)">
+                <select id="selectline">
                     <option value="-1_-1">-路線を選択-</option>
                 </select>
             </label>

@@ -75,6 +75,16 @@ async function getRecord(n, p, opt) {
   if (sortButton) sortButton.disabled = false;
 }
 
+let backBtn = document.getElementById("back");
+if (backBtn) backBtn.addEventListener("click", () => {
+  getRecord(nowN, nowP - 1, nowO);
+});
+
+let nextBtn = document.getElementById("next");
+if (nextBtn) nextBtn.addEventListener("click", () => {
+  getRecord(nowN, nowP + 1, nowO);
+});
+
 function renderRecords(data, nor, n, p) {
   let table = document.createElement('table');
   table.id = 'record';
