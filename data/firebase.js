@@ -25,7 +25,7 @@ const db = initializeFirestore(app, {
 
 // ===== Functions v2 の呼び出しURL =====
 // Firebase コンソール → Functions → setRecord の「呼び出しURL」を貼る
-// 例: https://asia-northeast1-ototetsu-memory.cloudfunctions.net
+// 例: https://us-central1-ototetsu-memory.cloudfunctions.net
 const BASE_URL = "https://us-central1-ototetsu-memory.cloudfunctions.net";
 
 // ===== 共通 fetch 関数 =====
@@ -55,6 +55,8 @@ const editRecord = (data) => callFunction("editRecord", data);
 const deleteRecord = (data) => callFunction("deleteRecord", data);
 
 // ===== ログイン状態の監視 =====
+status();
+
 function status() {
   let userStatus = document.getElementById("userStatus");
   let userName = document.getElementById("userName");
@@ -71,18 +73,7 @@ function status() {
 
       if (location.href === "https://fftdareka.github.io/ototetsu_memory/user.html") {
         let sSpace = document.getElementById("setting");
-        sSpace.innerHTML = `
-          <div id="nameS">
-            現在の名前: <span id="userNameS"></span><br>
-            新しい名前: <input id="newName" type="text" placeholder="名前を入力">
-          </div>
-          <button id="updateBtn" type="button">更新</button>
-          <br><br>
-          <div id="delS">
-            みんなの音鉄記録帳から退会される方はこちら　
-            <button id="deleteBtn" class="redB" type="button">退会する</button>
-          </div>
-        `;
+        sSpace.innerHTML = `<div id="nameS">現在の名前: <span id="userNameS"></span><br>新しい名前: <input id="newName" type="text" placeholder="名前を入力"></div><button id="updateBtn" type="button">更新</button><br><br><div id="delS">みんなの音鉄記録帳から退会される方はこちら　<button id="deleteBtn" class="redB" type="button">退会する</button></div>`;
         document.getElementById("updateBtn").addEventListener("click", updateUser);
         document.getElementById("deleteBtn").addEventListener("click", userDelete);
       }
@@ -105,19 +96,12 @@ function status() {
 
       if (location.href === "https://fftdareka.github.io/ototetsu_memory/user.html") {
         let sSpace = document.getElementById("setting");
-        sSpace.innerHTML = `
-          <span>
-            このページはアカウントにログインしている方のみ利用可能です。<br>
-            <span id="login2">ログイン(Google)はこちら</span>
-          </span>
-        `;
+        sSpace.innerHTML = `<span>このページはアカウントにログインしている方のみ利用可能です。<br><span id="login2">ログイン(Google)はこちら</span></span>`;
         document.getElementById("login2").addEventListener("click", userLogin);
       }
     }
   });
 }
-
-status();
 
 // ===== ログイン =====
 function userLogin() {
