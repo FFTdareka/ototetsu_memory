@@ -23,11 +23,10 @@ import {
     persistentMultipleTabManager,
 } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
 import {
-    algoliasearch
-} from "https://cdn.jsdelivr.net/npm/algoliasearch@5.56.0/dist/lite/builds/browser.esm.browser.js";
-import {
     setR
 } from "./staData.js";
+
+let algoliaClient = null;
 
 let uid;
 
@@ -41,8 +40,25 @@ const db = initializeFirestore(app, {
     }),
 });
 
+function getAlgoliaClient() {
+    if (algoliaClient) return algoliaClient;
+
+    if (!window["algoliasearch/lite"]) {
+        throw new Error(
+            "Algoliaのクライアントが読み込まれていません。" +
+            "このページでrecord検索機能を使う場合は、" +
+            "algoliasearch@5.56.0のUMD版scriptタグを追加してください。",
+        );
+    }
+
+    const {
+        liteClient
+    } = window["algoliasearch/lite"];
+    algoliaClient = liteClient(setR.algolia.appId, setR.algolia.searchKey);
+    return algoliaClient;
+}
+
 // ===== Algolia 初期化 =====
-// setR.algolia = { appId: "...", searchKey: "..." } のような形で staData.js に追加してください
 const algoliaClient = algoliasearch(setR.algolia.appId, setR.algolia.searchKey);
 
 // ソートフィールド + 方向 → レプリカインデックス名 のマッピング
@@ -308,7 +324,7 @@ async function getRecords(n, p, opt = {
 
     const {
         results
-    } = await algoliaClient.search({
+    } = await getAlgoliaClient().search({ // ★ここを変更
         requests: [{
             indexName,
             filters: filters || undefined,
@@ -331,7 +347,7 @@ async function getRecords(n, p, opt = {
 async function getRec1(id) {
     const {
         results
-    } = await algoliaClient.search({
+    } = await getAlgoliaClient().search({ // ★ここを変更
         requests: [{
             indexName: "records_ID_desc",
             numericFilters: [`ID=${Number(id)}`],
