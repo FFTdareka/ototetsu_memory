@@ -70,46 +70,7 @@ function setSta2(data) {
     }
 }
 
-function setRecord(data) {
-    fetch('data/staData.json')
-        .then(res => res.json())
-        .then(g => {
-            fetch(g.gas, {
-                    'method': 'POST',
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                    'body': JSON.stringify(data)
-                })
-                .then(res => res.text())
-                .then(data => {
-                    showNotice(data, "addRec", true);
-                    document.getElementById('addRec_cho').value = "";
-                    document.getElementById('addRec_trk').value = "";
-                    document.getElementById('addRec_com').value = "";
-                    check.checked = false;
-                    addButton.disabled = true;
-                    if (mode.value == "sameT") {
-                        document.getElementById('addRec_sta').value = "-1_-1";
-                    } else if (mode.value == "sameS") {
-                        document.getElementById('addRec_del').value = "";
-                        document.getElementById('addRec_trn').value = "";
-                        document.getElementById('addRec_for').value = "";
-                    } else {
-                        document.getElementById('addRec_date').value = "";
-                        document.getElementById('addRec_del').value = "";
-                        document.getElementById('addRec_line').value = "-1_-1";
-                        document.getElementById('addRec_sta').value = "-1_-1";
-                        document.getElementById('addRec_trn').value = "";
-                        document.getElementById('addRec_for').value = "";
-                        setSta({
-                            value: "-1_-1"
-                        });
-                    }
-                    getRecord(10, 1, { filter: {}, sort: {data: {ids: "d"}, rank: ["ids"]}});
-                });
-        });
-}
-
-function recordData() {
+async function recordData() {
     let er = document.getElementById("error");
     if (er) er.remove();
     let i;
@@ -221,6 +182,30 @@ function recordData() {
             'uid': getUid(),
             'edit': false
         };
-        setRecord(data);
+        let result = await setRecord(data);
+        showNotice(result, "addRec", true);
+        document.getElementById('addRec_cho').value = "";
+        document.getElementById('addRec_trk').value = "";
+        document.getElementById('addRec_com').value = "";
+        check.checked = false;
+        addButton.disabled = true;
+        if (mode.value == "sameT") {
+            document.getElementById('addRec_sta').value = "-1_-1";
+        } else if (mode.value == "sameS") {
+            document.getElementById('addRec_del').value = "";
+            document.getElementById('addRec_trn').value = "";
+            document.getElementById('addRec_for').value = "";
+        } else {
+            document.getElementById('addRec_date').value = "";
+            document.getElementById('addRec_del').value = "";
+            document.getElementById('addRec_line').value = "-1_-1";
+            document.getElementById('addRec_sta').value = "-1_-1";
+            document.getElementById('addRec_trn').value = "";
+            document.getElementById('addRec_for').value = "";
+            setSta({
+                value: "-1_-1"
+            });
+        }
+        getRecord(10, 1, { filter: {}, sort: {data: {ids: "d"}, rank: ["ids"]}});
     }
 }

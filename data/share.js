@@ -1,9 +1,9 @@
 const params = new URLSearchParams(window.location.search);
-const id = params.get("id");
+const id = Number(params.get("id"));
 
-let check, editButton;
+let check, editButton, d, sc;
 
-document.addEventListener("DOMContentLoaded", getRec1);
+document.addEventListener("DOMContentLoaded", getRec);
 document.addEventListener("DOMContentLoaded", () => {
     check = document.getElementById("addRec_chk");
     editButton = document.getElementById('editRecBtn');
@@ -33,114 +33,116 @@ fetch('data/staData.json')
         }
     });
 
-function getRec1() {
-    document.getElementById("editRecBtn").innerText = "読込中...";
-    document.getElementById("editRecBtn").disabled = true;
-    document.getElementById("editRecBtn").removeEventListener("click", editRec);
-    document.getElementById("delRecBtn").innerText = "読込中...";
-    document.getElementById("delRecBtn").disabled = true;
-    document.getElementById("delRecBtn").removeEventListener("click", delRec);
-    document.getElementById("addRec").style.display = "none";
-    if (id != null) {
-        opt = JSON.stringify({
-            filter: {
-                sid: id,
-                eid: id
-            },
-            sort: {}
-        });
-        document.getElementById('recStatus').innerText = "読み込み中...";
-        fetch('data/staData.json')
-        .then(res => res.json())
-        .then(g => {
-            d = g.d;
-            sc = g.line;
-            fetch(`${g.gas}?type=rec&nor=1&page=1&opt=${opt}`)
-            .then(res => res.json())
-            .then(async data => {
-                if (data.status == 'success') {
-                    data = data.body[0];
-                    date = data.date;
-                    sta = data.station;
-                    line = data.line.split("_");
-                    trk = data.track;
-                    cho = data.chorus;
-                    time = data.time;
-                    del = data.delay;
-                    if (del == 0) del = "";
-                    else del = `+${del}`;
-                    trn = data.train;
-                    bfor = data.for;
-                    com = data.comment;
-                    rid = data.ID;
-                    ruid = data.uid;
-                    log = data.log.split("\\n");
-                    uid = data.uid;
-                    var s = document.createElement("div");
-                    for (var i = 0; i < log.length; i++) {
-                        if (i > 0) {
-                            var br = document.createElement("br");
-                            s.appendChild(br);
-                        }
-                        var sp = document.createElement("span");
-                        sp.classList.add("data");
-                        sp.innerText = log[i];
-                        s.appendChild(sp);
-                    }
-                    let dt = [date, sta, line[0], trk, cho, time, trn, bfor, com, ruid];
-                    let rDatas = document.createElement("span");
-                    rDatas.id = rid;
-                    for (var j = 0; j < d.length; j++) {
-                        var rd = document.createElement("span");
-                        rd.innerText = `${d[j]}:`;
-                        var rData = document.createElement('span');
-                        rData.classList.add("data");
-                        if (j == 2)
-                            for (var k = 0; k < sc.length; k++) if (line[1] == sc[k][0]) rData.classList.add(sc[k][1]);
-                            rData.innerText = dt[j];
-                        if (j == 5 && del != 0) {
-                            delE = document.createElement("span");
-                            delE.innerText = del;
-                            delE.classList.add("delay");
-                            delE.classList.add("data");
-                            rData.innerText = dt[j];
-                            rData.appendChild(delE);
-                        }
-                        if (j == 9) {
-                            rData.innerText = await loadUserdata(dt[j] || "guest");
-                        }
-                        rd.appendChild(rData);
-                        rDatas.appendChild(rd);
-                        rDatas.appendChild(document.createElement("br"));
-                    }
-                    rDatas.appendChild(document.createElement("br"));
-                    var rd2 = document.createElement('span');
-                    rd2.innerText = "運営による編集履歴";
-                    rd2.appendChild(document.createElement("br"));
-                    var rData2 = document.createElement('span');
-                    rData2.appendChild(s);
-                    rd2.appendChild(rData2);
-                    rDatas.appendChild(rd2);
-                    document.getElementById("recSpace").appendChild(rDatas);
-                    document.getElementById("recStatus").innerText = "";
-                    if (uid == getUid()) {
-                        document.getElementById("editRecBtn").innerText = "編集";
-                        document.getElementById("editRecBtn").addEventListener("click", editRec);
-                        document.getElementById("delRecBtn").innerText = "削除";
-                        document.getElementById("delRecBtn").disabled = false;
-                        document.getElementById("delRecBtn").addEventListener("click", delRec);
-                        document.getElementById("addRec").style.display = "block";
-                    } else {
-                        document.getElementById("editRecBtn").innerText = "編集権限なし";
-                        document.getElementById("delRecBtn").innerText = "削除権限なし";
-                    }
-                } else if (data.status == 'no record') document.getElementById('recStatus').innerText = "指定した鳴動記録のデータがありません。";
-            })
-        })
-    } else document.getElementById("recStatus").innerText = "表示する鳴動記録が指定されていません。";
+async function getRec() {
+  document.getElementById("editRecBtn").innerText = "読込中...";
+  document.getElementById("editRecBtn").disabled = true;
+  document.getElementById("editRecBtn").removeEventListener("click", editRec);
+  document.getElementById("delRecBtn").innerText = "読込中...";
+  document.getElementById("delRecBtn").disabled = true;
+  document.getElementById("delRecBtn").removeEventListener("click", delRec);
+  document.getElementById("addRec").style.display = "none";
+
+  if (id == null) {
+    document.getElementById("recStatus").innerText = "表示する鳴動記録が指定されていません。";
+    return;
+  }
+
+  document.getElementById('recStatus').innerText = "読み込み中...";
+
+  const g = await fetch('data/staData.json').then(res => res.json());
+  d = g.d;
+  sc = g.line;
+
+  const data = await getRec1(id);
+
+  if (!data) {
+    document.getElementById("recStatus").innerText = "指定した鳴動記録のデータがありません。";
+    return;
+  }
+
+  await renderRec(data);
 }
 
-function editRec() {
+async function renderRec(data) {
+  const date = data.date;
+  const sta = data.station;
+  const line = data.line.split("_");
+  const trk = data.track;
+  const cho = data.chorus;
+  const time = data.time;
+  let del = data.delay;
+  del = (del == 0) ? "" : `+${del}`;
+  const trn = data.train;
+  const bfor = data.for;
+  const com = data.comment;
+  const rid = data.ID;
+  const ruid = data.uid;
+  const log = data.log.split("\\n");
+  const uid = data.uid;
+
+  var s = document.createElement("div");
+  for (var i = 0; i < log.length; i++) {
+    if (i > 0) {
+      var br = document.createElement("br");
+      s.appendChild(br);
+    }
+    var sp = document.createElement("span");
+    sp.classList.add("data");
+    sp.innerText = log[i];
+    s.appendChild(sp);
+  }
+
+  let dt = [date, sta, line[0], trk, cho, time, trn, bfor, com, ruid];
+  let rDatas = document.createElement("span");
+  rDatas.id = rid;
+  for (var j = 0; j < d.length; j++) {
+    var rd = document.createElement("span");
+    rd.innerText = `${d[j]}:`;
+    var rData = document.createElement('span');
+    rData.classList.add("data");
+    if (j == 2)
+      for (var k = 0; k < sc.length; k++) if (line[1] == sc[k][0]) rData.classList.add(sc[k][1]);
+    rData.innerText = dt[j];
+    if (j == 5 && del != 0) {
+      let delE = document.createElement("span");
+      delE.innerText = del;
+      delE.classList.add("delay");
+      delE.classList.add("data");
+      rData.innerText = dt[j];
+      rData.appendChild(delE);
+    }
+    if (j == 9) {
+      rData.innerText = await loadUserdata(dt[j] || "guest");
+    }
+    rd.appendChild(rData);
+    rDatas.appendChild(rd);
+    rDatas.appendChild(document.createElement("br"));
+  }
+  rDatas.appendChild(document.createElement("br"));
+  var rd2 = document.createElement('span');
+  rd2.innerText = "運営による編集履歴";
+  rd2.appendChild(document.createElement("br"));
+  var rData2 = document.createElement('span');
+  rData2.appendChild(s);
+  rd2.appendChild(rData2);
+  rDatas.appendChild(rd2);
+  document.getElementById("recSpace").appendChild(rDatas);
+  document.getElementById("recStatus").innerText = "";
+
+  if (uid == getUid()) {
+    document.getElementById("editRecBtn").innerText = "編集";
+    document.getElementById("editRecBtn").addEventListener("click", editRec);
+    document.getElementById("delRecBtn").innerText = "削除";
+    document.getElementById("delRecBtn").disabled = false;
+    document.getElementById("delRecBtn").addEventListener("click", delRec);
+    document.getElementById("addRec").style.display = "block";
+  } else {
+    document.getElementById("editRecBtn").innerText = "編集権限なし";
+    document.getElementById("delRecBtn").innerText = "削除権限なし";
+  }
+}
+
+async function editRec() {
     let er = document.getElementById("error");
     if (er) er.remove();
     let i;
@@ -253,7 +255,24 @@ function editRec() {
             'edit': true,
             'id': id
         };
-        editRecord(data);
+        let result = await editRecord(id ,data);
+        showNotice(data, "statusR", true);
+        document.getElementById('addRec_cho').value = "";
+        document.getElementById('addRec_trk').value = "";
+        document.getElementById('addRec_com').value = "";
+        check.checked = false;
+        editButton.disabled = true;
+        document.getElementById('addRec_date').value = "";
+        document.getElementById('addRec_del').value = "";
+        document.getElementById('addRec_line').value = "-1_-1";
+        document.getElementById('addRec_sta').value = "-1_-1";
+        document.getElementById('addRec_trn').value = "";
+        document.getElementById('addRec_for').value = "";
+        setSta({
+            value: "-1_-1"
+        });
+        document.getElementById("recSpace").innerHTML = "";
+        getRec();
     }
 }
 
@@ -319,58 +338,13 @@ function setSta2(data) {
     }
 }
 
-function editRecord(data) {
-    fetch('data/staData.json')
-        .then(res => res.json())
-        .then(g => {
-            fetch(g.gas, {
-                    'method': 'POST',
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                    'body': JSON.stringify(data)
-                })
-                .then(res => res.text())
-                .then(data => {
-                    showNotice(data, "statusR", true);
-                    document.getElementById('addRec_cho').value = "";
-                    document.getElementById('addRec_trk').value = "";
-                    document.getElementById('addRec_com').value = "";
-                    check.checked = false;
-                    editButton.disabled = true;
-                    document.getElementById('addRec_date').value = "";
-                    document.getElementById('addRec_del').value = "";
-                    document.getElementById('addRec_line').value = "-1_-1";
-                    document.getElementById('addRec_sta').value = "-1_-1";
-                    document.getElementById('addRec_trn').value = "";
-                    document.getElementById('addRec_for').value = "";
-                    setSta({
-                        value: "-1_-1"
-                    });
-                    document.getElementById("recSpace").innerHTML = "";
-                    getRec1();
-                });
-        });
-}
-
 function delRec() {
     if (!confirm("本当に記録を削除しますか？この操作は取り消せません。")) return;
     document.getElementById("delRecBtn").disabled = true;
-    fetch('data/staData.json')
-        .then(res => res.json())
-        .then(g => {
-            fetch(g.gas, {
-                    'method': 'POST',
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                    'body': JSON.stringify({
-                        uid: getUid(),
-                        id: id,
-                        dele: true
-                    })
-                })
-                .then(res => res.text())
-                .then(data => {
-                    showNotice(data, "addRec", true);
-                    document.getElementById("delRecBtn").disabled = true;
-                    if (data == "送信が完了しました。") location.href = "https://fftdareka.github.io/ototetsu_memory/"
-                });
-        });
+    let result = await deleteRecord(id);
+    if (data == "送信が完了しました。") location.href = "https://fftdareka.github.io/ototetsu_memory/";
+    else {
+        showNotice(data, "addRec", true);
+        document.getElementById("delRecBtn").disabled = true;
+    };
 }

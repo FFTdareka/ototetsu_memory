@@ -59,117 +59,93 @@ function wline(data) {
     }
 }
 
-function getRecord(n, p, o = {
-    filter: {},
-    sort: {}
-}) {
-    if (!o.hasOwnProperty("filter")) o.filter = {};
-    if (!o.hasOwnProperty("sort")) o.sort = {};
-    let sortButton = document.getElementById("filter");
-    if (sortButton) sortButton.disabled = true;
-    document.getElementById('recStatus').innerText = "読み込み中...";
-    document.getElementById('recSpace').innerHTML = "";
-    if (document.getElementById('back')) document.getElementById('back').disabled =
-        true;
-    if (document.getElementById('next')) document.getElementById('next').disabled =
-        true;
-    let opt = JSON.stringify(o);
-    fetch('data/staData.json')
-        .then(res => res.json())
-        .then(g => {
-            fetch(`${g.gas}?type=rec&nor=${n}&page=${p}&opt=${opt}`)
-                .then(res => res.json())
-                .then(data => {
-                    if (data.status == 'success') {
-                        nor = data.nor;
-                        data = data.body;
-                        let table = document.createElement('table');
-                        table.id = 'record';
-                        let thead = document.createElement('thead');
-                        let trh = document.createElement('tr');
-                        for (var i = 0; i < d.length - 1; i++) {
-                            th = document.createElement('th');
-                            th.innerText = d[i];
-                            trh.appendChild(th);
-                        }
-                        var th2 = document.createElement('th');
-                        th2.innerText = "詳細";
-                        trh.appendChild(th2);
-                        var th3 = document.createElement('th');
-                        th3.innerText = "共有";
-                        trh.appendChild(th3);
-                        thead.appendChild(trh);
-                        table.appendChild(thead);
-                        let tbody = document.createElement('tbody');
-                        for (var i = 0; i < data.length; i++) {
-                            var trb = document.createElement('tr');
-                            date = data[i].date;
-                            sta = data[i].station;
-                            line = data[i].line.split("_");
-                            trk = data[i].track;
-                            cho = data[i].chorus;
-                            time = data[i].time;
-                            del = data[i].delay;
-                            if (del == 0) del = "";
-                            else del = `+${del}`;
-                            trn = data[i].train;
-                            bfor = data[i].for;
-                            com = data[i].comment;
-                            rid = data[i].ID;
-                            trb.id = rid;
-                            let dt = [date, sta, line[0], trk, cho, time, trn, bfor, com];
-                            for (var j = 0; j < d.length - 1; j++) {
-                                var td = document.createElement('td');
-                                td.innerText = dt[j];
-                                if (j == 2)
-                                    for (var k = 0; k < sc.length; k++)
-                                        if (line[1] == sc[k][0]) td.classList.add(sc[k][1]);
-                                if (j == 5 && del != 0) {
-                                    delE = document.createElement("span");
-                                    delE.innerText = del;
-                                    delE.classList.add("delay");
-                                    td.appendChild(delE);
-                                }
-                                if (j == 8 && dt[j].length > 10) {
-                                    td.innerText = `${dt[j].slice(0, 10)}...`;
-                                }
-                                
-                                trb.appendChild(td);
-                            }
-                            var td2 = document.createElement('td');
-                            var td2_a = document.createElement('a');
-                            td2_a.href = `https://fftdareka.github.io/ototetsu_memory/share.html?id=${trb.id}`;
-                            td2_a.innerText = "こちら";
-                            td2.appendChild(td2_a);
-                            trb.appendChild(td2);
-                            var td3 = document.createElement('td');
-                            td3.innerText = "コピー";
-                            td3.addEventListener("click", (e) => {
-                                el = e.target.parentElement;
-                                elc = el.children;
-                                navigator.clipboard.writeText(`日付:${elc[0].innerText} ${elc[5].innerText}\n場所:${elc[1].innerText}駅${elc[3].innerText}番線\n記録:${elc[4].innerText}\n列車:${elc[6].innerText} ${elc[7].innerText}行\n\n#音鉄記録帳鳴動記録\n\nhttps://fftdareka.github.io/ototetsu_memory/share.html?id=${el.id}`);
-                                alert("共有URLをコピーしました。");
-                            })
-                            td3.classList.add("url");
-                            trb.appendChild(td3);
-                            tbody.appendChild(trb);
-                        }
-                        table.appendChild(tbody);
-                        document.getElementById('recSpace').appendChild(table);
-                        document.getElementById('recStatus').innerText =
-                            `全${nor}件中${n * (p - 1) + 1}～${n * (p - 1) + data.length}件`;
-                        if (p > 1 && document.getElementById('back')) document.getElementById('back').disabled = false;
-                        if (nor > n * p && document.getElementById('next')) document.getElementById('next').disabled = false;
-                        nowN = n;
-                        nowP = p;
-                        nowO = o;
-                    } else if (data.status == 'no record') {
-                        document.getElementById('recStatus').innerText = "指定した鳴動記録のデータがありません。";
-                    }
-                    if (sortButton) sortButton.disabled = false;
+async function getRecord(n, p, opt) {
+  const sortButton = document.getElementById("filter");
+  if (sortButton) sortButton.disabled = true;
+  document.getElementById('recStatus').innerText = "読み込み中...";
+  document.getElementById('recSpace').innerHTML = "";
+  if (document.getElementById('back')) document.getElementById('back').disabled = true;
+  if (document.getElementById('next')) document.getElementById('next').disabled = true;
 
-                });
-        });
+  const result = await getRecords(n, p, opt);
+
+  if (result) {
+    renderRecords(result.data, result.nor, n, p);
+    nowN = n;
+    nowP = p;
+    nowO = opt;
+  } else {
+    document.getElementById('recStatus').innerText = "指定した鳴動記録のデータがありません。";
+  }
+
+  if (sortButton) sortButton.disabled = false;
+}
+
+function renderRecords(data, nor, n, p) {
+  let table = document.createElement('table');
+  table.id = 'record';
+  let thead = document.createElement('thead');
+  let trh = document.createElement('tr');
+  for (var i = 0; i < d.length - 1; i++) {
+    let th = document.createElement('th');
+    th.innerText = d[i];
+    trh.appendChild(th);
+  }
+  var th2 = document.createElement('th');
+  th2.innerText = "詳細";
+  trh.appendChild(th2);
+  var th3 = document.createElement('th');
+  th3.innerText = "共有";
+  trh.appendChild(th3);
+  thead.appendChild(trh);
+  table.appendChild(thead);
+
+  let tbody = document.createElement('tbody');
+  for (var i = 0; i < data.length; i++) {
+    var trb = document.createElement('tr');
+    let date = data[i].date, sta = data[i].station, line = data[i].line.split("_");
+    let trk = data[i].track, cho = data[i].chorus, time = data[i].time;
+    let del = data[i].delay;
+    del = (del == 0) ? "" : `+${del}`;
+    let trn = data[i].train, bfor = data[i].for, com = data[i].comment, rid = data[i].ID;
+    trb.id = rid;
+    let dt = [date, sta, line[0], trk, cho, time, trn, bfor, com];
+    for (var j = 0; j < d.length - 1; j++) {
+      var td = document.createElement('td');
+      td.innerText = dt[j];
+      if (j == 2) for (var k = 0; k < sc.length; k++) if (line[1] == sc[k][0]) td.classList.add(sc[k][1]);
+      if (j == 5 && del != 0) {
+        let delE = document.createElement("span");
+        delE.innerText = del;
+        delE.classList.add("delay");
+        td.appendChild(delE);
+      }
+      if (j == 8 && dt[j].length > 10) td.innerText = `${dt[j].slice(0, 10)}...`;
+      trb.appendChild(td);
+    }
+    var td2 = document.createElement('td');
+    var td2_a = document.createElement('a');
+    td2_a.href = `https://fftdareka.github.io/ototetsu_memory/share.html?id=${trb.id}`;
+    td2_a.innerText = "こちら";
+    td2.appendChild(td2_a);
+    trb.appendChild(td2);
+    var td3 = document.createElement('td');
+    td3.innerText = "コピー";
+    td3.addEventListener("click", (e) => {
+      let el = e.target.parentElement, elc = el.children;
+      navigator.clipboard.writeText(`日付:${elc[0].innerText} ${elc[5].innerText}\n場所:${elc[1].innerText}駅${elc[3].innerText}番線\n記録:${elc[4].innerText}\n列車:${elc[6].innerText} ${elc[7].innerText}行\n\n#音鉄記録帳鳴動記録\n\nhttps://fftdareka.github.io/ototetsu_memory/share.html?id=${el.id}`);
+      alert("共有URLをコピーしました。");
+    });
+    td3.classList.add("url");
+    trb.appendChild(td3);
+    tbody.appendChild(trb);
+  }
+  table.appendChild(tbody);
+  document.getElementById('recSpace').appendChild(table);
+  document.getElementById('recStatus').innerText =
+    `全${nor}件中${n * (p - 1) + 1}～${n * (p - 1) + data.length}件`;
+  if (p > 1 && document.getElementById('back')) document.getElementById('back').disabled = false;
+  if (nor > n * p && document.getElementById('next')) document.getElementById('next').disabled = false;
 }
 
 function setFilter() {

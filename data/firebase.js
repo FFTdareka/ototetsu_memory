@@ -1,12 +1,10 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-analytics.js";
 import { getAuth, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, signOut, deleteUser, reauthenticateWithPopup } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
-import { getFirestore, doc, getDoc, setDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
+import { getFirestore, doc, getDoc, setDoc, deleteDoc, initializeFirestore, persistentLocalCache, persistentSingleTabManager, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
+import { getFunctions, httpsCallable } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-functions.js";
 
-let app,
-    auth,
-    db,
-    uid;
+let app, auth, db, uid, functions, setRecord, editRecord, deleteRecord;
 
 fetch('data/staData.json')
     .then(res => res.json())
@@ -14,7 +12,15 @@ fetch('data/staData.json')
         app = initializeApp(f.firebase);
         getAnalytics(app);
         auth = getAuth(app);
-        db = getFirestore(app);
+        db = initializeFirestore(app, {
+            localCache: persistentLocalCache({
+                tabManager: persistentSingleTabManager()
+            })
+        });
+        functions = getFunctions();
+        setRecord = httpsCallable(functions, "setRecord");
+        editRecord = httpsCallable(functions, "editRecord");
+        deleteRecord = httpsCallable(functions, "deleteRecord");
         status();
     });
 
@@ -153,6 +159,105 @@ function getUid() {
     return uid;
 }
 
+async function getRecords(n, p, opt = { filter: {}, sort: { data: {}, rank: [] } }) {
+  if (!opt.hasOwnProperty("filter")) opt.filter = {};
+  if (!opt.hasOwnProperty("sort")) opt.sort = { data: {}, rank: [] };
+  const filter = opt.filter;
+  const so = opt.sort.data;
+  const rank = opt.sort.rank;
+
+  const conditions = [];
+  if (filter.hasOwnProperty("sta")) conditions.push(where("station", "==", filter.sta));
+  if (filter.hasOwnProperty("strack")) conditions.push(where("track", "==", filter.strack));
+
+  const q = query(collection(db, "record"), ...conditions);
+  const snapshot = await getDocs(q);
+
+  let record = [];
+  snapshot.forEach(docSnap => {
+    const rec = docSnap.data();
+    const recD = rec.chorus.split("+");
+
+    if (filter.re) {
+      if (filter.re.type === "t" && recD.length === 1) return;
+      if (filter.re.type === "f" && recD.length !== 1) return;
+      if (filter.re.type === "s") {
+        if (filter.re.min !== -1 && Number(filter.re.min) + 1 > recD.length) return;
+        if (filter.re.max !== -1 && Number(filter.re.max) + 1 < recD.length) return;
+      }
+    }
+
+    if (filter.hasOwnProperty("minrec")) {
+      if (recD.every(r => Number(filter.minrec) > Number(r.replace("c", "")))) return;
+    }
+    if (filter.hasOwnProperty("maxrec")) {
+      if (recD.every(r => Number(filter.maxrec) < Number(r.replace("c", "")))) return;
+    }
+
+    if (filter.hasOwnProperty("line")) {
+      const lineParts = rec.line.split("_");
+      const nameMismatch = filter.line !== lineParts[0];
+      const branchMismatch = `${filter.line}${filter.lnum}` !== lineParts[1]
+        && filter.lnum !== "n" && filter.lnum != null;
+      if (nameMismatch || branchMismatch) return;
+    }
+
+    if (filter.hasOwnProperty("sdate")) {
+      if (new Date(`${filter.sdate} ${filter.stime}`) > new Date(`${rec.date} ${rec.time}`)) return;
+    }
+    if (filter.hasOwnProperty("edate")) {
+      if (new Date(`${filter.edate} ${filter.etime}`) < new Date(`${rec.date} ${rec.time}`)) return;
+    }
+
+    if (filter.hasOwnProperty("sid")) {
+      if (Number(filter.sid) > Number(rec.ID)) return;
+    }
+    if (filter.hasOwnProperty("eid")) {
+      if (Number(filter.eid) < Number(rec.ID)) return;
+    }
+
+    record.push(rec);
+  });
+
+  record.sort((a, b) => {
+    for (let i = 0; i < rank.length; i++) {
+      const r = rank[i];
+      const du = so[r];
+      let diff = 0;
+      if (r === "dates") {
+        diff = new Date(`${a.date} ${a.time}`) - new Date(`${b.date} ${b.time}`);
+      } else if (r === "records") {
+        const maxA = Math.max(...a.chorus.replace(/c/g, "").split("+").map(Number));
+        const maxB = Math.max(...b.chorus.replace(/c/g, "").split("+").map(Number));
+        diff = maxA - maxB;
+      } else if (r === "ids") {
+        diff = Number(a.ID) - Number(b.ID);
+      }
+      if (du === "d") diff *= -1;
+      if (diff !== 0) return diff;
+    }
+    return 0;
+  });
+
+  const nor = record.length;
+  const pageRecord = record.slice(n * (p - 1), n * p);
+  if (pageRecord.length === 0) return null;
+
+  return { data: pageRecord, nor };
+}
+
+async function getRec1(id) {
+  const docRef = doc(db, "record", String(id));
+  const snap = await getDoc(docRef);
+  if (!snap.exists()) return null;
+  return snap.data();
+}
+
 window.userDelete = userDelete;
 window.loadUserdata = loadUserdata;
+window.getRecords = getRecords;
+window.getRec1 = getRec1;
+window.setRecord = setRecord;
+window.editRecord = editRecord;
+window.deleteRecord = deleteRecord;
 window.getUid = getUid;
