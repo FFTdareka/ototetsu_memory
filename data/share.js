@@ -225,7 +225,7 @@ async function editRec() {
   };
 
   const result = await editRecord(data);
-  showNotice(result.data.message, "statusR", true);
+  showNotice(result.message, "statusR", true);
 
   document.getElementById('addRec_cho').value = "";
   document.getElementById('addRec_trk').value = "";
@@ -308,7 +308,7 @@ async function delRec() {
   document.getElementById("delRecBtn").disabled = true;
 
   const result = await deleteRecord({ id });
-  const message = result.data.message;
+  const message = result.message;
 
   if (message === null) {
     location.href = "https://fftdareka.github.io/ototetsu_memory/";

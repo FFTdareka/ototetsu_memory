@@ -168,7 +168,7 @@ async function recordData() {
   };
 
   const result = await setRecord(data);
-  showNotice(result.data.message, "addRec", false);
+  showNotice(result.message, "addRec", false);
 
   document.getElementById('addRec_cho').value = "";
   document.getElementById('addRec_trk').value = "";
