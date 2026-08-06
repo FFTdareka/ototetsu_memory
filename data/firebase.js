@@ -26,7 +26,7 @@ const db = initializeFirestore(app, {
 // ===== Functions v2 の呼び出しURL =====
 // Firebase コンソール → Functions → setRecord の「呼び出しURL」を貼る
 // 例: https://asia-northeast1-ototetsu-memory.cloudfunctions.net
-const BASE_URL = "https://YOUR_REGION-YOUR_PROJECT.cloudfunctions.net";
+const BASE_URL = "https://us-central1-ototetsu-memory.cloudfunctions.net/";
 
 // ===== 共通 fetch 関数 =====
 async function callFunction(name, data) {
