@@ -9,12 +9,11 @@ import {
   persistentLocalCache, persistentSingleTabManager, collection, query,
   where, getDocs,
 } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
-import { getFunctions, httpsCallable } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-functions.js";
 import { setR } from "./staData.js";
 
 let uid;
 
-// トップレベルawaitにより、初期化が終わるまで他モジュールの実行が待たされる
+// Firebase 初期化
 const app = initializeApp(setR.firebase);
 getAnalytics(app);
 const auth = getAuth(app);
@@ -23,16 +22,44 @@ const db = initializeFirestore(app, {
     tabManager: persistentSingleTabManager(),
   }),
 });
-const functions = getFunctions(app);
-const setRecord = httpsCallable(functions, "setRecord");
-const editRecord = httpsCallable(functions, "editRecord");
-const deleteRecord = httpsCallable(functions, "deleteRecord");
-status();
 
+// ===== Functions v2 の呼び出しURL =====
+// Firebase コンソール → Functions → setRecord の「呼び出しURL」を貼る
+// 例: https://asia-northeast1-ototetsu-memory.cloudfunctions.net
+const BASE_URL = "https://YOUR_REGION-YOUR_PROJECT.cloudfunctions.net";
+
+// ===== 共通 fetch 関数 =====
+async function callFunction(name, data) {
+  const user = auth.currentUser;
+  if (!user) {
+    return { message: "エラー:ログインが必要です。" };
+  }
+
+  const token = await user.getIdToken();
+
+  const res = await fetch(`${BASE_URL}/${name}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`,
+    },
+    body: JSON.stringify(data),
+  });
+
+  return res.json();
+}
+
+// ===== API =====
+const setRecord = (data) => callFunction("setRecord", data);
+const editRecord = (data) => callFunction("editRecord", data);
+const deleteRecord = (data) => callFunction("deleteRecord", data);
+
+// ===== ログイン状態の監視 =====
 function status() {
   let userStatus = document.getElementById("userStatus");
   let userName = document.getElementById("userName");
   let loginBtn = document.getElementById("login");
+
   onAuthStateChanged(auth, async (user) => {
     if (user) {
       uid = user.uid;
@@ -41,17 +68,32 @@ function status() {
       loginBtn.classList.add("redB");
       loginBtn.removeEventListener("click", userLogin);
       loginBtn.addEventListener("click", userLogout);
+
       if (location.href === "https://fftdareka.github.io/ototetsu_memory/user.html") {
         let sSpace = document.getElementById("setting");
-        sSpace.innerHTML = `<div id="nameS">現在の名前: <span id="userNameS"></span><br>新しい名前: <input id="newName" type="text" placeholder="名前を入力"></div><button id="updateBtn" type="button">更新</button><br><br><div id="delS">みんなの音鉄記録帳から退会される方はこちら　<button id="deleteBtn" class="redB" type="button">退会する</button></div>`;
+        sSpace.innerHTML = `
+          <div id="nameS">
+            現在の名前: <span id="userNameS"></span><br>
+            新しい名前: <input id="newName" type="text" placeholder="名前を入力">
+          </div>
+          <button id="updateBtn" type="button">更新</button>
+          <br><br>
+          <div id="delS">
+            みんなの音鉄記録帳から退会される方はこちら　
+            <button id="deleteBtn" class="redB" type="button">退会する</button>
+          </div>
+        `;
         document.getElementById("updateBtn").addEventListener("click", updateUser);
         document.getElementById("deleteBtn").addEventListener("click", userDelete);
       }
+
       let uName = await loadUserdata(uid, true);
       userName.innerText = uName;
+
       if (location.href === "https://fftdareka.github.io/ototetsu_memory/user.html") {
         document.getElementById("userNameS").innerText = uName;
       }
+
     } else {
       localStorage.setItem('uid', '');
       userStatus.innerText = "未ログイン";
@@ -60,15 +102,24 @@ function status() {
       loginBtn.classList.remove("redB");
       loginBtn.removeEventListener("click", userLogout);
       loginBtn.addEventListener("click", userLogin);
+
       if (location.href === "https://fftdareka.github.io/ototetsu_memory/user.html") {
         let sSpace = document.getElementById("setting");
-        sSpace.innerHTML = `<span>このページはアカウントにログインしている方のみ利用可能です。<br><span id="login2">ログイン(Google)はこちら</span></div>`;
+        sSpace.innerHTML = `
+          <span>
+            このページはアカウントにログインしている方のみ利用可能です。<br>
+            <span id="login2">ログイン(Google)はこちら</span>
+          </span>
+        `;
         document.getElementById("login2").addEventListener("click", userLogin);
       }
     }
   });
 }
 
+status();
+
+// ===== ログイン =====
 function userLogin() {
   let provider = new GoogleAuthProvider();
   signInWithPopup(auth, provider)
@@ -76,12 +127,14 @@ function userLogin() {
     .catch((er) => console.error("ログイン失敗:", er.code, er.message));
 }
 
+// ===== ログアウト =====
 function userLogout() {
   signOut(auth)
     .then(() => showNotice("ログアウトが完了しました。", "user", true))
     .catch(() => showNotice("ログアウト中にエラーが発生しました。", "user", true));
 }
 
+// ===== 退会 =====
 function userDelete() {
   let user = auth.currentUser;
   if (!user) return;
@@ -108,6 +161,7 @@ function userDelete() {
     });
 }
 
+// ===== ユーザーデータ読み込み =====
 function loadUserdata(uid = "guest", tf = false) {
   return getDoc(doc(db, "user", uid))
     .then((snap) => {
@@ -130,6 +184,7 @@ function loadUserdata(uid = "guest", tf = false) {
     });
 }
 
+// ===== 名前更新 =====
 function updateUser() {
   let newNameE = document.getElementById("newName");
   if (newNameE) {
@@ -150,10 +205,12 @@ function getUid() {
   return uid;
 }
 
+// ===== 記録取得 =====
 async function getRecords(n, p, opt = { filter: {}, sort: { data: { dates: "d" }, rank: ["dates"] } }) {
   if (!opt.hasOwnProperty("filter")) opt.filter = {};
   if (!opt.hasOwnProperty("sort")) opt.sort = { data: { dates: "d" }, rank: ["dates"] };
   else if (!opt.sort.rank.length <= 0) opt.sort = { data: { dates: "d" }, rank: ["dates"] };
+
   const filter = opt.filter;
   const so = opt.sort.data;
   const rank = opt.sort.rank;
@@ -233,6 +290,7 @@ async function getRecords(n, p, opt = { filter: {}, sort: { data: { dates: "d" }
   return { data: pageRecord, nor };
 }
 
+// ===== 単一記録取得 =====
 async function getRec1(id) {
   const docRef = doc(db, "record", String(id));
   const snap = await getDoc(docRef);
