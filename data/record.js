@@ -1,33 +1,61 @@
-import { getRecords } from "./firebase.js";
-import { setR, d, sc } from "./staData.js";
+import {
+    getRecords
+} from "./firebase.js";
+import {
+    setR,
+    d,
+    sc
+} from "./staData.js";
 
 let nowN = 0;
 let nowP = 0;
-let nowO = { filter: {}, sort: { data: {}, rank: [] } };
+let nowO = {
+    filter: {},
+    sort: {
+        data: {},
+        rank: []
+    }
+};
 
 // staDataはimport時点で取得済みなので、そのままセレクトボックスを組み立てる
 let sLine = document.getElementById("selectline") || document.getElementById("addRec_line");
 if (sLine) {
-  let ls = setR.sta;
-  for (var i = 0; i < ls.length; i++) {
-    var lg = document.createElement("optgroup");
-    lg.label = ls[i][0];
-    for (var j = 0; j < ls[i][1].length; j++) {
-      var le = document.createElement("option");
-      le.value = `${i}_${j}`;
-      le.innerText = ls[i][1][j][0];
-      lg.appendChild(le);
+    let ls = setR.sta;
+    for (var i = 0; i < ls.length; i++) {
+        var lg = document.createElement("optgroup");
+        lg.label = ls[i][0];
+        for (var j = 0; j < ls[i][1].length; j++) {
+            var le = document.createElement("option");
+            le.value = `${i}_${j}`;
+            le.innerText = ls[i][1][j][0];
+            lg.appendChild(le);
+        }
+        sLine.appendChild(lg);
     }
-    sLine.appendChild(lg);
-  }
 }
 
 let op;
-if (location.href === "https://fftdareka.github.io/ototetsu_memory/"
-  || location.href === "https://fftdareka.github.io/ototetsu_memory/index.html") {
-  op = { filter: {}, sort: { data: { ids: "d" }, rank: ["ids"] } };
+if (location.href === "https://fftdareka.github.io/ototetsu_memory/" ||
+    location.href === "https://fftdareka.github.io/ototetsu_memory/index.html") {
+    op = {
+        filter: {},
+        sort: {
+            data: {
+                ids: "d"
+            },
+            rank: ["ids"]
+        }
+    };
 } else {
-  op = { filter: {}, sort: { data: { dates: "d" }, rank: ["dates"] } };
+    op = {
+        filter: {},
+        sort: {
+            data: {
+                dates: "d"
+            },
+            rank: ["dates"]
+        }
+    };
 }
 getRecord(10, 1, op);
 nowN = 10;
@@ -35,208 +63,234 @@ nowP = 1;
 nowO = op;
 
 function wline(data) {
-  let l = document.getElementById("selectline2");
-  let line = data.value.split("_");
-  let i = Number(line[0]);
-  let j = Number(line[1]);
-  if (i !== -1 && j !== -1) {
-    if (setR.sta[i][1][j][0] === "その他") {
-      let input = document.createElement("input");
-      input.id = "selectline2";
-      input.type = "text";
-      input.placeholder = "例:横浜線";
-      document.getElementById("sline").appendChild(input);
+    let l = document.getElementById("selectline2");
+    let line = data.value.split("_");
+    let i = Number(line[0]);
+    let j = Number(line[1]);
+    if (i !== -1 && j !== -1) {
+        if (setR.sta[i][1][j][0] === "その他") {
+            let input = document.createElement("input");
+            input.id = "selectline2";
+            input.type = "text";
+            input.placeholder = "例:横浜線";
+            document.getElementById("sline").appendChild(input);
+        } else {
+            if (l) l.remove();
+        }
     } else {
-      if (l) l.remove();
+        if (l) l.remove();
     }
-  } else {
-    if (l) l.remove();
-  }
 }
 
 async function getRecord(n, p, opt) {
-  const sortButton = document.getElementById("filter");
-  if (sortButton) sortButton.disabled = true;
-  document.getElementById('recStatus').innerText = "読み込み中...";
-  document.getElementById('recSpace').innerHTML = "";
-  if (document.getElementById('back')) document.getElementById('back').disabled = true;
-  if (document.getElementById('next')) document.getElementById('next').disabled = true;
+    const sortButton = document.getElementById("filter");
+    if (sortButton) sortButton.disabled = true;
+    document.getElementById('recStatus').innerText = "読み込み中...";
+    document.getElementById('recSpace').innerHTML = "";
+    if (document.getElementById('back')) document.getElementById('back').disabled = true;
+    if (document.getElementById('next')) document.getElementById('next').disabled = true;
 
-  const result = await getRecords(n, p, opt);
+    const result = await getRecords(n, p, opt);
 
-  if (result) {
-    renderRecords(result.data, result.nor, n, p);
-    nowN = n;
-    nowP = p;
-    nowO = opt;
-  } else {
-    document.getElementById('recStatus').innerText = "指定した鳴動記録のデータがありません。";
-  }
-  if (sortButton) sortButton.disabled = false;
+    if (result) {
+        renderRecords(result.data, result.nor, n, p);
+        nowN = n;
+        nowP = p;
+        nowO = opt;
+    } else {
+        document.getElementById('recStatus').innerText = "指定した鳴動記録のデータがありません。";
+    }
+    if (sortButton) sortButton.disabled = false;
 }
 
 let backBtn = document.getElementById("back");
 if (backBtn) backBtn.addEventListener("click", () => {
-  getRecord(nowN, nowP - 1, nowO);
+    getRecord(nowN, nowP - 1, nowO);
 });
 
 let nextBtn = document.getElementById("next");
 if (nextBtn) nextBtn.addEventListener("click", () => {
-  getRecord(nowN, nowP + 1, nowO);
+    getRecord(nowN, nowP + 1, nowO);
 });
 
 function renderRecords(data, nor, n, p) {
-  let table = document.createElement('table');
-  table.id = 'record';
-  let thead = document.createElement('thead');
-  let trh = document.createElement('tr');
-  for (var i = 0; i < d.length - 1; i++) {
-    let th = document.createElement('th');
-    th.innerText = d[i];
-    trh.appendChild(th);
-  }
-  var th2 = document.createElement('th');
-  th2.innerText = "詳細";
-  trh.appendChild(th2);
-  var th3 = document.createElement('th');
-  th3.innerText = "共有";
-  trh.appendChild(th3);
-  thead.appendChild(trh);
-  table.appendChild(thead);
-
-  let tbody = document.createElement('tbody');
-  for (var i = 0; i < data.length; i++) {
-    var trb = document.createElement('tr');
-    let date = data[i].date, sta = data[i].station, line = data[i].line.split("_");
-    let trk = data[i].track, cho = data[i].chorus, time = data[i].time;
-    let del = data[i].delay;
-    del = (del == 0) ? "" : `+${del}`;
-    let trn = data[i].train, bfor = data[i].for, com = data[i].comment, rid = data[i].ID;
-    trb.id = rid;
-    let dt = [date, sta, line[0], trk, cho, time, trn, bfor, com];
-    for (var j = 0; j < d.length - 1; j++) {
-      var td = document.createElement('td');
-      td.innerText = dt[j];
-      if (j == 2) for (var k = 0; k < sc.length; k++) if (line[1] == sc[k][0]) td.classList.add(sc[k][1]);
-      if (j == 5 && del != 0) {
-        let delE = document.createElement("span");
-        delE.innerText = del;
-        delE.classList.add("delay");
-        td.appendChild(delE);
-      }
-      if (j == 8 && dt[j].length > 10) td.innerText = `${dt[j].slice(0, 10)}...`;
-      trb.appendChild(td);
+    let table = document.createElement('table');
+    table.id = 'record';
+    let thead = document.createElement('thead');
+    let trh = document.createElement('tr');
+    for (var i = 0; i < d.length - 1; i++) {
+        let th = document.createElement('th');
+        th.innerText = d[i];
+        trh.appendChild(th);
     }
-    var td2 = document.createElement('td');
-    var td2_a = document.createElement('a');
-    td2_a.href = `https://fftdareka.github.io/ototetsu_memory/share.html?id=${trb.id}`;
-    td2_a.innerText = "こちら";
-    td2.appendChild(td2_a);
-    trb.appendChild(td2);
-    var td3 = document.createElement('td');
-    td3.innerText = "コピー";
-    td3.addEventListener("click", (e) => {
-      let el = e.target.parentElement, elc = el.children;
-      navigator.clipboard.writeText(`日付:${elc[0].innerText} ${elc[5].innerText}\n場所:${elc[1].innerText}駅${elc[3].innerText}番線\n記録:${elc[4].innerText}\n列車:${elc[6].innerText} ${elc[7].innerText}行\n\n#音鉄記録帳鳴動記録\n\nhttps://fftdareka.github.io/ototetsu_memory/share.html?id=${el.id}`);
-      alert("共有URLをコピーしました。");
-    });
-    td3.classList.add("url");
-    trb.appendChild(td3);
-    tbody.appendChild(trb);
-  }
-  table.appendChild(tbody);
-  document.getElementById('recSpace').appendChild(table);
-  document.getElementById('recStatus').innerText =
-    `全${nor}件中${n * (p - 1) + 1}～${n * (p - 1) + data.length}件`;
-  if (p > 1 && document.getElementById('back')) document.getElementById('back').disabled = false;
-  if (nor > n * p && document.getElementById('next')) document.getElementById('next').disabled = false;
+    var th2 = document.createElement('th');
+    th2.innerText = "詳細";
+    trh.appendChild(th2);
+    var th3 = document.createElement('th');
+    th3.innerText = "共有";
+    trh.appendChild(th3);
+    thead.appendChild(trh);
+    table.appendChild(thead);
+
+    let tbody = document.createElement('tbody');
+    for (var i = 0; i < data.length; i++) {
+        var trb = document.createElement('tr');
+        let date = data[i].date,
+            sta = data[i].station,
+            line = data[i].line.split("_");
+        let trk = data[i].track,
+            cho = data[i].chorus,
+            time = data[i].time;
+        let del = data[i].delay;
+        del = (del == 0) ? "" : `+${del}`;
+        let trn = data[i].train,
+            bfor = data[i].for,
+            com = data[i].comment,
+            rid = data[i].ID;
+        trb.id = rid;
+        let dt = [date, sta, line[0], trk, cho, time, trn, bfor, com];
+        for (var j = 0; j < d.length - 1; j++) {
+            var td = document.createElement('td');
+            td.innerText = dt[j];
+            if (j == 2)
+                for (var k = 0; k < sc.length; k++)
+                    if (line[1] == sc[k][0]) td.classList.add(sc[k][1]);
+            if (j == 5 && del != 0) {
+                let delE = document.createElement("span");
+                delE.innerText = del;
+                delE.classList.add("delay");
+                td.appendChild(delE);
+            }
+            if (j == 8 && dt[j].length > 10) td.innerText = `${dt[j].slice(0, 10)}...`;
+            trb.appendChild(td);
+        }
+        var td2 = document.createElement('td');
+        var td2_a = document.createElement('a');
+        td2_a.href = `https://fftdareka.github.io/ototetsu_memory/share.html?id=${trb.id}`;
+        td2_a.innerText = "こちら";
+        td2.appendChild(td2_a);
+        trb.appendChild(td2);
+        var td3 = document.createElement('td');
+        td3.innerText = "コピー";
+        td3.addEventListener("click", (e) => {
+            let el = e.target.parentElement,
+                elc = el.children;
+            navigator.clipboard.writeText(`日付:${elc[0].innerText} ${elc[5].innerText}\n場所:${elc[1].innerText}駅${elc[3].innerText}番線\n記録:${elc[4].innerText}\n列車:${elc[6].innerText} ${elc[7].innerText}行\n\n#音鉄記録帳鳴動記録\n\nhttps://fftdareka.github.io/ototetsu_memory/share.html?id=${el.id}`);
+            alert("共有URLをコピーしました。");
+        });
+        td3.classList.add("url");
+        trb.appendChild(td3);
+        tbody.appendChild(trb);
+    }
+    table.appendChild(tbody);
+    document.getElementById('recSpace').appendChild(table);
+    document.getElementById('recStatus').innerText =
+        `全${nor}件中${n * (p - 1) + 1}～${n * (p - 1) + data.length}件`;
+    if (p > 1 && document.getElementById('back')) document.getElementById('back').disabled = false;
+    if (nor > n * p && document.getElementById('next')) document.getElementById('next').disabled = false;
 }
 
 function setFilter() {
-  let opt = { filter: {}, sort: { data: {}, rank: [] } };
-  let minrec = document.getElementById("minrec").value;
-  let maxrec = document.getElementById("maxrec").value;
-  let ssta = document.getElementById("selectsta").value;
-  let sli = document.getElementById("selectline").value;
-  let strack = document.getElementById("strack").value;
-  let startdate = document.getElementById("startdate").value;
-  let enddate = document.getElementById("enddate").value;
-  let re = document.getElementById("reactive").value;
-  let minre = document.getElementById("minrea").value;
-  let maxre = document.getElementById("maxrea").value;
-  let sdate, stime, edate, etime;
+    let opt = {
+        filter: {},
+        sort: {
+            data: {},
+            rank: []
+        }
+    };
+    let minrec = document.getElementById("minrec").value;
+    let maxrec = document.getElementById("maxrec").value;
+    let ssta = document.getElementById("selectsta").value;
+    let sli = document.getElementById("selectline").value;
+    let strack = document.getElementById("strack").value;
+    let startdate = document.getElementById("startdate").value;
+    let enddate = document.getElementById("enddate").value;
+    let re = document.getElementById("reactive").value;
+    let minre = document.getElementById("minrea").value;
+    let maxre = document.getElementById("maxrea").value;
+    let sdate, stime, edate, etime;
 
-  if (re === "s") {
-    opt.filter.re = { type: re, min: minre !== "" ? minre : -1, max: maxre !== "" ? maxre : -1 };
-  } else {
-    opt.filter.re = { type: re };
-  }
-  if (maxrec !== "") opt.filter.maxrec = Number(maxrec);
-  if (minrec !== "") opt.filter.minrec = Number(minrec);
-  if (sli !== "-1_-1") {
-    let lineData = sli.split("_");
-    let i = Number(lineData[0]);
-    let j = Number(lineData[1]);
-    let line = setR.sta[i][1][j][3] || setR.sta[i][1][j][0];
-    if (line === "その他") {
-      let line2 = document.getElementById("selectline2").value;
-      if (line2) {
-        line = line2;
-        opt.filter.line = line;
-        if (line === "信越本線") opt.filter.lnum = "n";
-      }
+    if (re === "s") {
+        opt.filter.re = {
+            type: re,
+            min: minre !== "" ? minre : -1,
+            max: maxre !== "" ? maxre : -1
+        };
     } else {
-      opt.filter.line = line;
-      if (line === "信越本線") opt.filter.lnum = Number(setR.sta[i][1][j][2].replace("信越本線", ""));
+        opt.filter.re = {
+            type: re
+        };
     }
-  }
-  if (ssta !== "") opt.filter.sta = ssta;
-  if (strack !== "") opt.filter.strack = strack;
-  if (startdate !== "") {
-    startdate = new Date(startdate);
-    sdate = `${startdate.getFullYear()}/${startdate.getMonth() + 1}/${startdate.getDate()}`;
-    stime = `${startdate.getHours()}:${startdate.getMinutes().toString().padStart(2, "0")}`;
-    opt.filter.sdate = sdate;
-    opt.filter.stime = stime;
-  }
-  if (enddate !== "") {
-    enddate = new Date(enddate);
-    edate = `${enddate.getFullYear()}/${enddate.getMonth() + 1}/${enddate.getDate()}`;
-    etime = `${enddate.getHours()}:${enddate.getMinutes().toString().padStart(2, "0")}`;
-    opt.filter.edate = edate;
-    opt.filter.etime = etime;
-  }
+    if (maxrec !== "") opt.filter.maxrec = Number(maxrec);
+    if (minrec !== "") opt.filter.minrec = Number(minrec);
+    if (sli !== "-1_-1") {
+        let lineData = sli.split("_");
+        let i = Number(lineData[0]);
+        let j = Number(lineData[1]);
+        let line = setR.sta[i][1][j][3] || setR.sta[i][1][j][0];
+        if (line === "その他") {
+            let line2 = document.getElementById("selectline2").value;
+            if (line2) {
+                line = line2;
+                opt.filter.line = line;
+                if (line === "信越本線") opt.filter.lnum = "n";
+            }
+        } else {
+            opt.filter.line = line;
+            if (line === "信越本線") opt.filter.lnum = Number(setR.sta[i][1][j][2].replace("信越本線", ""));
+        }
+    }
+    if (ssta !== "") opt.filter.sta = ssta;
+    if (strack !== "") opt.filter.strack = strack;
+    if (startdate !== "") {
+        startdate = new Date(startdate);
+        sdate = `${startdate.getFullYear()}/${startdate.getMonth() + 1}/${startdate.getDate()}`;
+        stime = `${startdate.getHours()}:${startdate.getMinutes().toString().padStart(2, "0")}`;
+        opt.filter.sdate = sdate;
+        opt.filter.stime = stime;
+    }
+    if (enddate !== "") {
+        enddate = new Date(enddate);
+        edate = `${enddate.getFullYear()}/${enddate.getMonth() + 1}/${enddate.getDate()}`;
+        etime = `${enddate.getHours()}:${enddate.getMinutes().toString().padStart(2, "0")}`;
+        opt.filter.edate = edate;
+        opt.filter.etime = etime;
+    }
 
-  const srank1 = document.getElementById("srank1").value;
-  const s1v = document.getElementById("s1v").value;
-  if (srank1 && s1v) {
-    opt.sort.data = { [srank1]: s1v };
-    opt.sort.rank = [srank1];
-  } else {
-    opt.sort.data = { dates: "d" };
-    opt.sort.rank = ["dates"];
-  }
+    const srank1 = document.getElementById("srank1").value;
+    const s1v = document.getElementById("s1v").value;
+    if (srank1 && s1v) {
+        opt.sort.data = {
+            [srank1]: s1v
+        };
+        opt.sort.rank = [srank1];
+    } else {
+        opt.sort.data = {
+            dates: "d"
+        };
+        opt.sort.rank = ["dates"];
+    }
 
-  getRecord(nowN, 1, opt);
-  nowP = 1;
-  nowO = opt;
+    getRecord(nowN, 1, opt);
+    nowP = 1;
+    nowO = opt;
 }
 
 function clearFilter() {
-  document.getElementById("minrec").value = "";
-  document.getElementById("maxrec").value = "";
-  document.getElementById("selectline").value = "-1_-1";
-  document.getElementById("selectsta").value = "";
-  document.getElementById("startdate").value = "";
-  document.getElementById("enddate").value = "";
-  document.getElementById("reactive").value = "b";
-  let l = document.getElementById("selectline2");
-  if (l) l.remove();
+    document.getElementById("minrec").value = "";
+    document.getElementById("maxrec").value = "";
+    document.getElementById("selectline").value = "-1_-1";
+    document.getElementById("selectsta").value = "";
+    document.getElementById("startdate").value = "";
+    document.getElementById("enddate").value = "";
+    document.getElementById("reactive").value = "b";
+    let l = document.getElementById("selectline2");
+    if (l) l.remove();
 }
 
 function clearSort() {
-  document.getElementById("srank1").value = "dates";
-  document.getElementById("s1v").value = "d";
+    document.getElementById("srank1").value = "dates";
+    document.getElementById("s1v").value = "d";
 }
 
 // HTMLのonclick/onchange属性から呼ばれている可能性があるため、window公開を維持

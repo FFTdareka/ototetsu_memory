@@ -1,15 +1,33 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
-import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-analytics.js";
 import {
-  getAuth, onAuthStateChanged, GoogleAuthProvider, signInWithPopup,
-  signOut, deleteUser, reauthenticateWithPopup,
+    initializeApp
+} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
+import {
+    getAnalytics
+} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-analytics.js";
+import {
+    getAuth,
+    onAuthStateChanged,
+    GoogleAuthProvider,
+    signInWithPopup,
+    signOut,
+    deleteUser,
+    reauthenticateWithPopup,
 } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
 import {
-  doc, getDoc, setDoc, deleteDoc, initializeFirestore,
-  persistentLocalCache, persistentMultipleTabManager,
+    doc,
+    getDoc,
+    setDoc,
+    deleteDoc,
+    initializeFirestore,
+    persistentLocalCache,
+    persistentMultipleTabManager,
 } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
-import { algoliasearch } from "https://cdn.jsdelivr.net/npm/algoliasearch@5.56.0/dist/lite/builds/browser.esm.browser.js";
-import { setR } from "./staData.js";
+import {
+    algoliasearch
+} from "https://cdn.jsdelivr.net/npm/algoliasearch@5.56.0/dist/lite/builds/browser.esm.browser.js";
+import {
+    setR
+} from "./staData.js";
 
 let uid;
 
@@ -18,9 +36,9 @@ const app = initializeApp(setR.firebase);
 getAnalytics(app);
 const auth = getAuth(app);
 const db = initializeFirestore(app, {
-  localCache: persistentLocalCache({
-    tabManager: persistentMultipleTabManager(),
-  }),
+    localCache: persistentLocalCache({
+        tabManager: persistentMultipleTabManager(),
+    }),
 });
 
 // ===== Algolia 初期化 =====
@@ -29,12 +47,12 @@ const algoliaClient = algoliasearch(setR.algolia.appId, setR.algolia.searchKey);
 
 // ソートフィールド + 方向 → レプリカインデックス名 のマッピング
 const SORT_INDEX_MAP = {
-  "dates_a": "records_date_asc",
-  "dates_d": "records_date_desc",
-  "records_a": "records_chorusMax_asc",
-  "records_d": "records_chorusMax_desc",
-  "ids_a": "records_ID_asc",
-  "ids_d": "records_ID_desc",
+    "dates_a": "records_date_asc",
+    "dates_d": "records_date_desc",
+    "records_a": "records_chorusMax_asc",
+    "records_d": "records_chorusMax_desc",
+    "ids_a": "records_ID_asc",
+    "ids_d": "records_ID_desc",
 };
 
 // ===== Functions v2 の呼び出しURL =====
@@ -42,23 +60,25 @@ const BASE_URL = "https://us-central1-ototetsu-memory.cloudfunctions.net";
 
 // ===== 共通 fetch 関数 =====
 async function callFunction(name, data) {
-  const user = auth.currentUser;
-  if (!user) {
-    return { message: "エラー:ログインが必要です。" };
-  }
+    const user = auth.currentUser;
+    if (!user) {
+        return {
+            message: "エラー:ログインが必要です。"
+        };
+    }
 
-  const token = await user.getIdToken();
+    const token = await user.getIdToken();
 
-  const res = await fetch(`${BASE_URL}/${name}`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": `Bearer ${token}`,
-    },
-    body: JSON.stringify(data),
-  });
+    const res = await fetch(`${BASE_URL}/${name}`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`,
+        },
+        body: JSON.stringify(data),
+    });
 
-  return res.json();
+    return res.json();
 }
 
 // ===== API =====
@@ -70,234 +90,267 @@ const deleteRecord = (data) => callFunction("deleteRecord", data);
 status();
 
 function status() {
-  let userStatus = document.getElementById("userStatus");
-  let userName = document.getElementById("userName");
-  let loginBtn = document.getElementById("login");
+    let userStatus = document.getElementById("userStatus");
+    let userName = document.getElementById("userName");
+    let loginBtn = document.getElementById("login");
 
-  onAuthStateChanged(auth, async (user) => {
-    if (user) {
-      uid = user.uid;
-      userStatus.innerText = " としてログイン中";
-      loginBtn.innerText = "ログアウト";
-      loginBtn.classList.add("redB");
-      loginBtn.removeEventListener("click", userLogin);
-      loginBtn.addEventListener("click", userLogout);
+    onAuthStateChanged(auth, async (user) => {
+        if (user) {
+            uid = user.uid;
+            userStatus.innerText = " としてログイン中";
+            loginBtn.innerText = "ログアウト";
+            loginBtn.classList.add("redB");
+            loginBtn.removeEventListener("click", userLogin);
+            loginBtn.addEventListener("click", userLogout);
 
-      if (location.href === "https://fftdareka.github.io/ototetsu_memory/user.html") {
-        let sSpace = document.getElementById("setting");
-        sSpace.innerHTML = `<div id="nameS">現在の名前: <span id="userNameS"></span><br>新しい名前: <input id="newName" type="text" placeholder="名前を入力"></div><button id="updateBtn" type="button">更新</button><br><br><div id="delS">みんなの音鉄記録帳から退会される方はこちら　<button id="deleteBtn" class="redB" type="button">退会する</button></div>`;
-        document.getElementById("updateBtn").addEventListener("click", updateUser);
-        document.getElementById("deleteBtn").addEventListener("click", userDelete);
-      }
+            if (location.href === "https://fftdareka.github.io/ototetsu_memory/user.html") {
+                let sSpace = document.getElementById("setting");
+                sSpace.innerHTML = `<div id="nameS">現在の名前: <span id="userNameS"></span><br>新しい名前: <input id="newName" type="text" placeholder="名前を入力"></div><button id="updateBtn" type="button">更新</button><br><br><div id="delS">みんなの音鉄記録帳から退会される方はこちら　<button id="deleteBtn" class="redB" type="button">退会する</button></div>`;
+                document.getElementById("updateBtn").addEventListener("click", updateUser);
+                document.getElementById("deleteBtn").addEventListener("click", userDelete);
+            }
 
-      let uName = await loadUserdata(uid, true);
-      userName.innerText = uName;
+            let uName = await loadUserdata(uid, true);
+            userName.innerText = uName;
 
-      if (location.href === "https://fftdareka.github.io/ototetsu_memory/user.html") {
-        document.getElementById("userNameS").innerText = uName;
-      }
+            if (location.href === "https://fftdareka.github.io/ototetsu_memory/user.html") {
+                document.getElementById("userNameS").innerText = uName;
+            }
 
-    } else {
-      localStorage.setItem('uid', '');
-      userStatus.innerText = "未ログイン";
-      userName.innerText = "";
-      loginBtn.innerText = "Googleでログイン";
-      loginBtn.classList.remove("redB");
-      loginBtn.removeEventListener("click", userLogout);
-      loginBtn.addEventListener("click", userLogin);
+        } else {
+            localStorage.setItem('uid', '');
+            userStatus.innerText = "未ログイン";
+            userName.innerText = "";
+            loginBtn.innerText = "Googleでログイン";
+            loginBtn.classList.remove("redB");
+            loginBtn.removeEventListener("click", userLogout);
+            loginBtn.addEventListener("click", userLogin);
 
-      if (location.href === "https://fftdareka.github.io/ototetsu_memory/user.html") {
-        let sSpace = document.getElementById("setting");
-        sSpace.innerHTML = `<span>このページはアカウントにログインしている方のみ利用可能です。<br><span id="login2">ログイン(Google)はこちら</span></span>`;
-        document.getElementById("login2").addEventListener("click", userLogin);
-      }
-    }
-  });
+            if (location.href === "https://fftdareka.github.io/ototetsu_memory/user.html") {
+                let sSpace = document.getElementById("setting");
+                sSpace.innerHTML = `<span>このページはアカウントにログインしている方のみ利用可能です。<br><span id="login2">ログイン(Google)はこちら</span></span>`;
+                document.getElementById("login2").addEventListener("click", userLogin);
+            }
+        }
+    });
 }
 
 // ===== ログイン =====
 function userLogin() {
-  let provider = new GoogleAuthProvider();
-  signInWithPopup(auth, provider)
-    .then((res) => console.log("ログイン成功:", res.user))
-    .catch((er) => console.error("ログイン失敗:", er.code, er.message));
+    let provider = new GoogleAuthProvider();
+    signInWithPopup(auth, provider)
+        .then((res) => console.log("ログイン成功:", res.user))
+        .catch((er) => console.error("ログイン失敗:", er.code, er.message));
 }
 
 // ===== ログアウト =====
 function userLogout() {
-  signOut(auth)
-    .then(() => showNotice("ログアウトが完了しました。", "user", true))
-    .catch(() => showNotice("ログアウト中にエラーが発生しました。", "user", true));
+    signOut(auth)
+        .then(() => showNotice("ログアウトが完了しました。", "user", true))
+        .catch(() => showNotice("ログアウト中にエラーが発生しました。", "user", true));
 }
 
 // ===== 退会 =====
 function userDelete() {
-  let user = auth.currentUser;
-  if (!user) return;
-  if (!confirm("本当に退会しますか?この操作は取り消せません。")) return;
+    let user = auth.currentUser;
+    if (!user) return;
+    if (!confirm("本当に退会しますか?この操作は取り消せません。")) return;
 
-  deleteDoc(doc(db, "user", user.uid))
-    .then(() => deleteUser(user))
-    .then(() => showNotice("退会が完了しました。これまでのご利用ありがとうございました。", "setStatus", true))
-    .catch((error) => {
-      if (error.code === "auth/requires-recent-login") {
-        let provider = new GoogleAuthProvider();
-        reauthenticateWithPopup(user, provider)
-          .then(() => deleteDoc(doc(db, "user", user.uid)))
-          .then(() => deleteUser(user))
-          .then(() => showNotice("退会が完了しました。これまでのご利用ありがとうございました。", "setStatus", true))
-          .catch((err) => {
-            console.error("退会失敗:", err);
-            showNotice("退会に失敗しました。", "setStatus", true);
-          });
-      } else {
-        console.error("退会失敗:", error);
-        showNotice("退会に失敗しました。", "setStatus", true);
-      }
-    });
+    deleteDoc(doc(db, "user", user.uid))
+        .then(() => deleteUser(user))
+        .then(() => showNotice("退会が完了しました。これまでのご利用ありがとうございました。", "setStatus", true))
+        .catch((error) => {
+            if (error.code === "auth/requires-recent-login") {
+                let provider = new GoogleAuthProvider();
+                reauthenticateWithPopup(user, provider)
+                    .then(() => deleteDoc(doc(db, "user", user.uid)))
+                    .then(() => deleteUser(user))
+                    .then(() => showNotice("退会が完了しました。これまでのご利用ありがとうございました。", "setStatus", true))
+                    .catch((err) => {
+                        console.error("退会失敗:", err);
+                        showNotice("退会に失敗しました。", "setStatus", true);
+                    });
+            } else {
+                console.error("退会失敗:", error);
+                showNotice("退会に失敗しました。", "setStatus", true);
+            }
+        });
 }
 
 // ===== ユーザーデータ読み込み =====
 function loadUserdata(uid = "guest", tf = false) {
-  return getDoc(doc(db, "user", uid))
-    .then((snap) => {
-      if (snap.exists()) {
-        return snap.data().name || "匿名";
-      } else if (tf) {
-        return setDoc(doc(db, "user", uid), { name: "匿名" }, { merge: true })
-          .then(() => "匿名")
-          .catch((error) => {
-            console.error("作成失敗:", error);
-            throw error;
-          });
-      } else {
-        return "削除されたユーザー";
-      }
-    })
-    .catch((er) => {
-      console.error("読込失敗:", er);
-      throw er;
-    });
+    return getDoc(doc(db, "user", uid))
+        .then((snap) => {
+            if (snap.exists()) {
+                return snap.data().name || "匿名";
+            } else if (tf) {
+                return setDoc(doc(db, "user", uid), {
+                        name: "匿名"
+                    }, {
+                        merge: true
+                    })
+                    .then(() => "匿名")
+                    .catch((error) => {
+                        console.error("作成失敗:", error);
+                        throw error;
+                    });
+            } else {
+                return "削除されたユーザー";
+            }
+        })
+        .catch((er) => {
+            console.error("読込失敗:", er);
+            throw er;
+        });
 }
 
 // ===== 名前更新 =====
 function updateUser() {
-  let newNameE = document.getElementById("newName");
-  if (newNameE) {
-    setDoc(doc(db, "user", uid), { name: newNameE.value }, { merge: true })
-      .then(() => {
-        showNotice("更新が完了しました。", "setting", false);
-        document.getElementById("userNameS").innerText = newNameE.value;
-        document.getElementById("userName").innerText = newNameE.value;
-      })
-      .catch((error) => {
-        showNotice("更新に失敗しました。", "setting", false);
-        console.error("更新失敗:", error);
-      });
-  }
+    let newNameE = document.getElementById("newName");
+    if (newNameE) {
+        setDoc(doc(db, "user", uid), {
+                name: newNameE.value
+            }, {
+                merge: true
+            })
+            .then(() => {
+                showNotice("更新が完了しました。", "setting", false);
+                document.getElementById("userNameS").innerText = newNameE.value;
+                document.getElementById("userName").innerText = newNameE.value;
+            })
+            .catch((error) => {
+                showNotice("更新に失敗しました。", "setting", false);
+                console.error("更新失敗:", error);
+            });
+    }
 }
 
 function getUid() {
-  return uid;
+    return uid;
 }
 
 // ===== Algolia用: フィルタ組み立て =====
 function buildAlgoliaFilters(filter = {}) {
-  const facetParts = [];   // 完全一致条件 (filters)
-  const numericParts = []; // 範囲・数値条件 (numericFilters)
+    const facetParts = []; // 完全一致条件 (filters)
+    const numericParts = []; // 範囲・数値条件 (numericFilters)
 
-  if (filter.sta) facetParts.push(`station:"${filter.sta}"`);
-  if (filter.strack) facetParts.push(`track:"${filter.strack}"`);
-  if (filter.line) {
-    facetParts.push(`line:"${filter.line}"`);
-  }
-  // 信越本線などの番線区別(lnum)は、書き込み時にlineへ結合済みの想定がないため、
-  // 必要ならAlgolia側に別フィールド(lnum)を追加して以下のように絞り込みます
-  if (filter.lnum !== undefined && filter.lnum !== null && filter.lnum !== "n") {
-    facetParts.push(`lnum:${filter.lnum}`);
-  }
-
-  // 鳴動コーラス範囲 (chorusMax)
-  if (filter.minrec !== undefined) numericParts.push(`chorusMax>=${Number(filter.minrec)}`);
-  if (filter.maxrec !== undefined) numericParts.push(`chorusMax<=${Number(filter.maxrec)}`);
-
-  // 打ち返し回数 (chorusCount) - re: { type: "t"|"f"|"s", min, max }
-  if (filter.re) {
-    if (filter.re.type === "t") numericParts.push(`chorusCount>1`);
-    if (filter.re.type === "f") numericParts.push(`chorusCount=1`);
-    if (filter.re.type === "s") {
-      if (filter.re.min !== -1 && filter.re.min !== undefined) {
-        numericParts.push(`chorusCount>=${Number(filter.re.min) + 1}`);
-      }
-      if (filter.re.max !== -1 && filter.re.max !== undefined) {
-        numericParts.push(`chorusCount<=${Number(filter.re.max) + 1}`);
-      }
+    if (filter.sta) facetParts.push(`station:"${filter.sta}"`);
+    if (filter.strack) facetParts.push(`track:"${filter.strack}"`);
+    if (filter.line) {
+        facetParts.push(`line:"${filter.line}"`);
     }
-  }
+    // 信越本線などの番線区別(lnum)は、書き込み時にlineへ結合済みの想定がないため、
+    // 必要ならAlgolia側に別フィールド(lnum)を追加して以下のように絞り込みます
+    if (filter.lnum !== undefined && filter.lnum !== null && filter.lnum !== "n") {
+        facetParts.push(`lnum:${filter.lnum}`);
+    }
 
-  // 期間 (datetime)
-  if (filter.sdate) {
-    const s = new Date(`${filter.sdate} ${filter.stime}`);
-    numericParts.push(`datetime>=${Math.floor(s.getTime() / 1000)}`);
-  }
-  if (filter.edate) {
-    const e = new Date(`${filter.edate} ${filter.etime}`);
-    numericParts.push(`datetime<=${Math.floor(e.getTime() / 1000)}`);
-  }
+    // 鳴動コーラス範囲 (chorusMax)
+    if (filter.minrec !== undefined) numericParts.push(`chorusMax>=${Number(filter.minrec)}`);
+    if (filter.maxrec !== undefined) numericParts.push(`chorusMax<=${Number(filter.maxrec)}`);
 
-  return {
-    filters: facetParts.join(" AND "),
-    numericFilters: numericParts,
-  };
+    // 打ち返し回数 (chorusCount) - re: { type: "t"|"f"|"s", min, max }
+    if (filter.re) {
+        if (filter.re.type === "t") numericParts.push(`chorusCount>1`);
+        if (filter.re.type === "f") numericParts.push(`chorusCount=1`);
+        if (filter.re.type === "s") {
+            if (filter.re.min !== -1 && filter.re.min !== undefined) {
+                numericParts.push(`chorusCount>=${Number(filter.re.min) + 1}`);
+            }
+            if (filter.re.max !== -1 && filter.re.max !== undefined) {
+                numericParts.push(`chorusCount<=${Number(filter.re.max) + 1}`);
+            }
+        }
+    }
+
+    // 期間 (datetime)
+    if (filter.sdate) {
+        const s = new Date(`${filter.sdate} ${filter.stime}`);
+        numericParts.push(`datetime>=${Math.floor(s.getTime() / 1000)}`);
+    }
+    if (filter.edate) {
+        const e = new Date(`${filter.edate} ${filter.etime}`);
+        numericParts.push(`datetime<=${Math.floor(e.getTime() / 1000)}`);
+    }
+
+    return {
+        filters: facetParts.join(" AND "),
+        numericFilters: numericParts,
+    };
 }
 
 // ===== 記録取得(Algolia版) =====
-async function getRecords(n, p, opt = { filter: {}, sort: { data: { dates: "d" }, rank: ["dates"] } }) {
-  if (!opt.hasOwnProperty("filter")) opt.filter = {};
-  if (!opt.hasOwnProperty("sort")) opt.sort = { data: { dates: "d" }, rank: ["dates"] };
+async function getRecords(n, p, opt = {
+    filter: {},
+    sort: {
+        data: {
+            dates: "d"
+        },
+        rank: ["dates"]
+    }
+}) {
+    if (!opt.hasOwnProperty("filter")) opt.filter = {};
+    if (!opt.hasOwnProperty("sort")) opt.sort = {
+        data: {
+            dates: "d"
+        },
+        rank: ["dates"]
+    };
 
-  const rankKey = opt.sort.rank[0] || "dates";
-  const dir = opt.sort.data[rankKey] || "d";
-  const indexName = SORT_INDEX_MAP[`${rankKey}_${dir}`] || "records_date_desc";
+    const rankKey = opt.sort.rank[0] || "dates";
+    const dir = opt.sort.data[rankKey] || "d";
+    const indexName = SORT_INDEX_MAP[`${rankKey}_${dir}`] || "records_date_desc";
 
-  const { filters, numericFilters } = buildAlgoliaFilters(opt.filter);
+    const {
+        filters,
+        numericFilters
+    } = buildAlgoliaFilters(opt.filter);
 
-  const { results } = await algoliaClient.search({
-    requests: [
-      {
-        indexName,
-        filters: filters || undefined,
-        numericFilters: numericFilters.length ? numericFilters : undefined,
-        page: p - 1,
-        hitsPerPage: n,
-      },
-    ],
-  });
+    const {
+        results
+    } = await algoliaClient.search({
+        requests: [{
+            indexName,
+            filters: filters || undefined,
+            numericFilters: numericFilters.length ? numericFilters : undefined,
+            page: p - 1,
+            hitsPerPage: n,
+        }, ],
+    });
 
-  const result = results[0];
-  if (!result || result.hits.length === 0) return null;
+    const result = results[0];
+    if (!result || result.hits.length === 0) return null;
 
-  return { data: result.hits, nor: result.nbHits };
+    return {
+        data: result.hits,
+        nor: result.nbHits
+    };
 }
 
 // ===== 単一記録取得(Algolia版) =====
 async function getRec1(id) {
-  const { results } = await algoliaClient.search({
-    requests: [
-      {
-        indexName: "records_ID_desc",
-        numericFilters: [`ID=${Number(id)}`],
-        hitsPerPage: 1,
-      },
-    ],
-  });
+    const {
+        results
+    } = await algoliaClient.search({
+        requests: [{
+            indexName: "records_ID_desc",
+            numericFilters: [`ID=${Number(id)}`],
+            hitsPerPage: 1,
+        }, ],
+    });
 
-  const result = results[0];
-  if (!result || result.hits.length === 0) return null;
-  return result.hits[0];
+    const result = results[0];
+    if (!result || result.hits.length === 0) return null;
+    return result.hits[0];
 }
 
 export {
-  userDelete, loadUserdata, getRecords, getRec1,
-  setRecord, editRecord, deleteRecord, getUid,
+    userDelete,
+    loadUserdata,
+    getRecords,
+    getRec1,
+    setRecord,
+    editRecord,
+    deleteRecord,
+    getUid,
 };

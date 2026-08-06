@@ -1,198 +1,219 @@
-import { getUid, setRecord } from "./firebase.js";
-import { setR } from "./staData.js";
+import {
+    getUid,
+    setRecord
+} from "./firebase.js";
+import {
+    setR
+} from "./staData.js";
 
 // モジュールはDOM解析後に実行されるため、DOMContentLoadedは不要
 const check = document.getElementById("addRec_chk");
 const addButton = document.getElementById('addRec_btn');
 const mode = document.getElementById("addRec_mode");
 check.addEventListener("change", () => {
-  addButton.disabled = !check.checked;
+    addButton.disabled = !check.checked;
 });
 
 function setSta(data) {
-  let l = document.getElementById("line");
-  let s = document.getElementById("station");
-  let line = data.value.split("_");
-  let i = Number(line[0]);
-  let j = Number(line[1]);
-  let sSta = document.getElementById("addRec_sta");
-  sSta.innerHTML = '<option value="-1_-1">-駅を選択-</option>';
-  if (i !== -1 && j !== -1) {
-    let staData = setR.sta[i][1][j][1];
-    for (var k = 0; k < staData.length; k++) {
-      var lg = document.createElement("optgroup");
-      lg.label = staData[k][0];
-      for (var k2 = 0; k2 < staData[k][1].length; k2++) {
-        var le = document.createElement("option");
-        le.value = `${k}_${k2}`;
-        le.innerText = staData[k][1][k2];
-        lg.appendChild(le);
-      }
-      sSta.appendChild(lg);
-    }
-    if (setR.sta[i][1][j][0] === "その他") {
-      let input = document.createElement("input");
-      input.id = "line";
-      input.type = "text";
-      input.placeholder = "例:横浜線";
-      document.getElementById("addRec").children[4].appendChild(input);
+    let l = document.getElementById("line");
+    let s = document.getElementById("station");
+    let line = data.value.split("_");
+    let i = Number(line[0]);
+    let j = Number(line[1]);
+    let sSta = document.getElementById("addRec_sta");
+    sSta.innerHTML = '<option value="-1_-1">-駅を選択-</option>';
+    if (i !== -1 && j !== -1) {
+        let staData = setR.sta[i][1][j][1];
+        for (var k = 0; k < staData.length; k++) {
+            var lg = document.createElement("optgroup");
+            lg.label = staData[k][0];
+            for (var k2 = 0; k2 < staData[k][1].length; k2++) {
+                var le = document.createElement("option");
+                le.value = `${k}_${k2}`;
+                le.innerText = staData[k][1][k2];
+                lg.appendChild(le);
+            }
+            sSta.appendChild(lg);
+        }
+        if (setR.sta[i][1][j][0] === "その他") {
+            let input = document.createElement("input");
+            input.id = "line";
+            input.type = "text";
+            input.placeholder = "例:横浜線";
+            document.getElementById("addRec").children[4].appendChild(input);
+        } else {
+            if (l) l.remove();
+            if (s) s.remove();
+        }
     } else {
-      if (l) l.remove();
-      if (s) s.remove();
+        if (l) l.remove();
+        if (s) s.remove();
     }
-  } else {
-    if (l) l.remove();
-    if (s) s.remove();
-  }
 }
 
 function setSta2(data) {
-  let s = document.getElementById("station");
-  let sta = data.value.split("_");
-  let k = Number(sta[0]);
-  let k2 = Number(sta[1]);
-  if (k !== -1 && k2 !== -1) {
-    let line = document.getElementById("addRec").children[4].children[0].value.split("_");
-    let i = Number(line[0]);
-    let j = Number(line[1]);
-    if (setR.sta[i][1][j][1][k][1][k2] === "その他") {
-      let input = document.createElement("input");
-      input.id = "station";
-      input.type = "text";
-      input.placeholder = "例:淵野辺";
-      document.getElementById("addRec").children[6].appendChild(input);
+    let s = document.getElementById("station");
+    let sta = data.value.split("_");
+    let k = Number(sta[0]);
+    let k2 = Number(sta[1]);
+    if (k !== -1 && k2 !== -1) {
+        let line = document.getElementById("addRec").children[4].children[0].value.split("_");
+        let i = Number(line[0]);
+        let j = Number(line[1]);
+        if (setR.sta[i][1][j][1][k][1][k2] === "その他") {
+            let input = document.createElement("input");
+            input.id = "station";
+            input.type = "text";
+            input.placeholder = "例:淵野辺";
+            document.getElementById("addRec").children[6].appendChild(input);
+        } else {
+            if (s) s.remove();
+        }
     } else {
-      if (s) s.remove();
+        if (s) s.remove();
     }
-  } else {
-    if (s) s.remove();
-  }
 }
 
 async function recordData() {
-  let er = document.getElementById("error");
-  if (er) er.remove();
-  let i, j, k, k2, date, time;
-  let date2 = document.getElementById("addRec_date").value;
-  let delay = document.getElementById("addRec_del").value;
-  let line, line4;
-  let line2 = document.getElementById("addRec_line").value;
-  let station;
-  let station2 = document.getElementById("addRec_sta").value;
-  let track = document.getElementById("addRec_trk").value;
-  let chorus = document.getElementById("addRec_cho").value;
-  let train = document.getElementById("addRec_trn").value;
-  let tfor = document.getElementById("addRec_for").value;
-  let comment = document.getElementById("addRec_com").value;
-  let error = "エラー:";
+    let er = document.getElementById("error");
+    if (er) er.remove();
+    let i, j, k, k2, date, time;
+    let date2 = document.getElementById("addRec_date").value;
+    let delay = document.getElementById("addRec_del").value;
+    let line, line4;
+    let line2 = document.getElementById("addRec_line").value;
+    let station;
+    let station2 = document.getElementById("addRec_sta").value;
+    let track = document.getElementById("addRec_trk").value;
+    let chorus = document.getElementById("addRec_cho").value;
+    let train = document.getElementById("addRec_trn").value;
+    let tfor = document.getElementById("addRec_for").value;
+    let comment = document.getElementById("addRec_com").value;
+    let error = "エラー:";
 
-  if (!check.checked) error += "確認欄がチェックされていません。";
+    if (!check.checked) error += "確認欄がチェックされていません。";
 
-  if (date2.length === 0) {
-    error += "日付が選択されていません。";
-  } else {
-    let date3 = new Date(date2);
-    date = `${date3.getFullYear()}/${date3.getMonth() + 1}/${date3.getDate()}`;
-    time = `${date3.getHours()}:${date3.getMinutes().toString().padStart(2, "0")}`;
-  }
-  if (delay.length === 0) delay = "0";
-
-  if (line2 === "-1_-1") {
-    error += "路線が選択されていません。";
-  } else {
-    let lineData = line2.split("_");
-    i = Number(lineData[0]);
-    j = Number(lineData[1]);
-    line = setR.sta[i][1][j][3] || setR.sta[i][1][j][0];
-    line4 = setR.sta[i][1][j][2];
-    if (line === "その他") {
-      let line3 = document.getElementById("line").value;
-      if (line3.length === 0) {
-        error += "路線が入力されていません。";
-      } else {
-        line = line3;
-        line4 = "その他";
-      }
+    if (date2.length === 0) {
+        error += "日付が選択されていません。";
+    } else {
+        let date3 = new Date(date2);
+        date = `${date3.getFullYear()}/${date3.getMonth() + 1}/${date3.getDate()}`;
+        time = `${date3.getHours()}:${date3.getMinutes().toString().padStart(2, "0")}`;
     }
-  }
+    if (delay.length === 0) delay = "0";
 
-  if (station2 === "-1_-1") {
-    error += "駅名が選択されていません。";
-  } else {
-    let staD = station2.split("_");
-    k = Number(staD[0]);
-    k2 = Number(staD[1]);
-    station = setR.sta[i][1][j][1][k][1][k2];
-    if (station === "その他") {
-      let station3 = document.getElementById("station").value;
-      if (station3.length === 0) {
-        error += "駅名が入力されていません。";
-      } else {
-        station = station3;
-      }
+    if (line2 === "-1_-1") {
+        error += "路線が選択されていません。";
+    } else {
+        let lineData = line2.split("_");
+        i = Number(lineData[0]);
+        j = Number(lineData[1]);
+        line = setR.sta[i][1][j][3] || setR.sta[i][1][j][0];
+        line4 = setR.sta[i][1][j][2];
+        if (line === "その他") {
+            let line3 = document.getElementById("line").value;
+            if (line3.length === 0) {
+                error += "路線が入力されていません。";
+            } else {
+                line = line3;
+                line4 = "その他";
+            }
+        }
     }
-  }
 
-  if (track.length === 0) error += "番線が入力されていません。";
+    if (station2 === "-1_-1") {
+        error += "駅名が選択されていません。";
+    } else {
+        let staD = station2.split("_");
+        k = Number(staD[0]);
+        k2 = Number(staD[1]);
+        station = setR.sta[i][1][j][1][k][1][k2];
+        if (station === "その他") {
+            let station3 = document.getElementById("station").value;
+            if (station3.length === 0) {
+                error += "駅名が入力されていません。";
+            } else {
+                station = station3;
+            }
+        }
+    }
 
-  if (chorus.length === 0) {
-    error += "記録が入力されていません。";
-  } else {
-    while (chorus.includes("c")) chorus = chorus.replace("c", "");
-    while (chorus.includes("C")) chorus = chorus.replace("C", "");
-    while (chorus.includes("ｃ")) chorus = chorus.replace("ｃ", "");
-    while (chorus.includes("Ｃ")) chorus = chorus.replace("Ｃ", "");
-    let ch = chorus.split("+");
-    for (let n = 0; n < ch.length; n++) ch[n] += "c";
-    chorus = ch.join("+");
-  }
+    if (track.length === 0) error += "番線が入力されていません。";
 
-  if (train.length === 0) error += "種別が入力されていません。";
-  if (tfor.length === 0) error += "行先が入力されていません。";
+    if (chorus.length === 0) {
+        error += "記録が入力されていません。";
+    } else {
+        while (chorus.includes("c")) chorus = chorus.replace("c", "");
+        while (chorus.includes("C")) chorus = chorus.replace("C", "");
+        while (chorus.includes("ｃ")) chorus = chorus.replace("ｃ", "");
+        while (chorus.includes("Ｃ")) chorus = chorus.replace("Ｃ", "");
+        let ch = chorus.split("+");
+        for (let n = 0; n < ch.length; n++) ch[n] += "c";
+        chorus = ch.join("+");
+    }
 
-  if (error !== "エラー:") {
-    let err = document.createElement("div");
-    err.id = "error";
-    err.innerText = error;
-    document.getElementById("addRec").appendChild(err);
-    return;
-  }
+    if (train.length === 0) error += "種別が入力されていません。";
+    if (tfor.length === 0) error += "行先が入力されていません。";
 
-  addButton.disabled = true;
-  const data = {
-    date, station,
-    line: `${line}_${line4}`,
-    track, chorus, time, delay, train,
-    for: tfor, comment,
-    uid: getUid(),
-  };
+    if (error !== "エラー:") {
+        let err = document.createElement("div");
+        err.id = "error";
+        err.innerText = error;
+        document.getElementById("addRec").appendChild(err);
+        return;
+    }
 
-  const result = await setRecord(data);
-  showNotice(result.message, "addRec", false);
+    addButton.disabled = true;
+    const data = {
+        date,
+        station,
+        line: `${line}_${line4}`,
+        track,
+        chorus,
+        time,
+        delay,
+        train,
+        for: tfor,
+        comment,
+        uid: getUid(),
+    };
 
-  document.getElementById('addRec_cho').value = "";
-  document.getElementById('addRec_trk').value = "";
-  document.getElementById('addRec_com').value = "";
-  check.checked = false;
-  addButton.disabled = true;
+    const result = await setRecord(data);
+    showNotice(result.message, "addRec", false);
 
-  if (mode.value === "sameT") {
-    document.getElementById('addRec_sta').value = "-1_-1";
-  } else if (mode.value === "sameS") {
-    document.getElementById('addRec_del').value = "";
-    document.getElementById('addRec_trn').value = "";
-    document.getElementById('addRec_for').value = "";
-  } else {
-    document.getElementById('addRec_date').value = "";
-    document.getElementById('addRec_del').value = "";
-    document.getElementById('addRec_line').value = "-1_-1";
-    document.getElementById('addRec_sta').value = "-1_-1";
-    document.getElementById('addRec_trn').value = "";
-    document.getElementById('addRec_for').value = "";
-    setSta({ value: "-1_-1" });
-  }
+    document.getElementById('addRec_cho').value = "";
+    document.getElementById('addRec_trk').value = "";
+    document.getElementById('addRec_com').value = "";
+    check.checked = false;
+    addButton.disabled = true;
 
-  getRecord(10, 1, { filter: {}, sort: { data: { ids: "d" }, rank: ["ids"] } });
+    if (mode.value === "sameT") {
+        document.getElementById('addRec_sta').value = "-1_-1";
+    } else if (mode.value === "sameS") {
+        document.getElementById('addRec_del').value = "";
+        document.getElementById('addRec_trn').value = "";
+        document.getElementById('addRec_for').value = "";
+    } else {
+        document.getElementById('addRec_date').value = "";
+        document.getElementById('addRec_del').value = "";
+        document.getElementById('addRec_line').value = "-1_-1";
+        document.getElementById('addRec_sta').value = "-1_-1";
+        document.getElementById('addRec_trn').value = "";
+        document.getElementById('addRec_for').value = "";
+        setSta({
+            value: "-1_-1"
+        });
+    }
+
+    getRecord(10, 1, {
+        filter: {},
+        sort: {
+            data: {
+                ids: "d"
+            },
+            rank: ["ids"]
+        }
+    });
 }
 
 window.setSta = setSta;
