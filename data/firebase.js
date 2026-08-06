@@ -58,9 +58,6 @@ function getAlgoliaClient() {
     return algoliaClient;
 }
 
-// ===== Algolia 初期化 =====
-const algoliaClient = algoliasearch(setR.algolia.appId, setR.algolia.searchKey);
-
 // ソートフィールド + 方向 → レプリカインデックス名 のマッピング
 const SORT_INDEX_MAP = {
     "dates_a": "records_date_asc",
