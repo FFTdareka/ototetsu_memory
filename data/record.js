@@ -206,19 +206,17 @@ function setFilter() {
     opt.filter.edate = edate;
     opt.filter.etime = etime;
   }
-  let srank = [document.getElementById("srank1").value, document.getElementById("srank2").value].filter(Boolean);
-  if (srank.length <= 0) {
+
+  const srank1 = document.getElementById("srank1").value;
+  const s1v = document.getElementById("s1v").value;
+  if (srank1 && s1v) {
+    opt.sort.data = { [srank1]: s1v };
+    opt.sort.rank = [srank1];
+  } else {
     opt.sort.data = { dates: "d" };
     opt.sort.rank = ["dates"];
-  } else {
-  let s1v = document.getElementById("s1v").value;
-  let s2v = document.getElementById("s2v").value;
-  if (srank[0] && s1v !== "") opt.sort.data[srank[0]] = s1v;
-  if (srank[1] && s2v !== "") opt.sort.data[srank[1]] = s2v;
-  for (var fi = 0; fi < srank.length; fi++) {
-    if (srank[fi] !== "") opt.sort.rank[fi] = srank[fi]; else break;
   }
-  }
+
   getRecord(nowN, 1, opt);
   nowP = 1;
   nowO = opt;
@@ -237,10 +235,8 @@ function clearFilter() {
 }
 
 function clearSort() {
-  document.getElementById("srank1").value = "";
-  document.getElementById("s1v").value = "";
-  document.getElementById("srank2").value = "";
-  document.getElementById("s2v").value = "";
+  document.getElementById("srank1").value = "dates";
+  document.getElementById("s1v").value = "d";
 }
 
 // HTMLのonclick/onchange属性から呼ばれている可能性があるため、window公開を維持
