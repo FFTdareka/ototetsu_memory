@@ -6,9 +6,9 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
 import {
   doc, getDoc, setDoc, deleteDoc, initializeFirestore,
-  persistentLocalCache, persistentMultipleTabManager, collection, query,
-  where, getDocs,
+  persistentLocalCache, persistentMultipleTabManager,
 } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
+import { algoliasearch } from "https://cdn.jsdelivr.net/npm/algoliasearch@5.56.0/dist/lite/builds/browser.esm.browser.js";
 import { setR } from "./staData.js";
 
 let uid;
@@ -17,15 +17,27 @@ let uid;
 const app = initializeApp(setR.firebase);
 getAnalytics(app);
 const auth = getAuth(app);
-const db = initializeFirestore(app, {/*
+const db = initializeFirestore(app, {
   localCache: persistentLocalCache({
     tabManager: persistentMultipleTabManager(),
   }),
-*/});
+});
+
+// ===== Algolia 初期化 =====
+// setR.algolia = { appId: "...", searchKey: "..." } のような形で staData.js に追加してください
+const algoliaClient = algoliasearch(setR.algolia.appId, setR.algolia.searchKey);
+
+// ソートフィールド + 方向 → レプリカインデックス名 のマッピング
+const SORT_INDEX_MAP = {
+  "dates_a": "records_date_asc",
+  "dates_d": "records_date_desc",
+  "records_a": "records_chorusMax_asc",
+  "records_d": "records_chorusMax_desc",
+  "ids_a": "records_ID_asc",
+  "ids_d": "records_ID_desc",
+};
 
 // ===== Functions v2 の呼び出しURL =====
-// Firebase コンソール → Functions → setRecord の「呼び出しURL」を貼る
-// 例: https://us-central1-ototetsu-memory.cloudfunctions.net
 const BASE_URL = "https://us-central1-ototetsu-memory.cloudfunctions.net";
 
 // ===== 共通 fetch 関数 =====
@@ -189,96 +201,100 @@ function getUid() {
   return uid;
 }
 
-// ===== 記録取得 =====
+// ===== Algolia用: フィルタ組み立て =====
+function buildAlgoliaFilters(filter = {}) {
+  const facetParts = [];   // 完全一致条件 (filters)
+  const numericParts = []; // 範囲・数値条件 (numericFilters)
+
+  if (filter.sta) facetParts.push(`station:"${filter.sta}"`);
+  if (filter.strack) facetParts.push(`track:"${filter.strack}"`);
+  if (filter.line) {
+    facetParts.push(`line:"${filter.line}"`);
+  }
+  // 信越本線などの番線区別(lnum)は、書き込み時にlineへ結合済みの想定がないため、
+  // 必要ならAlgolia側に別フィールド(lnum)を追加して以下のように絞り込みます
+  if (filter.lnum !== undefined && filter.lnum !== null && filter.lnum !== "n") {
+    facetParts.push(`lnum:${filter.lnum}`);
+  }
+
+  // 鳴動コーラス範囲 (chorusMax)
+  if (filter.minrec !== undefined) numericParts.push(`chorusMax>=${Number(filter.minrec)}`);
+  if (filter.maxrec !== undefined) numericParts.push(`chorusMax<=${Number(filter.maxrec)}`);
+
+  // 打ち返し回数 (chorusCount) - re: { type: "t"|"f"|"s", min, max }
+  if (filter.re) {
+    if (filter.re.type === "t") numericParts.push(`chorusCount>1`);
+    if (filter.re.type === "f") numericParts.push(`chorusCount=1`);
+    if (filter.re.type === "s") {
+      if (filter.re.min !== -1 && filter.re.min !== undefined) {
+        numericParts.push(`chorusCount>=${Number(filter.re.min) + 1}`);
+      }
+      if (filter.re.max !== -1 && filter.re.max !== undefined) {
+        numericParts.push(`chorusCount<=${Number(filter.re.max) + 1}`);
+      }
+    }
+  }
+
+  // 期間 (datetime)
+  if (filter.sdate) {
+    const s = new Date(`${filter.sdate} ${filter.stime}`);
+    numericParts.push(`datetime>=${Math.floor(s.getTime() / 1000)}`);
+  }
+  if (filter.edate) {
+    const e = new Date(`${filter.edate} ${filter.etime}`);
+    numericParts.push(`datetime<=${Math.floor(e.getTime() / 1000)}`);
+  }
+
+  return {
+    filters: facetParts.join(" AND "),
+    numericFilters: numericParts,
+  };
+}
+
+// ===== 記録取得(Algolia版) =====
 async function getRecords(n, p, opt = { filter: {}, sort: { data: { dates: "d" }, rank: ["dates"] } }) {
   if (!opt.hasOwnProperty("filter")) opt.filter = {};
   if (!opt.hasOwnProperty("sort")) opt.sort = { data: { dates: "d" }, rank: ["dates"] };
 
-  const filter = opt.filter;
-  const so = opt.sort.data;
-  const rank = opt.sort.rank;
+  const rankKey = opt.sort.rank[0] || "dates";
+  const dir = opt.sort.data[rankKey] || "d";
+  const indexName = SORT_INDEX_MAP[`${rankKey}_${dir}`] || "records_date_desc";
 
-  const conditions = [];
-  if (filter.hasOwnProperty("sta")) conditions.push(where("station", "==", filter.sta));
-  if (filter.hasOwnProperty("strack")) conditions.push(where("track", "==", filter.strack));
+  const { filters, numericFilters } = buildAlgoliaFilters(opt.filter);
 
-  const q = query(collection(db, "record"), ...conditions);
-  const snapshot = await getDocs(q);
-
-  let record = [];
-  snapshot.forEach((docSnap) => {
-    const rec = docSnap.data();
-    const recD = rec.chorus.split("+");
-
-    if (filter.re) {
-      if (filter.re.type === "t" && recD.length === 1) return;
-      if (filter.re.type === "f" && recD.length !== 1) return;
-      if (filter.re.type === "s") {
-        if (filter.re.min !== -1 && Number(filter.re.min) + 1 > recD.length) return;
-        if (filter.re.max !== -1 && Number(filter.re.max) + 1 < recD.length) return;
-      }
-    }
-    if (filter.hasOwnProperty("minrec")) {
-      if (recD.every((r) => Number(filter.minrec) > Number(r.replace("c", "")))) return;
-    }
-    if (filter.hasOwnProperty("maxrec")) {
-      if (recD.every((r) => Number(filter.maxrec) < Number(r.replace("c", "")))) return;
-    }
-    if (filter.hasOwnProperty("line")) {
-      const lineParts = rec.line.split("_");
-      const nameMismatch = filter.line !== lineParts[0];
-      const branchMismatch = `${filter.line}${filter.lnum}` !== lineParts[1]
-        && filter.lnum !== "n" && filter.lnum != null;
-      if (nameMismatch || branchMismatch) return;
-    }
-    if (filter.hasOwnProperty("sdate")) {
-      if (new Date(`${filter.sdate} ${filter.stime}`) > new Date(`${rec.date} ${rec.time}`)) return;
-    }
-    if (filter.hasOwnProperty("edate")) {
-      if (new Date(`${filter.edate} ${filter.etime}`) < new Date(`${rec.date} ${rec.time}`)) return;
-    }
-    if (filter.hasOwnProperty("sid")) {
-      if (Number(filter.sid) > Number(rec.ID)) return;
-    }
-    if (filter.hasOwnProperty("eid")) {
-      if (Number(filter.eid) < Number(rec.ID)) return;
-    }
-    record.push(rec);
+  const { results } = await algoliaClient.search({
+    requests: [
+      {
+        indexName,
+        filters: filters || undefined,
+        numericFilters: numericFilters.length ? numericFilters : undefined,
+        page: p - 1,
+        hitsPerPage: n,
+      },
+    ],
   });
 
-  record.sort((a, b) => {
-    for (let i = 0; i < rank.length; i++) {
-      const r = rank[i];
-      const du = so[r];
-      let diff = 0;
-      if (r === "dates") {
-        diff = new Date(`${a.date} ${a.time}`) - new Date(`${b.date} ${b.time}`);
-      } else if (r === "records") {
-        const maxA = Math.max(...a.chorus.replace(/c/g, "").split("+").map(Number));
-        const maxB = Math.max(...b.chorus.replace(/c/g, "").split("+").map(Number));
-        diff = maxA - maxB;
-      } else if (r === "ids") {
-        diff = Number(a.ID) - Number(b.ID);
-      }
-      if (du === "d") diff *= -1;
-      if (diff !== 0) return diff;
-    }
-    return 0;
-  });
+  const result = results[0];
+  if (!result || result.hits.length === 0) return null;
 
-  const nor = record.length;
-  const pageRecord = record.slice(n * (p - 1), n * p);
-  if (pageRecord.length === 0) return null;
-
-  return { data: pageRecord, nor };
+  return { data: result.hits, nor: result.nbHits };
 }
 
-// ===== 単一記録取得 =====
+// ===== 単一記録取得(Algolia版) =====
 async function getRec1(id) {
-  const docRef = doc(db, "record", String(id));
-  const snap = await getDoc(docRef);
-  if (!snap.exists()) return null;
-  return snap.data();
+  const { results } = await algoliaClient.search({
+    requests: [
+      {
+        indexName: "records_ID_desc",
+        numericFilters: [`ID=${Number(id)}`],
+        hitsPerPage: 1,
+      },
+    ],
+  });
+
+  const result = results[0];
+  if (!result || result.hits.length === 0) return null;
+  return result.hits[0];
 }
 
 export {

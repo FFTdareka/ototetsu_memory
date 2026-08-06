@@ -1,5 +1,5 @@
 {
-    "status": true,
+    "status": false,
     "gas": "https://script.google.com/macros/s/AKfycbwMuFTWf7vHFkhAJAlCgfelLvDG8LMWSF_bQAy80TjOaDJIG568hull_guJwB1_9kCk/exec",
     "firebase": {
         "apiKey": "AIzaSyCx0xxbgLL3N2JPjU6NWnMycqoAYcCiMZg",
@@ -9,6 +9,10 @@
         "messagingSenderId": "93907965715",
         "appId": "1:93907965715:web:e2df51223aa895253e6ce6",
         "measurementId": "G-JJX9BB6553"
+    },
+    "algolia": {
+        "appId": "E9IS7WL99Z",
+        "searchKey": "45b95b2e3a2ad75ab1e9c5ec0c013cda"
     },
     "d": [
         "日付",
