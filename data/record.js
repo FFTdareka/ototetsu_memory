@@ -27,7 +27,7 @@ if (location.href === "https://fftdareka.github.io/ototetsu_memory/"
   || location.href === "https://fftdareka.github.io/ototetsu_memory/index.html") {
   op = { filter: {}, sort: { data: { ids: "d" }, rank: ["ids"] } };
 } else {
-  op = { filter: {}, sort: { data: {}, rank: [] } };
+  op = { filter: {}, sort: { data: { dates: "d" }, rank: ["dates"] } };
 }
 getRecord(10, 1, op);
 nowN = 10;
