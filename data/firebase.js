@@ -153,6 +153,7 @@ function getUid() {
 async function getRecords(n, p, opt = { filter: {}, sort: { data: { dates: "d" }, rank: ["dates"] } }) {
   if (!opt.hasOwnProperty("filter")) opt.filter = {};
   if (!opt.hasOwnProperty("sort")) opt.sort = { data: { dates: "d" }, rank: ["dates"] };
+  else if (!opt.sort.rank.length <= 0) opt.sort = { data: { dates: "d" }, rank: ["dates"] };
   const filter = opt.filter;
   const so = opt.sort.data;
   const rank = opt.sort.rank;
