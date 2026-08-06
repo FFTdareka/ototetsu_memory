@@ -234,4 +234,4 @@ window.setFilter = setFilter;
 window.clearFilter = clearFilter;
 window.clearSort = clearSort;
 
-export { getRecord };
+window.getRecord = getRecord;

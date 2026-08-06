@@ -1,6 +1,5 @@
 import { getUid, setRecord } from "./firebase.js";
 import { setR } from "./staData.js";
-import { getRecord } from "./record.js";
 
 // モジュールはDOM解析後に実行されるため、DOMContentLoadedは不要
 const check = document.getElementById("addRec_chk");
