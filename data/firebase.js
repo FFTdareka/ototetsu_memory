@@ -39,6 +39,23 @@ const db = initializeFirestore(app, {
 
 let algoliaClient = null;
 
+function createNullCache() {
+    return {
+        get(key, fn) {
+            return fn();
+        },
+        set() {
+            return Promise.resolve();
+        },
+        delete() {
+            return Promise.resolve();
+        },
+        clear() {
+            return Promise.resolve();
+        },
+    };
+}
+
 function getAlgoliaClient() {
     if (algoliaClient) return algoliaClient;
     if (!window["algoliasearch/lite"]) {
@@ -49,7 +66,14 @@ function getAlgoliaClient() {
         );
     }
     const { liteClient } = window["algoliasearch/lite"];
-    algoliaClient = liteClient(setR.algolia.appId, setR.algolia.searchKey);
+    algoliaClient = liteClient(
+        setR.algolia.appId,
+        setR.algolia.searchKey,
+        {
+            responsesCache: createNullCache(),
+            requestsCache: createNullCache(),
+        },
+    );
     return algoliaClient;
 }
 
