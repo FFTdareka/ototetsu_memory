@@ -24,6 +24,8 @@ import {
     setR
 } from "./staData.js";
 
+console.log("[debug] firebase.js 実行開始");
+
 let uid;
 
 const app = initializeApp(setR.firebase);
@@ -288,6 +290,7 @@ async function getRecords(n, p, opt = {
         rank: ["dates"]
     }
 }) {
+    console.log("[debug] getRecords 呼び出し", opt);
     if (!opt.hasOwnProperty("filter")) opt.filter = {};
     if (!opt.hasOwnProperty("sort")) opt.sort = {
         data: {
@@ -302,6 +305,7 @@ async function getRecords(n, p, opt = {
 
     const { filters, numericFilters } = buildAlgoliaFilters(opt.filter);
 
+    console.log("[debug] Algolia search 実行直前");
     const { results } = await getAlgoliaClient().search({
         requests: [{
             indexName,
@@ -312,6 +316,7 @@ async function getRecords(n, p, opt = {
             userToken: `t${Date.now()}`,
         }],
     });
+    console.log("[debug] Algolia search 完了", results);
 
     const result = results[0];
     if (!result || result.hits.length === 0) return null;
