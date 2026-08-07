@@ -334,6 +334,7 @@ async function getRec1(id) {
             indexName: "records_ID_desc",
             numericFilters: [`ID=${Number(id)}`],
             hitsPerPage: 1,
+            userToken: `t${Date.now()}`,
         }],
     });
 
