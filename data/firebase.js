@@ -35,23 +35,6 @@ const db = getFirestore(app);
 
 let algoliaClient = null;
 
-function createNullCache() {
-    return {
-        get(key, fn) {
-            return fn();
-        },
-        set() {
-            return Promise.resolve();
-        },
-        delete() {
-            return Promise.resolve();
-        },
-        clear() {
-            return Promise.resolve();
-        },
-    };
-}
-
 function getAlgoliaClient() {
     if (algoliaClient) return algoliaClient;
     if (!window["algoliasearch/lite"]) {
@@ -64,6 +47,27 @@ function getAlgoliaClient() {
     const { liteClient } = window["algoliasearch/lite"];
     algoliaClient = liteClient(setR.algolia.appId, setR.algolia.searchKey);
     return algoliaClient;
+}
+
+async function searchWithTimeout(params, timeoutMs = 6000, retries = 2) {
+    let lastError;
+    for (let attempt = 0; attempt <= retries; attempt++) {
+        const controller = new AbortController();
+        const timer = setTimeout(() => controller.abort(), timeoutMs);
+        try {
+            const result = await getAlgoliaClient().search({
+                ...params,
+                requestOptions: { signal: controller.signal },
+            });
+            clearTimeout(timer);
+            return result;
+        } catch (e) {
+            clearTimeout(timer);
+            lastError = e;
+            console.log(`[debug] search失敗(試行${attempt + 1}/${retries + 1}):`, e);
+        }
+    }
+    throw lastError;
 }
 
 const SORT_INDEX_MAP = {
@@ -290,7 +294,6 @@ async function getRecords(n, p, opt = {
         rank: ["dates"]
     }
 }) {
-    console.log("[debug] getRecords 呼び出し", opt);
     if (!opt.hasOwnProperty("filter")) opt.filter = {};
     if (!opt.hasOwnProperty("sort")) opt.sort = {
         data: {
@@ -305,8 +308,7 @@ async function getRecords(n, p, opt = {
 
     const { filters, numericFilters } = buildAlgoliaFilters(opt.filter);
 
-    console.log("[debug] Algolia search 実行直前");
-    const { results } = await getAlgoliaClient().search({
+    const { results } = await searchWithTimeout({
         requests: [{
             indexName,
             filters: filters || undefined,
@@ -316,7 +318,6 @@ async function getRecords(n, p, opt = {
             userToken: `t${Date.now()}`,
         }],
     });
-    console.log("[debug] Algolia search 完了", results);
 
     const result = results[0];
     if (!result || result.hits.length === 0) return null;
@@ -328,7 +329,7 @@ async function getRecords(n, p, opt = {
 }
 
 async function getRec1(id) {
-    const { results } = await getAlgoliaClient().search({
+    const { results } = await searchWithTimeout({
         requests: [{
             indexName: "records_ID_desc",
             numericFilters: [`ID=${Number(id)}`],

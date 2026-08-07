@@ -47,27 +47,21 @@ console.log("[debug] sLine構築完了"); // ★追加
 let op;
 if (location.href === "https://fftdareka.github.io/ototetsu_memory/" ||
     location.href === "https://fftdareka.github.io/ototetsu_memory/index.html") {
-    op = {
-        filter: {},
-        sort: {
-            data: {
-                ids: "d"
-            },
-            rank: ["ids"]
-        }
-    };
+    op = { filter: {}, sort: { data: { ids: "d" }, rank: ["ids"] } };
 } else {
-    op = {
-        filter: {},
-        sort: {
-            data: {
-                dates: "d"
-            },
-            rank: ["dates"]
-        }
-    };
+    op = { filter: {}, sort: { data: { dates: "d" }, rank: ["dates"] } };
 }
-getRecord(10, 1, op);
+
+// 初回読み込みが一定時間で終わらなければ、強制的にページを再読み込みする
+const initialLoadWatchdog = setTimeout(() => {
+    console.log("[debug] 初回読み込みがタイムアウトしたため強制リロードします");
+    location.reload();
+}, 10000);
+
+getRecord(10, 1, op).finally(() => {
+    clearTimeout(initialLoadWatchdog);
+});
+
 nowN = 10;
 nowP = 1;
 nowO = op;
@@ -93,24 +87,28 @@ function wline(data) {
 }
 
 async function getRecord(n, p, opt) {
-    console.log("[debug] getRecord 呼び出し", n, p, opt);
     const sortButton = document.getElementById("filter");
     if (sortButton) sortButton.disabled = true;
     document.getElementById('recStatus').innerText = "読み込み中...";
     document.getElementById('recSpace').innerHTML = "";
     if (document.getElementById('back')) document.getElementById('back').disabled = true;
     if (document.getElementById('next')) document.getElementById('next').disabled = true;
-    
-    const result = await getRecords(n, p, opt);
 
-    if (result) {
-        renderRecords(result.data, result.nor, n, p);
-        nowN = n;
-        nowP = p;
-        nowO = opt;
-    } else {
-        document.getElementById('recStatus').innerText = "指定した鳴動記録のデータがありません。";
+    try {
+        const result = await getRecords(n, p, opt);
+        if (result) {
+            renderRecords(result.data, result.nor, n, p);
+            nowN = n;
+            nowP = p;
+            nowO = opt;
+        } else {
+            document.getElementById('recStatus').innerText = "指定した鳴動記録のデータがありません。";
+        }
+    } catch (e) {
+        console.log("[debug] getRecordエラー:", e);
+        document.getElementById('recStatus').innerText = "読み込みに失敗しました。もう一度お試しください。";
     }
+
     if (sortButton) sortButton.disabled = false;
 }
 
