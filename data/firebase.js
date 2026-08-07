@@ -28,7 +28,6 @@ import {
 
 let uid;
 
-// Firebase 初期化
 const app = initializeApp(setR.firebase);
 getAnalytics(app);
 const auth = getAuth(app);
@@ -42,7 +41,6 @@ let algoliaClient = null;
 
 function getAlgoliaClient() {
     if (algoliaClient) return algoliaClient;
-
     if (!window["algoliasearch/lite"]) {
         throw new Error(
             "Algoliaのクライアントが読み込まれていません。" +
@@ -50,24 +48,11 @@ function getAlgoliaClient() {
             "algoliasearch@5.56.0のUMD版scriptタグを追加してください。",
         );
     }
-
     const { liteClient } = window["algoliasearch/lite"];
     algoliaClient = liteClient(setR.algolia.appId, setR.algolia.searchKey);
     return algoliaClient;
 }
 
-// ★追加：Algoliaのクライアントキャッシュを破棄する関数
-function clearAlgoliaCache() {
-    if (algoliaClient) {
-        // v5では clearCache() またはクライアントインスタンスをリセットすることでキャッシュを破棄できます
-        if (typeof algoliaClient.clearCache === "function") {
-            algoliaClient.clearCache();
-        }
-        algoliaClient = null; // インスタンスを再作成させることで確実に内部キャッシュをクリア
-    }
-}
-
-// ソートフィールド + 方向 → レプリカインデックス名 のマッピング
 const SORT_INDEX_MAP = {
     "dates_a": "records_date_asc",
     "dates_d": "records_date_desc",
@@ -77,10 +62,8 @@ const SORT_INDEX_MAP = {
     "ids_d": "records_ID_desc",
 };
 
-// ===== Functions v2 の呼び出しURL =====
 const BASE_URL = "https://us-central1-ototetsu-memory.cloudfunctions.net";
 
-// ===== 共通 fetch 関数 =====
 async function callFunction(name, data) {
     const user = auth.currentUser;
     if (!user) {
@@ -88,9 +71,7 @@ async function callFunction(name, data) {
             message: "エラー:ログインが必要です。"
         };
     }
-
     const token = await user.getIdToken();
-
     const res = await fetch(`${BASE_URL}/${name}`, {
         method: "POST",
         headers: {
@@ -99,36 +80,13 @@ async function callFunction(name, data) {
         },
         body: JSON.stringify(data),
     });
-
     return res.json();
 }
 
-// ===== API =====
-// 内部関数
-const _setRecord = (data) => callFunction("setRecord", data);
-const _editRecord = (data) => callFunction("editRecord", data);
-const _deleteRecord = (data) => callFunction("deleteRecord", data);
+const setRecord = (data) => callFunction("setRecord", data);
+const editRecord = (data) => callFunction("editRecord", data);
+const deleteRecord = (data) => callFunction("deleteRecord", data);
 
-// 外部用API（成功時にAlgoliaキャッシュをクリア）
-const setRecord = async (data) => {
-    const res = await _setRecord(data);
-    clearAlgoliaCache(); // 追加後にキャッシュクリア
-    return res;
-};
-
-const editRecord = async (data) => {
-    const res = await _editRecord(data);
-    clearAlgoliaCache(); // 編集後にキャッシュクリア
-    return res;
-};
-
-const deleteRecord = async (data) => {
-    const res = await _deleteRecord(data);
-    clearAlgoliaCache(); // 削除後にキャッシュクリア
-    return res;
-};
-
-// ===== ログイン状態の監視 =====
 status();
 
 function status() {
@@ -177,7 +135,6 @@ function status() {
     });
 }
 
-// ===== ログイン =====
 function userLogin() {
     let provider = new GoogleAuthProvider();
     signInWithPopup(auth, provider)
@@ -185,14 +142,12 @@ function userLogin() {
         .catch((er) => console.error("ログイン失敗:", er.code, er.message));
 }
 
-// ===== ログアウト =====
 function userLogout() {
     signOut(auth)
         .then(() => showNotice("ログアウトが完了しました。", "user", true))
         .catch(() => showNotice("ログアウト中にエラーが発生しました。", "user", true));
 }
 
-// ===== 退会 =====
 function userDelete() {
     let user = auth.currentUser;
     if (!user) return;
@@ -219,7 +174,6 @@ function userDelete() {
         });
 }
 
-// ===== ユーザーデータ読み込み =====
 function loadUserdata(uid = "guest", tf = false) {
     return getDoc(doc(db, "user", uid))
         .then((snap) => {
@@ -246,7 +200,6 @@ function loadUserdata(uid = "guest", tf = false) {
         });
 }
 
-// ===== 名前更新 =====
 function updateUser() {
     let newNameE = document.getElementById("newName");
     if (newNameE) {
@@ -271,27 +224,22 @@ function getUid() {
     return uid;
 }
 
-// ===== Algolia用: フィルタ組み立て =====
 function buildAlgoliaFilters(filter = {}) {
-    const facetParts = []; // 完全一致条件 (filters)
-    const numericParts = []; // 範囲・数値条件 (numericFilters)
+    const facetParts = [];
+    const numericParts = [];
 
     if (filter.sta) facetParts.push(`station:"${filter.sta}"`);
     if (filter.strack) facetParts.push(`track:"${filter.strack}"`);
     if (filter.line) {
         facetParts.push(`line:"${filter.line}"`);
     }
-    // 信越本線などの番線区別(lnum)は、書き込み時にlineへ結合済みの想定がないため、
-    // 必要ならAlgolia側に別フィールド(lnum)を追加して以下のように絞り込みます
     if (filter.lnum !== undefined && filter.lnum !== null && filter.lnum !== "n") {
         facetParts.push(`lnum:${filter.lnum}`);
     }
 
-    // 鳴動コーラス範囲 (chorusMax)
     if (filter.minrec !== undefined) numericParts.push(`chorusMax>=${Number(filter.minrec)}`);
     if (filter.maxrec !== undefined) numericParts.push(`chorusMax<=${Number(filter.maxrec)}`);
 
-    // 打ち返し回数 (chorusCount) - re: { type: "t"|"f"|"s", min, max }
     if (filter.re) {
         if (filter.re.type === "t") numericParts.push(`chorusCount>1`);
         if (filter.re.type === "f") numericParts.push(`chorusCount=1`);
@@ -305,7 +253,6 @@ function buildAlgoliaFilters(filter = {}) {
         }
     }
 
-    // 期間 (datetime)
     if (filter.sdate) {
         const s = new Date(`${filter.sdate} ${filter.stime}`);
         numericParts.push(`datetime>=${Math.floor(s.getTime() / 1000)}`);
@@ -321,7 +268,6 @@ function buildAlgoliaFilters(filter = {}) {
     };
 }
 
-// ===== 記録取得(Algolia版) =====
 async function getRecords(n, p, opt = {
     filter: {},
     sort: {
@@ -343,21 +289,16 @@ async function getRecords(n, p, opt = {
     const dir = opt.sort.data[rankKey] || "d";
     const indexName = SORT_INDEX_MAP[`${rankKey}_${dir}`] || "records_date_desc";
 
-    const {
-        filters,
-        numericFilters
-    } = buildAlgoliaFilters(opt.filter);
+    const { filters, numericFilters } = buildAlgoliaFilters(opt.filter);
 
-    const {
-        results
-    } = await getAlgoliaClient().search({ // ★ここを変更
+    const { results } = await getAlgoliaClient().search({
         requests: [{
             indexName,
             filters: filters || undefined,
             numericFilters: numericFilters.length ? numericFilters : undefined,
             page: p - 1,
             hitsPerPage: n,
-        }, ],
+        }],
     });
 
     const result = results[0];
@@ -369,16 +310,13 @@ async function getRecords(n, p, opt = {
     };
 }
 
-// ===== 単一記録取得(Algolia版) =====
 async function getRec1(id) {
-    const {
-        results
-    } = await getAlgoliaClient().search({ // ★ここを変更
+    const { results } = await getAlgoliaClient().search({
         requests: [{
             indexName: "records_ID_desc",
             numericFilters: [`ID=${Number(id)}`],
             hitsPerPage: 1,
-        }, ],
+        }],
     });
 
     const result = results[0];
@@ -395,5 +333,4 @@ export {
     editRecord,
     deleteRecord,
     getUid,
-    clearAlgoliaCache,
 };

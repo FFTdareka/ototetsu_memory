@@ -1,7 +1,6 @@
 import {
     getUid,
-    setRecord,
-    clearAlgoliaCache
+    setRecord
 } from "./firebase.js";
 import {
     setR

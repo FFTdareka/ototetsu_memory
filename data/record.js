@@ -1,6 +1,5 @@
 import {
-    getRecords,
-    clearAlgoliaCache
+    getRecords
 } from "./firebase.js";
 import {
     setR,
@@ -17,8 +16,6 @@ let nowO = {
         rank: []
     }
 };
-
-clearAlgoliaCache();
 
 // staDataはimport時点で取得済みなので、そのままセレクトボックスを組み立てる
 let sLine = document.getElementById("selectline") || document.getElementById("addRec_line");
