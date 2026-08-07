@@ -55,9 +55,8 @@ async function searchWithTimeout(params, timeoutMs = 6000, retries = 2) {
         const controller = new AbortController();
         const timer = setTimeout(() => controller.abort(), timeoutMs);
         try {
-            const result = await getAlgoliaClient().search({
-                ...params,
-                requestOptions: { signal: controller.signal },
+            const result = await getAlgoliaClient().search(params, {
+                signal: controller.signal, // ★第2引数として渡す
             });
             clearTimeout(timer);
             return result;
