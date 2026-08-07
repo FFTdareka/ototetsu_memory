@@ -3,8 +3,7 @@ import {
     getRec1,
     loadUserdata,
     editRecord,
-    deleteRecord,
-    clearAlgoliaCache
+    deleteRecord
 } from "./firebase.js";
 import {
     setR,
@@ -335,7 +334,6 @@ async function delRec() {
     const message = result.message;
 
     if (message === null) {
-        await clearAlgoliaCache();
         location.href = "https://fftdareka.github.io/ototetsu_memory/";
     } else {
         showNotice(message, "addRec", false);

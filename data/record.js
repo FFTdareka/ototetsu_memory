@@ -89,8 +89,7 @@ async function getRecord(n, p, opt) {
     document.getElementById('recSpace').innerHTML = "";
     if (document.getElementById('back')) document.getElementById('back').disabled = true;
     if (document.getElementById('next')) document.getElementById('next').disabled = true;
-
-    await clearAlgoliaCache();
+    
     const result = await getRecords(n, p, opt);
 
     if (result) {
