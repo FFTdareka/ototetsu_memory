@@ -181,7 +181,7 @@ async function recordData() {
 
     const result = await setRecord(data);
     showNotice(result.message, "addRec", false);
-    clearAlgoliaCache();
+    await clearAlgoliaCache();
 
     document.getElementById('addRec_cho').value = "";
     document.getElementById('addRec_trk').value = "";
