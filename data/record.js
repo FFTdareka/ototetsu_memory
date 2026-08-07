@@ -1,5 +1,6 @@
 import {
-    getRecords
+    getRecords,
+    clearAlgoliaCache
 } from "./firebase.js";
 import {
     setR,
@@ -90,6 +91,7 @@ async function getRecord(n, p, opt) {
     if (document.getElementById('back')) document.getElementById('back').disabled = true;
     if (document.getElementById('next')) document.getElementById('next').disabled = true;
 
+    await clearAlgoliaCache();
     const result = await getRecords(n, p, opt);
 
     if (result) {
