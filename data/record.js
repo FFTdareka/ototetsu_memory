@@ -21,20 +21,28 @@ let nowO = {
 
 // staDataはimport時点で取得済みなので、そのままセレクトボックスを組み立てる
 let sLine = document.getElementById("selectline") || document.getElementById("addRec_line");
-if (sLine) {
+console.log("[debug] sLine:", sLine, "setR:", setR); // ★追加
+
+try {
+  if (sLine) {
     let ls = setR.sta;
     for (var i = 0; i < ls.length; i++) {
-        var lg = document.createElement("optgroup");
-        lg.label = ls[i][0];
-        for (var j = 0; j < ls[i][1].length; j++) {
-            var le = document.createElement("option");
-            le.value = `${i}_${j}`;
-            le.innerText = ls[i][1][j][0];
-            lg.appendChild(le);
-        }
-        sLine.appendChild(lg);
+      var lg = document.createElement("optgroup");
+      lg.label = ls[i][0];
+      for (var j = 0; j < ls[i][1].length; j++) {
+        var le = document.createElement("option");
+        le.value = `${i}_${j}`;
+        le.innerText = ls[i][1][j][0];
+        lg.appendChild(le);
+      }
+      sLine.appendChild(lg);
     }
+  }
+} catch (e) {
+  console.log("[debug] sLine構築でエラー発生:", e.message, e.stack); // ★これで確実に拾えるはず
 }
+
+console.log("[debug] sLine構築完了"); // ★追加
 
 let op;
 if (location.href === "https://fftdareka.github.io/ototetsu_memory/" ||
