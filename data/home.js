@@ -179,9 +179,9 @@ async function recordData() {
         uid: getUid(),
     };
 
+    await clearAlgoliaCache();
     const result = await setRecord(data);
     showNotice(result.message, "addRec", false);
-    await clearAlgoliaCache();
 
     document.getElementById('addRec_cho').value = "";
     document.getElementById('addRec_trk').value = "";
