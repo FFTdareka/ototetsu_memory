@@ -261,7 +261,7 @@ async function editRec() {
         value: "-1_-1"
     });
     document.getElementById("recSpace").innerHTML = "";
-    location.reload();
+    getRec();
 }
 
 function setSta(data) {
