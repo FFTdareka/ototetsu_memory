@@ -18,9 +18,7 @@ import {
     getDoc,
     setDoc,
     deleteDoc,
-    initializeFirestore,
-    persistentLocalCache,
-    persistentMultipleTabManager,
+    getFirestore,
 } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
 import {
     setR
@@ -31,11 +29,7 @@ let uid;
 const app = initializeApp(setR.firebase);
 getAnalytics(app);
 const auth = getAuth(app);
-const db = initializeFirestore(app, {
-    localCache: persistentLocalCache({
-        tabManager: persistentMultipleTabManager(),
-    }),
-});
+const db = getFirestore(app);
 
 let algoliaClient = null;
 
