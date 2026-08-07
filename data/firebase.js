@@ -26,8 +26,6 @@ import {
     setR
 } from "./staData.js";
 
-let algoliaClient = null;
-
 let uid;
 
 // Firebase 初期化
@@ -40,6 +38,8 @@ const db = initializeFirestore(app, {
     }),
 });
 
+let algoliaClient = null;
+
 function getAlgoliaClient() {
     if (algoliaClient) return algoliaClient;
 
@@ -51,11 +51,20 @@ function getAlgoliaClient() {
         );
     }
 
-    const {
-        liteClient
-    } = window["algoliasearch/lite"];
+    const { liteClient } = window["algoliasearch/lite"];
     algoliaClient = liteClient(setR.algolia.appId, setR.algolia.searchKey);
     return algoliaClient;
+}
+
+// ★追加：Algoliaのクライアントキャッシュを破棄する関数
+function clearAlgoliaCache() {
+    if (algoliaClient) {
+        // v5では clearCache() またはクライアントインスタンスをリセットすることでキャッシュを破棄できます
+        if (typeof algoliaClient.clearCache === "function") {
+            algoliaClient.clearCache();
+        }
+        algoliaClient = null; // インスタンスを再作成させることで確実に内部キャッシュをクリア
+    }
 }
 
 // ソートフィールド + 方向 → レプリカインデックス名 のマッピング
@@ -95,9 +104,29 @@ async function callFunction(name, data) {
 }
 
 // ===== API =====
-const setRecord = (data) => callFunction("setRecord", data);
-const editRecord = (data) => callFunction("editRecord", data);
-const deleteRecord = (data) => callFunction("deleteRecord", data);
+// 内部関数
+const _setRecord = (data) => callFunction("setRecord", data);
+const _editRecord = (data) => callFunction("editRecord", data);
+const _deleteRecord = (data) => callFunction("deleteRecord", data);
+
+// 外部用API（成功時にAlgoliaキャッシュをクリア）
+const setRecord = async (data) => {
+    const res = await _setRecord(data);
+    clearAlgoliaCache(); // 追加後にキャッシュクリア
+    return res;
+};
+
+const editRecord = async (data) => {
+    const res = await _editRecord(data);
+    clearAlgoliaCache(); // 編集後にキャッシュクリア
+    return res;
+};
+
+const deleteRecord = async (data) => {
+    const res = await _deleteRecord(data);
+    clearAlgoliaCache(); // 削除後にキャッシュクリア
+    return res;
+};
 
 // ===== ログイン状態の監視 =====
 status();
@@ -366,4 +395,5 @@ export {
     editRecord,
     deleteRecord,
     getUid,
+    clearAlgoliaCache,
 };
