@@ -54,12 +54,8 @@ async function getRec() {
 
     document.getElementById('recStatus').innerText = "読み込み中...";
 
-    const data = await new Promise((resolve) => {
-        setTimeout(() => {
-            getRec1(id);
-            resolve();
-        }, 500);
-    });
+    await new Promise(resolve => setTimeout(resolve, 500));
+    const data = await getRec1(id);
 
     if (!data) {
         document.getElementById("recStatus").innerText = "指定した鳴動記録のデータがありません。";
