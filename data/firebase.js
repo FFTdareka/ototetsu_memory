@@ -315,6 +315,7 @@ async function getRecords(n, p, opt = {
             numericFilters: numericFilters.length ? numericFilters : undefined,
             page: p - 1,
             hitsPerPage: n,
+            userToken: `t${Date.now()}`,
         }],
     });
 
