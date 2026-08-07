@@ -66,14 +66,7 @@ function getAlgoliaClient() {
         );
     }
     const { liteClient } = window["algoliasearch/lite"];
-    algoliaClient = liteClient(
-        setR.algolia.appId,
-        setR.algolia.searchKey,
-        {
-            responsesCache: createNullCache(),
-            requestsCache: createNullCache(),
-        },
-    );
+    algoliaClient = liteClient(setR.algolia.appId, setR.algolia.searchKey);
     return algoliaClient;
 }
 
