@@ -54,7 +54,6 @@ async function getRec() {
 
     document.getElementById('recStatus').innerText = "読み込み中...";
 
-    await new Promise(resolve => setTimeout(resolve, 1000));
     const data = await getRec1(id);
 
     if (!data) {
