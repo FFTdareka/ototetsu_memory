@@ -29,7 +29,7 @@ console.log("[debug] firebase.js 実行開始");
 let uid;
 
 const app = initializeApp(setR.firebase);
-//getAnalytics(app);
+getAnalytics(app);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
