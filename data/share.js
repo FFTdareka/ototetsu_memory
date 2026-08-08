@@ -336,7 +336,7 @@ function setSta2(data) {
     }
 }
 
-function setLineAndStation(lineValue, staName) {
+function setLineAndSta(lineValue, staName) {
     const lineName = lineValue.split("_")[0];
 
     let lineSelect = document.getElementById("addRec").children[4].children[0];
