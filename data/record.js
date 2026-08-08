@@ -291,7 +291,6 @@ function clearSort() {
     document.getElementById("s1v").value = "d";
 }
 
-// HTMLのonclick/onchange属性から呼ばれている可能性があるため、window公開を維持
 window.wline = wline;
 window.setFilter = setFilter;
 window.clearFilter = clearFilter;

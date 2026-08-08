@@ -132,6 +132,16 @@ async function renderRec(data) {
         document.getElementById("delRecBtn").disabled = false;
         document.getElementById("delRecBtn").addEventListener("click", delRec);
         document.getElementById("addRec").style.display = "block";
+        let unix = data.datetime;
+        let delayN = Number(data.delay);
+        document.getElementById("addRec_date").value = formatDateTime(new Date((unix - delayN * 60) * 1000));
+        document.getElementById("addRec_del").value = delayN == 0 ? null : delayN;
+        setLineAndSta(data.line, sta);
+        document.getElementById("addRec_cho").value = cho.replace(/c/g, "");
+        document.getElementById("addRec_trk").value = trk;
+        document.getElementById("addRec_trn").value = trn;
+        document.getElementById("addRec_for").value = bfor;
+        document.getElementById("addRec_com").value = com;
     } else {
         document.getElementById("editRecBtn").innerText = "編集権限なし";
         document.getElementById("delRecBtn").innerText = "削除権限なし";
@@ -324,6 +334,45 @@ function setSta2(data) {
     } else {
         if (s) s.remove();
     }
+}
+
+function setLineAndSta(lineValue, staName) {
+    const lineName = lineValue.split("_")[0];
+
+    let lineSelect = document.getElementById("addRec").children[4].children[0];
+    let i = -1, j = -1;
+    outer:
+    for (let gi = 0; gi < setR.sta.length; gi++) {
+        const lines = setR.sta[gi][1];
+        for (let li = 0; li < lines.length; li++) {
+            if (lines[li][0] === lineName) {
+                i = gi;
+                j = li;
+                break outer;
+            }
+        }
+    }
+    lineSelect.value = `${i}_${j}`;
+    setSta(lineSelect);
+    
+    let staSelect = document.getElementById("addRec_sta");
+    let k = -1, k2 = -1;
+    if (i !== -1 && j !== -1) {
+        const staData = setR.sta[i][1][j][1];
+        outer2:
+        for (let gk = 0; gk < staData.length; gk++) {
+            const names = staData[gk][1];
+            for (let sk = 0; sk < names.length; sk++) {
+                if (names[sk] === staName) {
+                    k = gk;
+                    k2 = sk;
+                    break outer2;
+                }
+            }
+        }
+    }
+    staSelect.value = `${k}_${k2}`;
+    setSta2(staSelect);
 }
 
 async function delRec() {
