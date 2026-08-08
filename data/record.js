@@ -8,6 +8,7 @@ import {
 } from "./staData.js";
 
 console.log("[debug] record.js 実行開始");
+sendClientLog({type: "record.js実行開始"});
 
 let nowN = 0;
 let nowP = 0;
@@ -87,6 +88,7 @@ function wline(data) {
 }
 
 async function getRecord(n, p, opt) {
+    sendClientLog({type: "getRecord呼び出し"});
     const sortButton = document.getElementById("filter");
     if (sortButton) sortButton.disabled = true;
     document.getElementById('recStatus').innerText = "読み込み中...";
