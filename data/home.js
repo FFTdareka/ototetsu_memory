@@ -7,9 +7,8 @@ import {
     ready
 } from "./staData.js";
 
-await ready; // ★追加: これでsetRが確実に使える状態になるまで待つ
+await ready;
 
-// モジュールはDOM解析後に実行されるため、DOMContentLoadedは不要
 const check = document.getElementById("addRec_chk");
 const addButton = document.getElementById('addRec_btn');
 const mode = document.getElementById("addRec_mode");

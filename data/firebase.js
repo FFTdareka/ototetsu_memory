@@ -26,9 +26,7 @@ import {
     ready
 } from "./staData.js";
 
-console.log("[debug] firebase.js 実行開始");
-
-await ready; // ★追加: これでsetRが確実に使える状態になるまで待つ
+await ready;
 
 let uid;
 
@@ -63,14 +61,12 @@ async function searchWithTimeout(params, timeoutMs = 6000, retries = 2) {
         const timer = setTimeout(() => controller.abort(), timeoutMs);
         try {
             const result = await getAlgoliaClient().search(params, {
-                signal: controller.signal, // ★第2引数として渡す
+                signal: controller.signal,
             });
             clearTimeout(timer);
             return result;
         } catch (e) {
             clearTimeout(timer);
-            lastError = e;
-            console.log(`[debug] search失敗(試行${attempt + 1}/${retries + 1}):`, e);
         }
     }
     throw lastError;

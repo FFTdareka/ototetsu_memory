@@ -11,16 +11,11 @@ function sendClientLog(data) {
         fetch(LOG_ENDPOINT, {
             method: "POST",
             keepalive: true,
-            body: payload, // ★ Content-Typeを指定しない(text/plain扱いになりpreflightを回避)
-        }).catch((e) => {
-            // 送信自体に失敗しても何もしない(ログ機能なので握りつぶす)
-        });
-    } catch (e) {
-        // 何もしない
-    }
+            body: payload,
+        }).catch((e) => {});
+    } catch (e) {}
 }
 
-// ページの読み込み開始を記録(実行がどこまで進んだかの基準点)
 sendClientLog({type: "pageload"});
 
 window.addEventListener("error", (e) => {
@@ -37,14 +32,6 @@ window.addEventListener("unhandledrejection", (e) => {
         type: "unhandledrejection",
         message: String(e.reason && e.reason.message || e.reason),
     });
-});
-
-// ページが表示された/復帰したタイミングも記録
-window.addEventListener("pageshow", (event) => {
-    sendClientLog({type: "pageshow", persisted: event.persisted});
-    if (event.persisted) {
-        location.reload();
-    }
 });
 
 fetch('data/staData.json')

@@ -8,10 +8,9 @@ import {
     ready
 } from "./staData.js";
 
-console.log("[debug] record.js 実行開始");
 sendClientLog({type: "record.js実行開始"});
 
-await ready; // ★追加: これでsetRが確実に使える状態になるまで待つ
+await ready;
 
 let nowN = 0;
 let nowP = 0;
@@ -23,9 +22,7 @@ let nowO = {
     }
 };
 
-// staDataはimport時点で取得済みなので、そのままセレクトボックスを組み立てる
 let sLine = document.getElementById("selectline") || document.getElementById("addRec_line");
-console.log("[debug] sLine:", sLine, "setR:", setR); // ★追加
 
 try {
   if (sLine) {
@@ -42,11 +39,7 @@ try {
       sLine.appendChild(lg);
     }
   }
-} catch (e) {
-  console.log("[debug] sLine構築でエラー発生:", e.message, e.stack); // ★これで確実に拾えるはず
-}
-
-console.log("[debug] sLine構築完了"); // ★追加
+} catch (e) {}
 
 let op;
 if (location.href === "https://fftdareka.github.io/ototetsu_memory/" ||
@@ -56,15 +49,7 @@ if (location.href === "https://fftdareka.github.io/ototetsu_memory/" ||
     op = { filter: {}, sort: { data: { dates: "d" }, rank: ["dates"] } };
 }
 
-// 初回読み込みが一定時間で終わらなければ、強制的にページを再読み込みする
-const initialLoadWatchdog = setTimeout(() => {
-    console.log("[debug] 初回読み込みがタイムアウトしたため強制リロードします");
-    location.reload();
-}, 10000);
-
-getRecord(10, 1, op).finally(() => {
-    clearTimeout(initialLoadWatchdog);
-});
+getRecord(10, 1, op);
 
 nowN = 10;
 nowP = 1;
@@ -110,7 +95,6 @@ async function getRecord(n, p, opt) {
             document.getElementById('recStatus').innerText = "指定した鳴動記録のデータがありません。";
         }
     } catch (e) {
-        console.log("[debug] getRecordエラー:", e);
         document.getElementById('recStatus').innerText = "読み込みに失敗しました。もう一度お試しください。";
     }
 
