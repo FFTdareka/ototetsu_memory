@@ -8,8 +8,11 @@ import {
 import {
     setR,
     d,
-    sc
+    sc,
+    ready
 } from "./staData.js";
+
+await ready;
 
 const params = new URLSearchParams(window.location.search);
 const id = Number(params.get("id"));
