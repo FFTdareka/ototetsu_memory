@@ -348,7 +348,7 @@ function setLineAndSta(lineValue, staName) {
     for (let gi = 0; gi < setR.sta.length; gi++) {
         const lines = setR.sta[gi][1];
         for (let li = 0; li < lines.length; li++) {
-            if (lines[li][0] === lineName) {
+            if (lines[li][3] === lineName) {
                 i = gi;
                 j = li;
             }
