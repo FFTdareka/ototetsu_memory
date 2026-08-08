@@ -336,43 +336,75 @@ function setSta2(data) {
     }
 }
 
-function setLineAndSta(lineValue, staName) {
+function setLineAndStation(lineValue, staName) {
     const lineName = lineValue.split("_")[0];
 
     let lineSelect = document.getElementById("addRec").children[4].children[0];
     let i = -1, j = -1;
-    outer:
+    let iOther = -1, jOther = -1;
     for (let gi = 0; gi < setR.sta.length; gi++) {
         const lines = setR.sta[gi][1];
         for (let li = 0; li < lines.length; li++) {
             if (lines[li][0] === lineName) {
                 i = gi;
                 j = li;
-                break outer;
+            }
+            if (lines[li][0] === "その他") {
+                iOther = gi;
+                jOther = li;
             }
         }
     }
+
+    let lineIsOther = false;
+    if ((i === -1 || j === -1) && iOther !== -1 && jOther !== -1) {
+        i = iOther;
+        j = jOther;
+        lineIsOther = true;
+    }
+
     lineSelect.value = `${i}_${j}`;
     setSta(lineSelect);
-    
+
+    if (lineIsOther) {
+        let lineInput = document.getElementById("line");
+        if (lineInput) lineInput.value = lineName;
+    }
+
     let staSelect = document.getElementById("addRec_sta");
     let k = -1, k2 = -1;
+    let kOther = -1, k2Other = -1;
     if (i !== -1 && j !== -1) {
         const staData = setR.sta[i][1][j][1];
-        outer2:
         for (let gk = 0; gk < staData.length; gk++) {
             const names = staData[gk][1];
             for (let sk = 0; sk < names.length; sk++) {
                 if (names[sk] === staName) {
                     k = gk;
                     k2 = sk;
-                    break outer2;
+                }
+                if (names[sk] === "その他") {
+                    kOther = gk;
+                    k2Other = sk;
                 }
             }
         }
     }
+
+    let staIsOther = false;
+    if ((k === -1 || k2 === -1) && kOther !== -1 && k2Other !== -1) {
+        k = kOther;
+        k2 = k2Other;
+        staIsOther = true;
+    }
+
     staSelect.value = `${k}_${k2}`;
     setSta2(staSelect);
+
+    if (staIsOther) {
+        let staInput = document.getElementById("station");
+        if (staInput) staInput.value = staName;
+    }
 }
 
 async function delRec() {
