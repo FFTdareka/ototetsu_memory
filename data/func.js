@@ -2,13 +2,21 @@ const LOG_ENDPOINT = "https://us-central1-ototetsu-memory.cloudfunctions.net/log
 
 function sendClientLog(data) {
     try {
-        const blob = new Blob(
-            [JSON.stringify({...data, ua: navigator.userAgent, url: location.href, time: new Date().toISOString()})],
-            {type: "application/json"},
-        );
-        navigator.sendBeacon(LOG_ENDPOINT, blob);
+        const payload = JSON.stringify({
+            ...data,
+            ua: navigator.userAgent,
+            url: location.href,
+            time: new Date().toISOString(),
+        });
+        fetch(LOG_ENDPOINT, {
+            method: "POST",
+            keepalive: true,
+            body: payload, // ★ Content-Typeを指定しない(text/plain扱いになりpreflightを回避)
+        }).catch((e) => {
+            // 送信自体に失敗しても何もしない(ログ機能なので握りつぶす)
+        });
     } catch (e) {
-        // 送信自体に失敗しても何もしない(ログ機能なので握りつぶす)
+        // 何もしない
     }
 }
 
