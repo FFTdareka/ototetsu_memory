@@ -33,7 +33,8 @@ const app = initializeApp(setR.firebase);
 getAnalytics(app);
 const auth = getAuth(app);
 const db = initializeFirestore(app, {
-    localCache: memoryLocalCache()
+    localCache: memoryLocalCache(),
+    experimentalAutoDetectLongPolling: true
 });
 
 let algoliaClient = null;
