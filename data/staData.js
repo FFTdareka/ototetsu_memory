@@ -1,6 +1,12 @@
-const res = await fetch('data/staData.json');
-const setR = await res.json();
-const d = setR.d;
-const sc = setR.line;
+let setR;
+let d;
+let sc;
 
-export { setR, d, sc };
+const ready = (async () => {
+    const res = await fetch('data/staData.json');
+    setR = await res.json();
+    d = setR.d;
+    sc = setR.line;
+})();
+
+export { setR, d, sc, ready };

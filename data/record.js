@@ -4,11 +4,14 @@ import {
 import {
     setR,
     d,
-    sc
+    sc,
+    ready
 } from "./staData.js";
 
 console.log("[debug] record.js 実行開始");
 sendClientLog({type: "record.js実行開始"});
+
+await ready; // ★追加: これでsetRが確実に使える状態になるまで待つ
 
 let nowN = 0;
 let nowP = 0;

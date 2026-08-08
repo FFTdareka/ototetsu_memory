@@ -22,10 +22,13 @@ import {
     memoryLocalCache,
 } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
 import {
-    setR
+    setR,
+    ready
 } from "./staData.js";
 
 console.log("[debug] firebase.js 実行開始");
+
+await ready; // ★追加: これでsetRが確実に使える状態になるまで待つ
 
 let uid;
 

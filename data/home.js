@@ -3,8 +3,11 @@ import {
     setRecord
 } from "./firebase.js";
 import {
-    setR
+    setR,
+    ready
 } from "./staData.js";
+
+await ready; // ★追加: これでsetRが確実に使える状態になるまで待つ
 
 // モジュールはDOM解析後に実行されるため、DOMContentLoadedは不要
 const check = document.getElementById("addRec_chk");
