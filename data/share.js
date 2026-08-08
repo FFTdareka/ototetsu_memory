@@ -228,6 +228,8 @@ async function editRec() {
     }
 
     document.getElementById("editRecBtn").disabled = true;
+    document.getElementById("editRecBtn").innerText = "編集中...";
+    document.getElementById("delRecBtn").disabled = true;
     const data = {
         date,
         station,
@@ -326,7 +328,9 @@ function setSta2(data) {
 
 async function delRec() {
     if (!confirm("本当に記録を削除しますか?この操作は取り消せません。")) return;
+    document.getElementById("editRecBtn").disabled = true;
     document.getElementById("delRecBtn").disabled = true;
+    document.getElementById("delRecBtn").innerText = "削除中...";
 
     const result = await deleteRecord({
         id
@@ -337,7 +341,9 @@ async function delRec() {
         location.href = "https://fftdareka.github.io/ototetsu_memory/";
     } else {
         showNotice(message, "addRec", false);
+        document.getElementById("editRecBtn").disabled = false;
         document.getElementById("delRecBtn").disabled = false;
+        document.getElementById("delRecBtn").innerText = "削除";
     }
 }
 

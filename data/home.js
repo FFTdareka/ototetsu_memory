@@ -166,6 +166,7 @@ async function recordData() {
     }
 
     addButton.disabled = true;
+    addButton.innerText = "送信中...";
     const data = {
         date,
         station,
@@ -188,6 +189,7 @@ async function recordData() {
     document.getElementById('addRec_com').value = "";
     check.checked = false;
     addButton.disabled = true;
+    addButton.innerText = "送信";
 
     if (mode.value === "sameT") {
         document.getElementById('addRec_sta').value = "-1_-1";
