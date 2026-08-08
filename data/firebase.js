@@ -18,7 +18,8 @@ import {
     getDoc,
     setDoc,
     deleteDoc,
-    getFirestore,
+    initializeFirestore,
+    memoryLocalCache,
 } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
 import {
     setR
@@ -31,7 +32,9 @@ let uid;
 const app = initializeApp(setR.firebase);
 getAnalytics(app);
 const auth = getAuth(app);
-const db = getFirestore(app);
+const db = initializeFirestore(app, {
+    localCache: memoryLocalCache()
+});
 
 let algoliaClient = null;
 
