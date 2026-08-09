@@ -57,10 +57,11 @@ function showNotice(text, parentId, sd = true, noticeId = "") {
 
 function formatDateTime(date) {
   const pad = (n) => String(n).padStart(2, '0');
-  const year = date.getFullYear();
-  const month = pad(date.getMonth() + 1);
-  const day = pad(date.getDate());
-  const hours = pad(date.getHours());
-  const minutes = pad(date.getMinutes());
+  const jst = new Date(date.getTime() + 9 * 60 * 60 * 1000);
+  const year = jst.getUTCFullYear();
+  const month = pad(jst.getUTCMonth() + 1);
+  const day = pad(jst.getUTCDate());
+  const hours = pad(jst.getUTCHours());
+  const minutes = pad(jst.getUTCMinutes());
   return `${year}-${month}-${day}T${hours}:${minutes}`;
 }

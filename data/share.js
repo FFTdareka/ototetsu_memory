@@ -134,9 +134,9 @@ async function renderRec(data) {
     let isM = await getUserStatus();
     let myUid = await getUid();
     if (uid == myUid || isM) {
-        document.getElementById("editRecBtn").innerText = uid == getUid() ? "編集" : "メンバー権限で編集";
+        document.getElementById("editRecBtn").innerText = uid == myUid ? "編集" : "メンバー権限で編集";
         document.getElementById("editRecBtn").addEventListener("click", editRec);
-        document.getElementById("delRecBtn").innerText = uid == getUid() ? "削除" : "メンバー権限で削除";
+        document.getElementById("delRecBtn").innerText = uid == myUid ? "削除" : "メンバー権限で削除";
         document.getElementById("delRecBtn").disabled = false;
         document.getElementById("delRecBtn").addEventListener("click", delRec);
         document.getElementById("addRec").style.display = "block";
@@ -178,9 +178,10 @@ async function editRec() {
     if (date2.length === 0) {
         error += "日付が選択されていません。";
     } else {
-        let date3 = new Date(date2);
-        date = `${date3.getFullYear()}/${date3.getMonth() + 1}/${date3.getDate()}`;
-        time = `${date3.getHours()}:${date3.getMinutes().toString().padStart(2, "0")}`;
+        const [datePart, timePart] = date2.split("T");
+        const [y, m, d] = datePart.split("-").map(Number);
+        date = `${y}/${m}/${d}`;
+        time = timePart;
     }
     if (delay.length === 0) delay = "0";
 
