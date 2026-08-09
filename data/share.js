@@ -141,7 +141,7 @@ async function renderRec(data) {
         document.getElementById("addRec").style.display = "block";
         let unix = data.datetime;
         let delayN = Number(data.delay);
-        document.getElementById("addRec_date").value = formatDateTime(new Date((unix - delayN * 60 - 32400) * 1000));
+        document.getElementById("addRec_date").value = formatDateTime(new Date((unix - delayN * 60) * 1000));
         document.getElementById("addRec_del").value = delayN == 0 ? null : delayN;
         setLineAndSta(data.line, sta);
         document.getElementById("addRec_cho").value = cho.replace(/c/g, "");
