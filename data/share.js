@@ -123,7 +123,7 @@ async function renderRec(data) {
     }
     rDatas.appendChild(document.createElement("br"));
     let rd2 = document.createElement('span');
-    rd2.innerText = "運営による編集履歴";
+    rd2.innerText = "編集履歴";
     rd2.appendChild(document.createElement("br"));
     let rData2 = document.createElement('span');
     rData2.appendChild(s);
@@ -150,6 +150,8 @@ async function renderRec(data) {
         document.getElementById("addRec_trn").value = trn;
         document.getElementById("addRec_for").value = bfor;
         document.getElementById("addRec_com").value = com;
+        document.getElementById("addRec_oldlog").value = log.join("\\n");
+        isM ? document.getElementById("addRec_oldlogA").style.display = "block" : document.getElementById("addRec_oldlog").disabled = true;
     } else {
         document.getElementById("editRecBtn").innerText = "編集権限なし";
         document.getElementById("delRecBtn").innerText = "削除権限なし";
@@ -171,6 +173,7 @@ async function editRec() {
     let train = document.getElementById("addRec_trn").value;
     let tfor = document.getElementById("addRec_for").value;
     let comment = document.getElementById("addRec_com").value;
+    let addLog = document.getElementById("addRec_log").value;
     let error = "エラー:";
 
     if (!check.checked) error += "確認欄がチェックされていません。";
@@ -236,7 +239,10 @@ async function editRec() {
     }
 
     if (train.length === 0) error += "種別が入力されていません。";
+
     if (tfor.length === 0) error += "行先が入力されていません。";
+
+    if (addLog == "") error += "編集履歴が入力されていません。";
 
     if (error !== "エラー:") {
         let err = document.createElement("div");
@@ -245,7 +251,8 @@ async function editRec() {
         document.getElementById("addRec").appendChild(err);
         return;
     }
-
+    let oldlog = document.getElementById("addRec_oldlog").value;
+    let dateN = new Date();
     document.getElementById("editRecBtn").disabled = true;
     document.getElementById("editRecBtn").innerText = "編集中...";
     document.getElementById("delRecBtn").disabled = true;
@@ -260,6 +267,8 @@ async function editRec() {
         train,
         for: tfor,
         comment,
+        log: `${oldlog}\\n${dateN.getFullYear()}/${dateN.getMonth() + 1}/${dateN.getDate()} ${addLog}`,
+        newlog: `${dateN.getFullYear()}/${dateN.getMonth() + 1}/${dateN.getDate()} ${addLog}`,
         id,
     };
 
