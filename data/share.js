@@ -267,7 +267,7 @@ async function editRec() {
         train,
         for: tfor,
         comment,
-        log: `${oldlog}\\n${dateN.getFullYear()}/${dateN.getMonth() + 1}/${dateN.getDate()} ${addLog}`,
+        log: oldlog == "" ? `${dateN.getFullYear()}/${dateN.getMonth() + 1}/${dateN.getDate()} ${addLog}` : `${oldlog}\\n${dateN.getFullYear()}/${dateN.getMonth() + 1}/${dateN.getDate()} ${addLog}`,
         newlog: `${dateN.getFullYear()}/${dateN.getMonth() + 1}/${dateN.getDate()} ${addLog}`,
         id,
     };
