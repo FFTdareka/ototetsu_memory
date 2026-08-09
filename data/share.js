@@ -134,9 +134,9 @@ async function renderRec(data) {
     document.getElementById("recStatus").innerText = "";
 
     if (uid == getUid() || isM) {
-        document.getElementById("editRecBtn").innerText = isM ? "メンバー権限で編集" : "編集";
+        document.getElementById("editRecBtn").innerText = uid == getUid() ? "編集" : "メンバー権限で編集";
         document.getElementById("editRecBtn").addEventListener("click", editRec);
-        document.getElementById("delRecBtn").innerText = isM ? "メンバー権限で削除" : "削除";
+        document.getElementById("delRecBtn").innerText = uid == getUid() ? "削除" : "メンバー権限で削除";
         document.getElementById("delRecBtn").disabled = false;
         document.getElementById("delRecBtn").addEventListener("click", delRec);
         document.getElementById("addRec").style.display = "block";
