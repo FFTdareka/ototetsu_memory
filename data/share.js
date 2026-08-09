@@ -3,7 +3,8 @@ import {
     getRec1,
     loadUserdata,
     editRecord,
-    deleteRecord
+    deleteRecord,
+    getUserStatus
 } from "./firebase.js";
 import {
     setR,
@@ -16,6 +17,7 @@ await ready;
 
 const params = new URLSearchParams(window.location.search);
 const id = Number(params.get("id"));
+const isM = getUserStatus();
 
 const check = document.getElementById("addRec_chk");
 const editButton = document.getElementById('editRecBtn');
@@ -112,7 +114,10 @@ async function renderRec(data) {
             rData.innerText = dt[j];
             rData.appendChild(delE);
         }
-        if (j == 9) rData.innerText = await loadUserdata(dt[j] || "guest");
+        if (j == 9) {
+            let uData2 = await loadUserdata(dt[j] || "guest");
+            rData.innerText = uData2.name;
+        };
         rd.appendChild(rData);
         rDatas.appendChild(rd);
         rDatas.appendChild(document.createElement("br"));
@@ -128,10 +133,10 @@ async function renderRec(data) {
     document.getElementById("recSpace").appendChild(rDatas);
     document.getElementById("recStatus").innerText = "";
 
-    if (uid == getUid()) {
-        document.getElementById("editRecBtn").innerText = "編集";
+    if (uid == getUid() || isM) {
+        document.getElementById("editRecBtn").innerText = isM ? "メンバー権限で編集" : "編集";
         document.getElementById("editRecBtn").addEventListener("click", editRec);
-        document.getElementById("delRecBtn").innerText = "削除";
+        document.getElementById("delRecBtn").innerText = isM ? "メンバー権限で削除" : "削除";
         document.getElementById("delRecBtn").disabled = false;
         document.getElementById("delRecBtn").addEventListener("click", delRec);
         document.getElementById("addRec").style.display = "block";
@@ -279,6 +284,27 @@ async function editRec() {
     getRec();
 }
 
+async function delRec() {
+    if (!confirm("本当に記録を削除しますか?この操作は取り消せません。")) return;
+    document.getElementById("editRecBtn").disabled = true;
+    document.getElementById("delRecBtn").disabled = true;
+    document.getElementById("delRecBtn").innerText = "削除中...";
+
+    const result = await deleteRecord({
+        id
+    });
+    const message = result.message;
+
+    if (message === null) {
+        location.href = "https://fftdareka.github.io/ototetsu_memory/";
+    } else {
+        showNotice(message, "addRec", false);
+        document.getElementById("editRecBtn").disabled = false;
+        document.getElementById("delRecBtn").disabled = false;
+        document.getElementById("delRecBtn").innerText = "削除";
+    }
+}
+
 function setSta(data) {
     let l = document.getElementById("line");
     let s = document.getElementById("station");
@@ -407,27 +433,6 @@ function setLineAndSta(lineValue, staName) {
     if (staIsOther) {
         let staInput = document.getElementById("station");
         if (staInput) staInput.value = staName;
-    }
-}
-
-async function delRec() {
-    if (!confirm("本当に記録を削除しますか?この操作は取り消せません。")) return;
-    document.getElementById("editRecBtn").disabled = true;
-    document.getElementById("delRecBtn").disabled = true;
-    document.getElementById("delRecBtn").innerText = "削除中...";
-
-    const result = await deleteRecord({
-        id
-    });
-    const message = result.message;
-
-    if (message === null) {
-        location.href = "https://fftdareka.github.io/ototetsu_memory/";
-    } else {
-        showNotice(message, "addRec", false);
-        document.getElementById("editRecBtn").disabled = false;
-        document.getElementById("delRecBtn").disabled = false;
-        document.getElementById("delRecBtn").innerText = "削除";
     }
 }
 

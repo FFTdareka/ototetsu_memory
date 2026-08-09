@@ -28,7 +28,7 @@ import {
 
 await ready;
 
-let uid;
+let uid, isMember;
 
 const app = initializeApp(setR.firebase);
 getAnalytics(app);
@@ -129,15 +129,16 @@ function status() {
                 document.getElementById("deleteBtn").addEventListener("click", userDelete);
             }
 
-            let uName = await loadUserdata(uid, true);
-            userName.innerText = uName;
+            let uData = await loadUserdata(uid, true);
+            let uName = uData.name;
+            isMember = uData.member;
+            userName.innerText = `${uName}${isMember ? "(メンバー)" : ""}`;
 
             if (location.href === "https://fftdareka.github.io/ototetsu_memory/user.html") {
                 document.getElementById("userNameS").innerText = uName;
             }
 
         } else {
-            localStorage.setItem('uid', '');
             userStatus.innerText = "未ログイン";
             userName.innerText = "";
             loginBtn.innerText = "Googleでログイン";
@@ -197,20 +198,23 @@ function loadUserdata(uid = "guest", tf = false) {
     return getDoc(doc(db, "user", uid))
         .then((snap) => {
             if (snap.exists()) {
-                return snap.data().name || "匿名";
+                return {
+                    name: snap.data().name || "匿名",
+                    member: snap.data().member || false
+                };
             } else if (tf) {
                 return setDoc(doc(db, "user", uid), {
                         name: "匿名"
                     }, {
                         merge: true
                     })
-                    .then(() => "匿名")
+                    .then(() => ({ name: "匿名", member: false }))
                     .catch((error) => {
                         console.error("作成失敗:", error);
                         throw error;
                     });
             } else {
-                return "削除されたユーザー";
+                return ({ name: "削除されたユーザー", member: false });
             }
         })
         .catch((er) => {
@@ -241,6 +245,10 @@ function updateUser() {
 
 function getUid() {
     return uid;
+}
+
+function getUserStatus() {
+    return isMember;
 }
 
 function buildAlgoliaFilters(filter = {}) {
@@ -354,4 +362,5 @@ export {
     editRecord,
     deleteRecord,
     getUid,
+    getUserStatus,
 };
