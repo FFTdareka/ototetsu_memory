@@ -153,8 +153,8 @@ function status() {
                 document.getElementById("login2").addEventListener("click", userLogin);
             }
         }
+        resolveStatusReady();
     });
-    resolveStatusReady();
 }
 
 function userLogin() {
