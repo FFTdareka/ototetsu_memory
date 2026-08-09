@@ -280,6 +280,7 @@ function clearFilter() {
     document.getElementById("maxrec").value = "";
     document.getElementById("selectline").value = "-1_-1";
     document.getElementById("selectsta").value = "";
+    document.getElementById("strack").value = "";
     document.getElementById("startdate").value = "";
     document.getElementById("enddate").value = "";
     document.getElementById("reactive").value = "b";
