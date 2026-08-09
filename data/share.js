@@ -260,7 +260,6 @@ async function editRec() {
         train,
         for: tfor,
         comment,
-        uid: await getUid(),
         id,
     };
 
@@ -369,7 +368,7 @@ function setSta2(data) {
 function setLineAndSta(lineValue, staName) {
     const lineName = lineValue.split("_")[0];
 
-    let lineSelect = document.getElementById("addRec").children[4].children[0];
+    let lineSelect = document.getElementById("addRec_line");
     let i = -1, j = -1;
     let iOther = -1, jOther = -1;
     for (let gi = 0; gi < setR.sta.length; gi++) {
