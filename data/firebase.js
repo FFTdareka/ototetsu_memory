@@ -116,25 +116,21 @@ function status() {
     onAuthStateChanged(auth, async (user) => {
         if (user) {
             uid = user.uid;
+            let uData = await loadUserdata(uid, true);
+            let uName = uData.name;
+            isMember = uData.member;
             userStatus.innerText = " としてログイン中";
             loginBtn.innerText = "ログアウト";
             loginBtn.classList.add("redB");
             loginBtn.removeEventListener("click", userLogin);
             loginBtn.addEventListener("click", userLogout);
+            userName.innerText = `${uName}${isMember ? "(メンバー)" : ""}`;
 
             if (location.href === "https://fftdareka.github.io/ototetsu_memory/user.html") {
                 let sSpace = document.getElementById("setting");
                 sSpace.innerHTML = `<div id="nameS">現在の名前: <span id="userNameS"></span><br>新しい名前: <input id="newName" type="text" placeholder="名前を入力"></div><button id="updateBtn" type="button">更新</button><br><br><div id="delS">みんなの音鉄記録帳から退会される方はこちら　<button id="deleteBtn" class="redB" type="button">退会する</button></div>`;
                 document.getElementById("updateBtn").addEventListener("click", updateUser);
                 document.getElementById("deleteBtn").addEventListener("click", userDelete);
-            }
-
-            let uData = await loadUserdata(uid, true);
-            let uName = uData.name;
-            isMember = uData.member;
-            userName.innerText = `${uName}${isMember ? "(メンバー)" : ""}`;
-
-            if (location.href === "https://fftdareka.github.io/ototetsu_memory/user.html") {
                 document.getElementById("userNameS").innerText = uName;
             }
 
