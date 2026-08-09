@@ -225,17 +225,18 @@ function setFilter() {
         let lineData = sli.split("_");
         let i = Number(lineData[0]);
         let j = Number(lineData[1]);
-        let line = setR.sta[i][1][j][3] || setR.sta[i][1][j][0];
+        let lineD = setR.sta[i][1][j]; 
+        let line = lineD[3] || lineD[0];
         if (line === "その他") {
             let line2 = document.getElementById("selectline2").value;
             if (line2) {
                 line = line2;
-                opt.filter.line = line;
-                if (line === "信越本線") opt.filter.lnum = "n";
+                opt.filter.line = `${line}_その他`;
+                if (line2 === "信越本線") opt.filter.lnum = "n";
             }
         } else {
-            opt.filter.line = line;
-            if (line === "信越本線") opt.filter.lnum = Number(setR.sta[i][1][j][2].replace("信越本線", ""));
+            opt.filter.line = `${line}_${lineD[2]}`;
+            if (line === "信越本線") opt.filter.lnum = Number(lineD[2].replace("信越本線", ""));
         }
     }
     if (ssta !== "") opt.filter.sta = ssta;
