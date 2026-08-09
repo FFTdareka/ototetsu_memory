@@ -17,7 +17,6 @@ await ready;
 
 const params = new URLSearchParams(window.location.search);
 const id = Number(params.get("id"));
-const isM = getUserStatus();
 
 const check = document.getElementById("addRec_chk");
 const editButton = document.getElementById('editRecBtn');
@@ -85,7 +84,7 @@ async function renderRec(data) {
     const log = data.log.split("\\n");
     const uid = data.uid;
 
-    var s = document.createElement("div");
+    let s = document.createElement("div");
     for (var i = 0; i < log.length; i++) {
         if (i > 0) s.appendChild(document.createElement("br"));
         var sp = document.createElement("span");
@@ -123,16 +122,16 @@ async function renderRec(data) {
         rDatas.appendChild(document.createElement("br"));
     }
     rDatas.appendChild(document.createElement("br"));
-    var rd2 = document.createElement('span');
+    let rd2 = document.createElement('span');
     rd2.innerText = "運営による編集履歴";
     rd2.appendChild(document.createElement("br"));
-    var rData2 = document.createElement('span');
+    let rData2 = document.createElement('span');
     rData2.appendChild(s);
     rd2.appendChild(rData2);
     rDatas.appendChild(rd2);
     document.getElementById("recSpace").appendChild(rDatas);
     document.getElementById("recStatus").innerText = "";
-
+    let isM = getUserStatus();
     if (uid == getUid() || isM) {
         document.getElementById("editRecBtn").innerText = uid == getUid() ? "編集" : "メンバー権限で編集";
         document.getElementById("editRecBtn").addEventListener("click", editRec);
