@@ -280,7 +280,7 @@ async function editRec() {
     document.getElementById('addRec_com').value = "";
     document.getElementById('addRec_log').value = "";
     document.getElementById('addRec_oldlog').value = "";
-    document.getElementById('addRec_oldlog').style.display = "none";
+    document.getElementById('addRec_oldlogA').style.display = "none";
     document.getElementById('addRec_oldlog').disabled = false;
     check.checked = false;
     editButton.disabled = true;
