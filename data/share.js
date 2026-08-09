@@ -379,7 +379,7 @@ function setLineAndSta(lineValue, staName) {
                 i = gi;
                 j = li;
             }
-            if (lines[li][0] === "その他") {
+            if (lines[li][3] === "その他") {
                 iOther = gi;
                 jOther = li;
             }
