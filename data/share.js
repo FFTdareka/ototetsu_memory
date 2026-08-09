@@ -131,8 +131,9 @@ async function renderRec(data) {
     rDatas.appendChild(rd2);
     document.getElementById("recSpace").appendChild(rDatas);
     document.getElementById("recStatus").innerText = "";
-    let isM = getUserStatus();
-    if (uid == getUid() || isM) {
+    let isM = await getUserStatus();
+    let myUid = await getUid();
+    if (uid == myUid || isM) {
         document.getElementById("editRecBtn").innerText = uid == getUid() ? "編集" : "メンバー権限で編集";
         document.getElementById("editRecBtn").addEventListener("click", editRec);
         document.getElementById("delRecBtn").innerText = uid == getUid() ? "削除" : "メンバー権限で削除";
@@ -258,7 +259,7 @@ async function editRec() {
         train,
         for: tfor,
         comment,
-        uid: getUid(),
+        uid: await getUid(),
         id,
     };
 

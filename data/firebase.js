@@ -30,6 +30,11 @@ await ready;
 
 let uid, isMember;
 
+let resolveStatusReady;
+const statusReady = new Promise((resolve) => {
+    resolveStatusReady = resolve;
+});
+
 const app = initializeApp(setR.firebase);
 getAnalytics(app);
 const auth = getAuth(app);
@@ -149,6 +154,7 @@ function status() {
             }
         }
     });
+    resolveStatusReady();
 }
 
 function userLogin() {
@@ -239,11 +245,13 @@ function updateUser() {
     }
 }
 
-function getUid() {
+async function getUid() {
+    await statusReady;
     return uid;
 }
 
-function getUserStatus() {
+async function getUserStatus() {
+    await statusReady;
     return isMember;
 }
 

@@ -178,7 +178,7 @@ async function recordData() {
         train,
         for: tfor,
         comment,
-        uid: getUid(),
+        uid: await getUid(),
     };
 
     const result = await setRecord(data);
