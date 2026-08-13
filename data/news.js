@@ -2,18 +2,19 @@ import {
     getNewsData,
 } from "./firebase.js";
 
-async function getNews(n = -1, e = "newsSpace") {
+async function getNews(n = -1, e = "newsSpace", tf = false) {
     let el = document.getElementById(e);
-    if (!el) return;
+    if (!el && !tf) return;
 
     let statusEl = document.getElementById("newsStatus");
     if (statusEl) statusEl.innerText = "読み込み中...";
-    el.innerHTML = "";
+    if (el) el.innerHTML = "";
 
     try {
         let data = await getNewsData(n);
+        console.log(data);
+        if (tf) return data;
         renderNews(data, el);
-
         if (statusEl) {
             statusEl.innerText = data.length === 0 ?
                 "ニュースはありません。" :
@@ -21,6 +22,7 @@ async function getNews(n = -1, e = "newsSpace") {
         }
     } catch (er) {
         console.error("ニュース取得失敗:", er);
+        if (tf) return "ニュースの取得に失敗しました。";
         if (statusEl) statusEl.innerText = "ニュースの取得に失敗しました。";
     }
 }
@@ -59,3 +61,7 @@ function renderNews(data, el) {
 
 if (location.href == "https://fftdareka.github.io/ototetsu_memory/" || location.href == "https://fftdareka.github.io/ototetsu_memory/index.html") getNews(2);
 else if (location.href == "https://fftdareka.github.io/ototetsu_memory/news.html") getNews(-1);
+
+export {
+    getNews
+};

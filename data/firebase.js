@@ -131,7 +131,7 @@ function status() {
     let loginBtn = document.getElementById("login");
 
     onAuthStateChanged(auth, async (user) => {        
-        if (location.href == "https://fftdareka.github.io/ototetsu_memory/member/" || location.href == "https://fftdareka.github.io/ototetsu_memory/member/index.html") checkMember();
+        if (location.href.includes("https://fftdareka.github.io/ototetsu_memory/member/")) checkMember();
         if (user) {
             uid = user.uid;
             let uData = await loadUserdata(uid, true);
