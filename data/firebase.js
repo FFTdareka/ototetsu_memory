@@ -131,12 +131,12 @@ function status() {
     let loginBtn = document.getElementById("login");
 
     onAuthStateChanged(auth, async (user) => {        
+        if (location.href == "https://fftdareka.github.io/ototetsu_memory/member/" || location.href == "https://fftdareka.github.io/ototetsu_memory/member/index.html") checkMember();
         if (user) {
             uid = user.uid;
             let uData = await loadUserdata(uid, true);
             let uName = uData.name;
             isMember = uData.member;
-            if (location.href == "https://fftdareka.github.io/ototetsu_memory/member/" || location.href == "https://fftdareka.github.io/ototetsu_memory/member/index.html") checkMember();
             userStatus.innerText = " としてログイン中";
             loginBtn.innerText = "ログアウト";
             loginBtn.classList.add("redB");
