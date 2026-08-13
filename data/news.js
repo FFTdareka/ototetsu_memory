@@ -1,55 +1,60 @@
-function getNews(n = 0, e = "newsSpace") {
+import {
+    getNewsData,
+} from "./firebase.js";
+
+async function getNews(n = -1, e = "newsSpace") {
     let el = document.getElementById(e);
-    if (el) {
-        document.getElementById('newsStatus').innerText = "読み込み中...";
-        document.getElementById('newsSpace').innerHTML = "";
-        fetch('data/staData.json')
-            .then(res => res.json())
-            .then(g => {
-                fetch(`${g.gas}?type=news`)
-                    .then(res => res.json())
-                    .then(data => {
-                        if (data.status == 'success') {
-                            let ns = data.body;
-                            if (n > data.nor || n == -1) n = data.nor;
-                            for (var i = 0; i < n; i++) {
-                                if (i > 0) {
-                                    var br = document.createElement(
-                                        "br");
-                                    el.appendChild(br);
-                                }
-                                var g = document.createElement("div");
-                                g.classList.add("news");
-                                var t = document.createElement("div");
-                                t.innerText = ns[i][0];
-                                t.style = "font-weight: bold;";
-                                g.appendChild(t);
-                                var txt = ns[i][1].split("\\n");
-                                var s = document.createElement("div");
-                                for (var j = 0; j < txt.length; j++) {
-                                    if (j > 0) {
-                                        var br = document.createElement(
-                                            "br");
-                                        s.appendChild(br);
-                                    }
-                                    var sp = document.createElement(
-                                        "span");
-                                    sp.innerText = txt[j];
-                                    s.appendChild(sp);
-                                }
-                                g.appendChild(s);
-                                var p = document.createElement("div");
-                                p.innerText = `執筆者:${ns[i][2]}`;
-                                g.appendChild(p);
-                                el.appendChild(g);
-                                document.getElementById('newsStatus').innerText =
-                                    `全${data.nor}件`;
-                            }
-                            if (n == 0) document.getElementById(
-                                    'newsStatus').innerText =
-                                "ニュースはありません。";
-                        }
-                    })
-            })
+    if (!el) return;
+
+    let statusEl = document.getElementById("newsStatus");
+    if (statusEl) statusEl.innerText = "読み込み中...";
+    el.innerHTML = "";
+
+    try {
+        let data = await getNewsData(n);
+        renderNews(data, el);
+
+        if (statusEl) {
+            statusEl.innerText = data.length === 0 ?
+                "ニュースはありません。" :
+                `全${data.length}件`;
+        }
+    } catch (er) {
+        console.error("ニュース取得失敗:", er);
+        if (statusEl) statusEl.innerText = "ニュースの取得に失敗しました。";
     }
 }
+
+function renderNews(data, el) {
+    data.forEach((news, i) => {
+        if (i > 0) {
+            el.appendChild(document.createElement("br"));
+        }
+
+        let g = document.createElement("div");
+        g.classList.add("news");
+
+        let t = document.createElement("div");
+        t.innerText = news.title;
+        t.style = "font-weight: bold;";
+        g.appendChild(t);
+
+        let s = document.createElement("div");
+        let txt = news.body.split("\n");
+        txt.forEach((line, j) => {
+            if (j > 0) s.appendChild(document.createElement("br"));
+            let sp = document.createElement("span");
+            sp.innerText = line;
+            s.appendChild(sp);
+        });
+        g.appendChild(s);
+
+        let p = document.createElement("div");
+        p.innerText = `執筆者:${news.author}`;
+        g.appendChild(p);
+
+        el.appendChild(g);
+    });
+}
+
+export { getNews };

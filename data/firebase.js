@@ -20,6 +20,11 @@ import {
     deleteDoc,
     initializeFirestore,
     memoryLocalCache,
+    collection,
+    query,
+    orderBy,
+    limit,
+    getDocs,
 } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
 import {
     setR,
@@ -357,6 +362,26 @@ async function getRec1(id) {
     return result.hits[0];
 }
 
+async function getNewsData(n = -1) {
+    const newsRef = collection(db, "news");
+    const constraints = [orderBy("rank", "asc")];
+    if (n !== -1) constraints.push(limit(n));
+
+    const q = query(newsRef, ...constraints);
+    const snap = await getDocs(q);
+    const data = snap.docs.map((d) => d.data());
+
+    return Promise.all(
+        data.map(async (news) => {
+            const uData = await loadUserdata(news.author);
+            return {
+                ...news,
+                author: uData.name,
+            };
+        })
+    );
+}
+
 export {
     userDelete,
     loadUserdata,
@@ -367,4 +392,5 @@ export {
     deleteRecord,
     getUid,
     getUserStatus,
+    getNewsData,
 };
