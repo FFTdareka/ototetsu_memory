@@ -19,3 +19,7 @@ async function checkMember() {
         }
     }
 }
+
+export {
+    checkMember
+}

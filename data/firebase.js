@@ -30,6 +30,9 @@ import {
     setR,
     ready
 } from "./staData.js";
+import {
+    checkMember
+} from "./mhome.js";
 
 await ready;
 
@@ -133,6 +136,7 @@ function status() {
             let uData = await loadUserdata(uid, true);
             let uName = uData.name;
             isMember = uData.member;
+            checkMember();
             userStatus.innerText = " としてログイン中";
             loginBtn.innerText = "ログアウト";
             loginBtn.classList.add("redB");
