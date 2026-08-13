@@ -30,7 +30,6 @@ import {
     setR,
     ready
 } from "./staData.js";
-import { use } from "react";
 
 await ready;
 
