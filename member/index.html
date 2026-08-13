@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>メンバーメニュー - みんなの音鉄記録帳</title>
+        <meta charset="UTF-8">
+        <meta name="description" content="「みんなの音鉄記録帳」は、日本全国の発車メロディーが流れる駅の鳴動記録を、皆様の投稿によって記録するサイトです。コーラス数が固定でない限り、放送被り、乗降促進問わず、どの駅のどの記録も記録ができます。" />
+        <meta property="og:title" content="メンバーメニュー - みんなの音鉄記録帳">
+        <meta property="og:description" content="「みんなの音鉄記録帳」は、日本全国の発車メロディーが流れる駅の鳴動記録を、皆様の情報提供によって記録するサイトです。コーラス数が固定でない限り、放送被り、乗降促進問わず、どの駅のどの記録も記録ができます。">
+        <meta property="og:url" content="https://fftdareka.github.io/ototetsu_memory/user.html">
+        <meta property="og:image" content="https://fftdareka.github.io/ototetsu_memory/img/favicon.ico">
+        <meta property="og:type" content="website">
+        <meta property="og:site_name" content="みんなの音鉄記録帳">
+        <link rel="icon" href="../img/favicon.ico">
+        <link rel="apple-touch-icon-precomposed" href="../img/favicon.ico">
+        <link rel="stylesheet" href="../css/normal.css">
+        <script src="../data/func.js"></script>
+        <script>
+            window.onload = () => {
+                let ifr = document.getElementsByTagName("iframe");
+                for (var i = 0; i < ifr.length; i++) {
+                    try {
+                        let contentHeight = ifr[i].contentWindow.document.body.scrollHeight;
+                        ifr[i].style.height = contentHeight + 'px';
+                    } catch (e) {
+                    }
+                }
+            };
+        </script>
+    </head>
+    <body>
+        <h1><span onclick="location.href = 'https:\/\/fftdareka.github.io\/ototetsu_memory\/';">みんなの音鉄記録帳</span> メンバーメニュー</h1>
+        <div id="user"><span id="status"><span id="userName"></span><span id="userStatus">読込中...</span></span><span id="login">読込中...</span> </div>
+        <br>
+        <iframe src="../jre_press.html" width="100%" scrolling="no" frameborder="0" style="border: none"></iframe>
+        <br>
+        <div id="menuSpace">
+            このページはメンバー用ページです。現在作成中ですので完成までお待ちください。
+        </div>
+        <br>
+        <div>
+            <a href="https://fftdareka.github.io/ototetsu_memory/">トップページへ</a>
+        </div>
+        <script type="module" src="../data/firebase.js"></script>
+        <script type="module" src="../data/mhome.js"></script>
+    </body>
+</html>

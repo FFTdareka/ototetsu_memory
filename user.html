@@ -40,11 +40,34 @@
         <iframe src="jre_press.html" width="100%" scrolling="no" frameborder="0" style="border: none"></iframe>
         <br>
         <br>
-        <h2>設定</h2>
-        <div id="setting">
-            読込中...
+        <div id="memberS">
+            <span>メンバー用ページは<a href="member/index.html">こちら</a></span>
+            <br>
         </div>
-        <div id="setStatus"></div>
+        <h2>設定</h2>
+        <div id="setName" style="display: none;">
+            <div id="nameS">
+                現在の名前: <span id="userNameS"></span>
+                <br>新しい名前: <input id="newName" type="text" placeholder="名前を入力">
+            </div>
+            <button id="updateBtn" type="button">更新</button>
+        </div>
+        <br>
+        <br>
+        <div id="delS" style="display: none;">
+            みんなの音鉄記録帳から退会される方はこちら　<button id="deleteBtn" class="redB" type="button">退会する</button>
+        </div>
+        <div id="userInfo" style="display: none;">
+            <span>
+                このページはアカウントにログインしている方のみ利用可能です。
+                <br><span id="login2">ログイン(Google)はこちら</span>
+            </span>
+        </div>
+        <div id="setStatus">読込中...</div>
+        <br>
+        <div>
+            <a href="https://fftdareka.github.io/ototetsu_memory/">トップページへ</a>
+        </div>
         <script type="module" src="data/firebase.js"></script>
     </body>
 </html>

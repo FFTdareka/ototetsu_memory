@@ -30,6 +30,7 @@ import {
     setR,
     ready
 } from "./staData.js";
+import { use } from "react";
 
 await ready;
 
@@ -116,6 +117,10 @@ const setRecord = (data) => callFunction("setRecord", data);
 const editRecord = (data) => callFunction("editRecord", data);
 const deleteRecord = (data) => callFunction("deleteRecord", data);
 
+const createNews = (data) => callFunction("createNews", data);
+const editNews = (data) => callFunction("editNews", data);
+const deleteNews = (data) => callFunction("deleteNews", data);
+
 status();
 
 function status() {
@@ -136,12 +141,31 @@ function status() {
             loginBtn.addEventListener("click", userLogout);
             userName.innerText = `${uName}${isMember ? "(メンバー)" : ""}`;
 
+            let memberS = document.getElementById("memberS");
+            let setNameS = document.getElementById("setName");
+            let userInfoS = document.getElementById("userInfo");
+            let updateBtnS = document.getElementById("updateBtn");
+            let delS = document.getElementById("delS");
+            let deleteBtnS = document.getElementById("deleteBtn");
+            let userNameS = document.getElementById("userNameS");
+            let loginS = document.getElementById("login2");
+
+            memberS.style.display - "none";
+            setNameS.style.display = "none";
+            updateBtnS.removeEventListener("click", updateUser);
+            delS.style.display = "none";
+            deleteBtnS.removeEventListener("click", userDelete);
+            userNameS.innerText = "";
+            userInfoS.style.display = "none";
+            loginS.removeEventListener("click", userLogin);
+
             if (location.href === "https://fftdareka.github.io/ototetsu_memory/user.html") {
-                let sSpace = document.getElementById("setting");
-                sSpace.innerHTML = `<div id="nameS">現在の名前: <span id="userNameS"></span><br>新しい名前: <input id="newName" type="text" placeholder="名前を入力"></div><button id="updateBtn" type="button">更新</button><br><br><div id="delS">みんなの音鉄記録帳から退会される方はこちら　<button id="deleteBtn" class="redB" type="button">退会する</button></div>`;
-                document.getElementById("updateBtn").addEventListener("click", updateUser);
-                document.getElementById("deleteBtn").addEventListener("click", userDelete);
-                document.getElementById("userNameS").innerText = uName;
+                setNameS.style.display = "block";
+                updateBtnS.addEventListener("click", updateUser);
+                delS.style.display = "block";
+                deleteBtnS.addEventListener("click", userDelete);
+                userNameS.innerText = uName;
+                if (isMember) memberS.style.display = "block";
             }
 
         } else {
@@ -153,9 +177,8 @@ function status() {
             loginBtn.addEventListener("click", userLogin);
 
             if (location.href === "https://fftdareka.github.io/ototetsu_memory/user.html") {
-                let sSpace = document.getElementById("setting");
-                sSpace.innerHTML = `<span>このページはアカウントにログインしている方のみ利用可能です。<br><span id="login2">ログイン(Google)はこちら</span></span>`;
-                document.getElementById("login2").addEventListener("click", userLogin);
+                userInfoS.style.display = "block";
+                loginS.addEventListener("click", userLogin);
             }
         }
         resolveStatusReady();
@@ -393,4 +416,7 @@ export {
     getUid,
     getUserStatus,
     getNewsData,
+    createNews,
+    editNews,
+    deleteNews,
 };

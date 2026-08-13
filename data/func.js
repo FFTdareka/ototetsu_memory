@@ -37,7 +37,8 @@ window.addEventListener("unhandledrejection", (e) => {
 fetch('data/staData.json')
     .then(res => res.json())
     .then(s => {
-        if (localStorage.getItem("debug") != "true") if (s.status && location.href == "https://fftdareka.github.io/ototetsu_memory/maint.html") location.href = "https://fftdareka.github.io/ototetsu_memory/"; else if (!s.status && location.href != "https://fftdareka.github.io/ototetsu_memory/maint.html") location.href = "https://fftdareka.github.io/ototetsu_memory/maint.html";
+        if (s.status && location.href == "https://fftdareka.github.io/ototetsu_memory/maint.html" && localStorage.getItem('debug') != 'true') location.href = "https://fftdareka.github.io/ototetsu_memory/";
+        else if (!s.status && location.href != "https://fftdareka.github.io/ototetsu_memory/maint.html" && localStorage.getItem('debug') != 'true') location.href = "https://fftdareka.github.io/ototetsu_memory/maint.html";
     });
 
 window.addEventListener("pageshow", (event) => {
