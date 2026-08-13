@@ -127,7 +127,24 @@ function status() {
     let userName = document.getElementById("userName");
     let loginBtn = document.getElementById("login");
 
-    onAuthStateChanged(auth, async (user) => {
+    onAuthStateChanged(auth, async (user) => {        
+        let memberS = document.getElementById("memberS");
+        let setNameS = document.getElementById("setName");
+        let userInfoS = document.getElementById("userInfo");
+        let updateBtnS = document.getElementById("updateBtn");
+        let delS = document.getElementById("delS");
+        let deleteBtnS = document.getElementById("deleteBtn");
+        let userNameS = document.getElementById("userNameS");
+        let loginS = document.getElementById("login2");
+
+        memberS.style.display - "none";
+        setNameS.style.display = "none";
+        updateBtnS.removeEventListener("click", updateUser);
+        delS.style.display = "none";
+        deleteBtnS.removeEventListener("click", userDelete);
+        userNameS.innerText = "";
+        userInfoS.style.display = "none";
+        loginS.removeEventListener("click", userLogin);
         if (user) {
             uid = user.uid;
             let uData = await loadUserdata(uid, true);
@@ -140,24 +157,6 @@ function status() {
             loginBtn.addEventListener("click", userLogout);
             userName.innerText = `${uName}${isMember ? "(メンバー)" : ""}`;
 
-            let memberS = document.getElementById("memberS");
-            let setNameS = document.getElementById("setName");
-            let userInfoS = document.getElementById("userInfo");
-            let updateBtnS = document.getElementById("updateBtn");
-            let delS = document.getElementById("delS");
-            let deleteBtnS = document.getElementById("deleteBtn");
-            let userNameS = document.getElementById("userNameS");
-            let loginS = document.getElementById("login2");
-
-            memberS.style.display - "none";
-            setNameS.style.display = "none";
-            updateBtnS.removeEventListener("click", updateUser);
-            delS.style.display = "none";
-            deleteBtnS.removeEventListener("click", userDelete);
-            userNameS.innerText = "";
-            userInfoS.style.display = "none";
-            loginS.removeEventListener("click", userLogin);
-
             if (location.href === "https://fftdareka.github.io/ototetsu_memory/user.html") {
                 setNameS.style.display = "block";
                 updateBtnS.addEventListener("click", updateUser);
@@ -166,7 +165,6 @@ function status() {
                 userNameS.innerText = uName;
                 if (isMember) memberS.style.display = "block";
             }
-
         } else {
             userStatus.innerText = "未ログイン";
             userName.innerText = "";
