@@ -57,4 +57,5 @@ function renderNews(data, el) {
     });
 }
 
-export { getNews };
+if (location.href == "https://fftdareka.github.io/ototetsu_memory/" || location.href == "https://fftdareka.github.io/ototetsu_memory/index.html") getNews(2);
+else if (location.href == "https://fftdareka.github.io/ototetsu_memory/news.html") getNews(-1);
