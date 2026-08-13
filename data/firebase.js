@@ -150,6 +150,8 @@ function status() {
                 let userNameS = document.getElementById("userNameS");
                 let loginS = document.getElementById("login2");
 
+                document.getElementById("setStatus").innerText = "";
+
                 memberS.style.display - "none";
                 setNameS.style.display = "none";
                 updateBtnS.removeEventListener("click", updateUser);
@@ -184,6 +186,8 @@ function status() {
                 let userNameS = document.getElementById("userNameS");
                 let loginS = document.getElementById("login2");
 
+                document.getElementById("setStatus").innerText = "";
+
                 memberS.style.display - "none";
                 setNameS.style.display = "none";
                 updateBtnS.removeEventListener("click", updateUser);
@@ -192,7 +196,7 @@ function status() {
                 userNameS.innerText = "";
                 userInfoS.style.display = "none";
                 loginS.removeEventListener("click", userLogin);
-                
+
                 userInfoS.style.display = "block";
                 loginS.addEventListener("click", userLogin);
             }
