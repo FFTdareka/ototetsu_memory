@@ -2,7 +2,7 @@ import {
     getNewsData,
 } from "./firebase.js";
 
-async function getNews(n = -1, e = "newsSpace", tf = false) {
+async function getNews(n = -1, e = "newsSpace", tf = false, id = null) {
     let el = document.getElementById(e);
     if (!el && !tf) return;
 
@@ -11,7 +11,7 @@ async function getNews(n = -1, e = "newsSpace", tf = false) {
     if (el) el.innerHTML = "";
 
     try {
-        let data = await getNewsData(n);
+        let data = await getNewsData(n, id);
         console.log(data);
         if (tf) return data;
         renderNews(data, el);

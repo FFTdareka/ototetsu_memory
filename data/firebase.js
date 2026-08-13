@@ -409,7 +409,7 @@ async function getRec1(id) {
     return result.hits[0];
 }
 
-async function getNewsData(n = -1) {
+async function getNewsData(n = -1, id = null) {
     const newsRef = collection(db, "news");
     const constraints = [orderBy("rank", "asc")];
     if (n !== -1) constraints.push(limit(n));
