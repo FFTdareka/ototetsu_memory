@@ -40,7 +40,7 @@ async function setNews() {
                 location.href = `https://fftdareka.github.io/ototetsu_memory/member/editNews.html?id=${news.ID}`;
             });
 
-            el.appendChild(g);
+            newsS.appendChild(g);
         });
     }
 }
