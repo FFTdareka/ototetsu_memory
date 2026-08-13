@@ -136,7 +136,6 @@ function status() {
             let uData = await loadUserdata(uid, true);
             let uName = uData.name;
             isMember = uData.member;
-            checkMember();
             userStatus.innerText = " としてログイン中";
             loginBtn.innerText = "ログアウト";
             loginBtn.classList.add("redB");
@@ -145,6 +144,7 @@ function status() {
             userName.innerText = `${uName}${isMember ? "(メンバー)" : ""}`;
 
             if (location.href === "https://fftdareka.github.io/ototetsu_memory/user.html") {
+                checkMember();
                 let memberS = document.getElementById("memberS");
                 let setNameS = document.getElementById("setName");
                 let userInfoS = document.getElementById("userInfo");
@@ -181,6 +181,7 @@ function status() {
             loginBtn.addEventListener("click", userLogin);
 
             if (location.href === "https://fftdareka.github.io/ototetsu_memory/user.html") {
+                checkMember();
                 let memberS = document.getElementById("memberS");
                 let setNameS = document.getElementById("setName");
                 let userInfoS = document.getElementById("userInfo");
