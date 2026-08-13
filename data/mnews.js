@@ -5,7 +5,7 @@ import {
 async function setNews() {
     let newsS = document.getElementById("newsSpace");
     let statusN = document.getElementById("newsStatus");
-    newsS.innerText = "読込中...";
+    statusN.innerText = "読込中...";
     let data = await getNews(-1, "", true);
     if (data == "ニュースの取得に失敗しました。") {
         statusN.innerText = data;
