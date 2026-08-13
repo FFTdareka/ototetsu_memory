@@ -34,7 +34,7 @@ window.addEventListener("unhandledrejection", (e) => {
     });
 });
 
-fetch('data/staData.json')
+fetch('https://fftdareka.github.io/ototetsu_memory/data/staData.json')
     .then(res => res.json())
     .then(s => {
         if (s.status && location.href == "https://fftdareka.github.io/ototetsu_memory/maint.html" && localStorage.getItem('debug') != 'true') location.href = "https://fftdareka.github.io/ototetsu_memory/";
