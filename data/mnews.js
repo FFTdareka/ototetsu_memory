@@ -2,30 +2,20 @@ import {
     getNews
 } from "./news.js";
 
-const params = new URLSearchParams(window.location.search);
-const id = Number(params.get("id"));
+setNews();
 
-if (id) setNews(1, id);
-else setNews();
-
-async function setNews(n = -1, id = null) {
+async function setNews() {
     let statusN = document.getElementById("newsStatus");
     if (statusN) statusN.innerText = "読込中...";
 
-    let data = await getNews(n, "", true, id);
+    let data = await getNews(-1, "", true);
 
     if (data === "ニュースの取得に失敗しました。") {
         if (statusN) statusN.innerText = data;
-    } else if (id != null) {
-        if (data) {
-            renderNews1(data);
-            if (statusN) statusN.innerText = "";
-        } else if (statusN) {
-            statusN.innerText = "指定されたニュースが見つかりません。";
-        }
-    } else {
-        renderNewsList(data);
+        return;
     }
+
+    renderNewsList(data);
 }
 
 function renderNewsList(data) {
@@ -74,16 +64,3 @@ function renderNewsList(data) {
 
     if (statusN) statusN.innerText = "";
 }
-
-function renderNews1(data) {
-    let titleS = document.getElementById("addNews_title");
-    let bodyS = document.getElementById("addNews_body");
-    let rankS = document.getElementById("addNews_rank");
-    titleS.value = data.title;
-    bodyS.value = data.body;
-    rankS.value = data.rank;
-}
-
-export {
-    setNews
-};
