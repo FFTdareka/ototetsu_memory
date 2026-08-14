@@ -146,7 +146,6 @@ th {
     font-size: 20px;
 }
 
-/* editNews.htmlの確認チェックボックスだけは通常の太さ・小さめの表示にする */
 #newsSpace label:has(input[type="checkbox"]) {
     display: inline-flex;
     align-items: center;
@@ -254,7 +253,6 @@ textarea:focus {
     transform: none;
 }
 
-/* editNews.htmlの送信・削除ボタン(横並び。削除色はHTML側のclass="redB"で赤に上書きされる) */
 #addNews_btn,
 #deleteNews_btn {
     display: inline-block;
@@ -366,7 +364,6 @@ textarea:focus {
     border: 1px dotted #ccc;
 }
 
-/* member/news.htmlの一覧項目はクリックして編集画面に飛べるので、その手がかりを追加 */
 .snews {
     cursor: pointer;
     transition: background-color 0.2s, box-shadow 0.2s;
@@ -378,7 +375,6 @@ textarea:focus {
     border-style: solid;
 }
 
-/* member/editNews.htmlのフォーム部分(labelを直接含む場合のみ)をカード枠で囲む */
 #newsSpace:has(label) {
     background: #ffffff;
     padding: 25px;
@@ -402,7 +398,34 @@ textarea:focus {
     margin-left: 10px;
 }
 
-/* member/index.htmlのメニュー一覧 */
+#memberS {
+    margin: 10px 0;
+}
+
+#memberS a {
+    display: inline-block;
+    padding: 8px 20px;
+    background-color: #2e7d32;
+    color: #ffffff;
+    border-radius: 20px;
+    font-weight: bold;
+    text-decoration: none;
+    box-shadow: 0 3px 0 #1b5e20;
+    transition: all 0.2s;
+}
+
+#memberS a:hover {
+    background-color: #388e3c;
+    transform: translateY(1px);
+    box-shadow: 0 2px 0 #1b5e20;
+    text-decoration: none;
+}
+
+#memberS a:active {
+    transform: translateY(3px);
+    box-shadow: none;
+}
+
 #menuSpace {
     display: flex;
     flex-direction: column;

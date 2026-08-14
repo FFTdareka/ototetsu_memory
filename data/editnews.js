@@ -83,12 +83,6 @@ function validateNewsInput() {
     return null;
 }
 
-/**
- * 結果メッセージを表示する。errorなら赤枠、それ以外(notice)なら青枠で表示し、
- * 鳴動記録の通知と同様に5秒後に自動で非表示にする。
- * @param {string} text 表示するメッセージ
- * @param {"error"|"notice"} type 表示スタイル
- */
 function showMessage(text, type = "notice") {
     if (!msgS) return;
 
