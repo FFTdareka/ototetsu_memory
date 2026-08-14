@@ -2,6 +2,12 @@ import {
     getNews
 } from "./news.js";
 
+const params = new URLSearchParams(window.location.search);
+const id = Number(params.get("id"));
+
+if (id) setNews(1, id);
+else setNews();
+
 async function setNews(n = -1, id = null) {
     let statusN = document.getElementById("newsStatus");
     statusN.innerText = "読込中...";
@@ -63,5 +69,3 @@ function renderNews1(data) {
     bodyS.value = data.body;
     rankS.value = data.rank;
 }
-
-setNews();
