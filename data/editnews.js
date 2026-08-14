@@ -20,6 +20,10 @@ const delS = document.getElementById("deleteNews_btn");
 const statusS = document.getElementById("newsStatus");
 const msgS = document.getElementById("newsMsg");
 
+const NEWS_LIST_URL = "https://fftdareka.github.io/ototetsu_memory/member/news.html";
+
+let msgTimer = null;
+
 init();
 
 async function init() {
@@ -79,11 +83,30 @@ function validateNewsInput() {
     return null;
 }
 
+/**
+ * 結果メッセージを表示する。errorなら赤枠、それ以外(notice)なら青枠で表示し、
+ * 鳴動記録の通知と同様に5秒後に自動で非表示にする。
+ * @param {string} text 表示するメッセージ
+ * @param {"error"|"notice"} type 表示スタイル
+ */
 function showMessage(text, type = "notice") {
     if (!msgS) return;
+
+    if (msgTimer) {
+        clearTimeout(msgTimer);
+        msgTimer = null;
+    }
+
     msgS.innerText = text;
     msgS.className = type;
     msgS.style.display = text ? "block" : "none";
+
+    if (text) {
+        msgTimer = setTimeout(() => {
+            msgS.style.display = "none";
+            msgTimer = null;
+        }, 5000);
+    }
 }
 
 function clearMessage() {
@@ -109,19 +132,20 @@ async function onCreate() {
         });
 
         if (statusS) statusS.innerText = "";
-        if (res.message) {
-            showMessage(
-                res.message,
-                res.message.startsWith("エラー:") ? "error" : "notice",
-            );
+
+        if (isErrorMessage(res.message)) {
+            showMessage(res.message, "error");
+            btnS.disabled = !chkS.checked;
+            return;
         }
+
+        location.href = NEWS_LIST_URL;
     } catch (e) {
         console.error("ニュース作成失敗:", e);
         if (statusS) statusS.innerText = "";
         showMessage("エラー:作成に失敗しました。", "error");
+        btnS.disabled = !chkS.checked;
     }
-
-    btnS.disabled = !chkS.checked;
 }
 
 async function onUpdate() {
@@ -144,19 +168,20 @@ async function onUpdate() {
         });
 
         if (statusS) statusS.innerText = "";
-        if (res.message) {
-            showMessage(
-                res.message,
-                res.message.startsWith("エラー:") ? "error" : "notice",
-            );
+
+        if (isErrorMessage(res.message)) {
+            showMessage(res.message, "error");
+            btnS.disabled = !chkS.checked;
+            return;
         }
+
+        location.href = NEWS_LIST_URL;
     } catch (e) {
         console.error("ニュース編集失敗:", e);
         if (statusS) statusS.innerText = "";
         showMessage("エラー:編集に失敗しました。", "error");
+        btnS.disabled = !chkS.checked;
     }
-
-    btnS.disabled = !chkS.checked;
 }
 
 async function onDelete() {
@@ -169,20 +194,30 @@ async function onDelete() {
     try {
         const res = await deleteNews({id: id});
 
+        if (statusS) statusS.innerText = "";
+
         if (res && res.message) {
-            if (statusS) statusS.innerText = "";
             showMessage(res.message, "error");
             delS.disabled = false;
             return;
         }
 
-        if (statusS) statusS.innerText = "";
-        showMessage("削除が完了しました。", "notice");
-        location.href = "https://fftdareka.github.io/ototetsu_memory/member/news.html";
+        location.href = NEWS_LIST_URL;
     } catch (e) {
         console.error("ニュース削除失敗:", e);
         if (statusS) statusS.innerText = "";
         showMessage("エラー:削除に失敗しました。", "error");
         delS.disabled = false;
     }
+}
+
+/**
+ * Cloud Functionsからのmessageがエラーを表しているかを判定する。
+ * (作成・編集は成功時も"投稿が完了しました。"等のmessageを返すため、
+ *  "エラー:"接頭辞の有無で判定する)
+ * @param {string|null|undefined} message
+ * @return {boolean}
+ */
+function isErrorMessage(message) {
+    return !!message && message.startsWith("エラー:");
 }
