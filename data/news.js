@@ -12,7 +12,6 @@ async function getNews(n = -1, e = "newsSpace", tf = false, id = null) {
 
     try {
         let data = await getNewsData(n, id);
-        console.log(data);
         if (tf) return data;
         renderNews(data, el);
         if (statusEl) {
