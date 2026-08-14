@@ -18,6 +18,7 @@ const chkS = document.getElementById("addNews_chk");
 const btnS = document.getElementById("addNews_btn");
 const delS = document.getElementById("deleteNews_btn");
 const statusS = document.getElementById("newsStatus");
+const msgS = document.getElementById("newsMsg");
 
 init();
 
@@ -28,7 +29,7 @@ async function init() {
 
     if (id != null) {
         // URLにidパラメータがある場合は編集・削除モード
-        btnS.innerText = "編集";
+        btnS.innerText = "更新";
         if (delS) {
             delS.style.display = "inline-block";
             delS.addEventListener("click", onDelete);
@@ -37,11 +38,11 @@ async function init() {
 
         const data = await getNews(1, "", true, id);
         if (!data || data === "ニュースの取得に失敗しました。") {
-            if (statusS) {
-                statusS.innerText = data ?
-                    data :
-                    "指定されたニュースが見つかりません。";
-            }
+            if (statusS) statusS.innerText = "";
+            showMessage(
+                data ? data : "指定されたニュースが見つかりません。",
+                "error",
+            );
             titleS.disabled = true;
             bodyS.disabled = true;
             rankS.disabled = true;
@@ -63,7 +64,40 @@ async function init() {
     }
 }
 
+function validateNewsInput() {
+    if (!titleS.value.trim()) return "エラー:タイトルが入力されていません。";
+    if (!bodyS.value.trim()) return "エラー:本文が入力されていません。";
+
+    if (rankS.value === "") {
+        return "エラー:掲載順位が入力されていません。";
+    }
+    const rank = Number(rankS.value);
+    if (!Number.isInteger(rank) || rank < 1) {
+        return "エラー:掲載順位は1以上の整数で入力してください。";
+    }
+
+    return null;
+}
+
+function showMessage(text, type = "notice") {
+    if (!msgS) return;
+    msgS.innerText = text;
+    msgS.className = type;
+    msgS.style.display = text ? "block" : "none";
+}
+
+function clearMessage() {
+    showMessage("");
+}
+
 async function onCreate() {
+    const validationError = validateNewsInput();
+    if (validationError) {
+        showMessage(validationError, "error");
+        return;
+    }
+    clearMessage();
+
     btnS.disabled = true;
     if (statusS) statusS.innerText = "作成中...";
 
@@ -74,16 +108,30 @@ async function onCreate() {
             rank: Number(rankS.value),
         });
 
-        if (statusS) statusS.innerText = res.message || "";
+        if (statusS) statusS.innerText = "";
+        if (res.message) {
+            showMessage(
+                res.message,
+                res.message.startsWith("エラー:") ? "error" : "notice",
+            );
+        }
     } catch (e) {
         console.error("ニュース作成失敗:", e);
-        if (statusS) statusS.innerText = "エラー:作成に失敗しました。";
+        if (statusS) statusS.innerText = "";
+        showMessage("エラー:作成に失敗しました。", "error");
     }
 
     btnS.disabled = !chkS.checked;
 }
 
 async function onUpdate() {
+    const validationError = validateNewsInput();
+    if (validationError) {
+        showMessage(validationError, "error");
+        return;
+    }
+    clearMessage();
+
     btnS.disabled = true;
     if (statusS) statusS.innerText = "編集中...";
 
@@ -95,10 +143,17 @@ async function onUpdate() {
             rank: Number(rankS.value),
         });
 
-        if (statusS) statusS.innerText = res.message || "";
+        if (statusS) statusS.innerText = "";
+        if (res.message) {
+            showMessage(
+                res.message,
+                res.message.startsWith("エラー:") ? "error" : "notice",
+            );
+        }
     } catch (e) {
         console.error("ニュース編集失敗:", e);
-        if (statusS) statusS.innerText = "エラー:編集に失敗しました。";
+        if (statusS) statusS.innerText = "";
+        showMessage("エラー:編集に失敗しました。", "error");
     }
 
     btnS.disabled = !chkS.checked;
@@ -109,23 +164,25 @@ async function onDelete() {
 
     delS.disabled = true;
     if (statusS) statusS.innerText = "削除中...";
+    clearMessage();
 
     try {
         const res = await deleteNews({id: id});
 
         if (res && res.message) {
-            if (statusS) statusS.innerText = res.message;
+            if (statusS) statusS.innerText = "";
+            showMessage(res.message, "error");
             delS.disabled = false;
             return;
         }
 
-        if (statusS) statusS.innerText = "削除が完了しました。";
-        setTimeout(() => {
-            location.href = "https://fftdareka.github.io/ototetsu_memory/member/news.html";
-        }, 800);
+        if (statusS) statusS.innerText = "";
+        showMessage("削除が完了しました。", "notice");
+        location.href = "https://fftdareka.github.io/ototetsu_memory/member/news.html";
     } catch (e) {
         console.error("ニュース削除失敗:", e);
-        if (statusS) statusS.innerText = "エラー:削除に失敗しました。";
+        if (statusS) statusS.innerText = "";
+        showMessage("エラー:削除に失敗しました。", "error");
         delS.disabled = false;
     }
 }
