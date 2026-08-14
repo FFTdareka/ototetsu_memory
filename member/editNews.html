@@ -33,9 +33,29 @@
         <br>
         <iframe src="../jre_press.html" width="100%" scrolling="no" frameborder="0" style="border: none"></iframe>
         <br>
-        <h2>ニュース編集</h2>
+        <h2>ニュース作成・編集・削除</h2>
         <div id="newsSpace">
-            
+            <label>
+                タイトル
+                <input id="addNews_title" type="text" placeholder="タイトルを入力...">
+            </label>
+            <br>
+            <label>
+                本文
+                <textarea id="addNews_body" placeholder="本文を入力..."></textarea>
+            </label>
+            <br>
+            <label>
+                掲載順位
+                <input id="addNews_rank" type="number" placeholder="掲載順位を自然数で入力...">
+            </label>
+            <br>
+            <label>
+                確認
+                <input id="addNews_chk" type="checkbox"><span>入力内容を確認し、正常なニュース入力を行いました。</span>
+            </label>
+            <br>
+            <button id="addNews_btn" type="button" disabled>送信</button>
         </div>
         <div>
             <a href="https://fftdareka.github.io/ototetsu_memory/">トップページへ</a>

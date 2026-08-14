@@ -220,6 +220,7 @@ async function recordData() {
     });
 }
 
+addButton.addEventListener("click" ,recordData);
+
 window.setSta = setSta;
 window.setSta2 = setSta2;
-window.recordData = recordData;
