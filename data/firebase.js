@@ -130,7 +130,7 @@ function status() {
     let userName = document.getElementById("userName");
     let loginBtn = document.getElementById("login");
 
-    onAuthStateChanged(auth, async (user) => {        
+    onAuthStateChanged(auth, async (user) => {
         if (location.href.includes("https://fftdareka.github.io/ototetsu_memory/member/")) checkMember();
         if (user) {
             uid = user.uid;
@@ -164,7 +164,7 @@ function status() {
                 userNameS.innerText = "";
                 userInfoS.style.display = "none";
                 loginS.removeEventListener("click", userLogin);
-                
+
                 setNameS.style.display = "block";
                 updateBtnS.addEventListener("click", updateUser);
                 delS.style.display = "block";
@@ -410,6 +410,15 @@ async function getRec1(id) {
 }
 
 async function getNewsData(n = -1, id = null) {
+    if (id != null) {
+        const snap = await getDoc(doc(db, "news", String(id)));
+        if (!snap.exists()) return null;
+
+        const news = snap.data();
+        const uData = await loadUserdata(news.author);
+        return { ...news, author: uData.name };
+    }
+
     const newsRef = collection(db, "news");
     const constraints = [orderBy("rank", "asc")];
     if (n !== -1) constraints.push(limit(n));

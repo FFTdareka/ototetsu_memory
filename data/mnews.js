@@ -10,12 +10,19 @@ else setNews();
 
 async function setNews(n = -1, id = null) {
     let statusN = document.getElementById("newsStatus");
-    statusN.innerText = "読込中...";
+    if (statusN) statusN.innerText = "読込中...";
+
     let data = await getNews(n, "", true, id);
-    if (data == "ニュースの取得に失敗しました。") {
-        statusN.innerText = data;
+
+    if (data === "ニュースの取得に失敗しました。") {
+        if (statusN) statusN.innerText = data;
     } else if (id != null) {
-        renderNews1(data);
+        if (data) {
+            renderNews1(data);
+            if (statusN) statusN.innerText = "";
+        } else if (statusN) {
+            statusN.innerText = "指定されたニュースが見つかりません。";
+        }
     } else {
         renderNewsList(data);
     }
@@ -24,6 +31,12 @@ async function setNews(n = -1, id = null) {
 function renderNewsList(data) {
     let newsS = document.getElementById("newsSpace");
     let statusN = document.getElementById("newsStatus");
+
+    if (data.length === 0) {
+        if (statusN) statusN.innerText = "ニュースはありません。";
+        return;
+    }
+
     data.forEach((news, i) => {
         if (i > 0) {
             newsS.appendChild(document.createElement("br"));
@@ -57,8 +70,9 @@ function renderNewsList(data) {
         });
 
         newsS.appendChild(g);
-        statusN.innerText = "";
     });
+
+    if (statusN) statusN.innerText = "";
 }
 
 function renderNews1(data) {
@@ -69,3 +83,7 @@ function renderNews1(data) {
     bodyS.value = data.body;
     rankS.value = data.rank;
 }
+
+export {
+    setNews
+};
