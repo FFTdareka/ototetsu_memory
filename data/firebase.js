@@ -70,6 +70,7 @@ async function searchWithTimeout(params, timeoutMs = 6000, retries = 2) {
         } catch (e) {
             clearTimeout(timer);
             lastError = e;
+            console.error("Algolia検索失敗:", e);
         }
     }
     throw lastError;
