@@ -40,8 +40,7 @@ const statusReady = new Promise((resolve) => {
 
 let algoliaClient = null;
 
-async function getAlgoliaClient() {
-    await initPromise;
+function getAlgoliaClient() {
     if (algoliaClient) return algoliaClient;
     if (!window["algoliasearch/lite"]) {
         throw new Error(
