@@ -56,6 +56,7 @@ async function getAlgoliaClient() {
 }
 
 async function searchWithTimeout(params, timeoutMs = 6000, retries = 2) {
+    await initPromise;
     let lastError;
     for (let attempt = 0; attempt <= retries; attempt++) {
         const controller = new AbortController();
