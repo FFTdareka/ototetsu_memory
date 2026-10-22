@@ -30,11 +30,6 @@ import {
     setR,
     ready
 } from "./staData.js";
-import {
-    checkMember
-} from "./mhome.js";
-
-await ready;
 
 let uid, isMember;
 
@@ -43,17 +38,10 @@ const statusReady = new Promise((resolve) => {
     resolveStatusReady = resolve;
 });
 
-const app = initializeApp(setR.firebase);
-getAnalytics(app);
-const auth = getAuth(app);
-const db = initializeFirestore(app, {
-    localCache: memoryLocalCache(),
-    experimentalAutoDetectLongPolling: true
-});
-
 let algoliaClient = null;
 
-function getAlgoliaClient() {
+async function getAlgoliaClient() {
+    await initPromise;
     if (algoliaClient) return algoliaClient;
     if (!window["algoliasearch/lite"]) {
         throw new Error(
@@ -80,6 +68,7 @@ async function searchWithTimeout(params, timeoutMs = 6000, retries = 2) {
             return result;
         } catch (e) {
             clearTimeout(timer);
+            lastError = e;
         }
     }
     throw lastError;
@@ -97,6 +86,7 @@ const SORT_INDEX_MAP = {
 const BASE_URL = "https://us-central1-ototetsu-memory.cloudfunctions.net";
 
 async function callFunction(name, data) {
+    await initPromise;
     const user = auth.currentUser;
     if (!user) {
         return {
@@ -123,15 +113,30 @@ const createNews = (data) => callFunction("createNews", data);
 const editNews = (data) => callFunction("editNews", data);
 const deleteNews = (data) => callFunction("deleteNews", data);
 
-status();
+let app, auth, db;
 
-function status() {
+const initPromise = (async () => {
+    await ready;
+    app = initializeApp(setR.firebase);
+    getAnalytics(app);
+    auth = getAuth(app);
+    db = initializeFirestore(app, {
+        localCache: memoryLocalCache(),
+        experimentalAutoDetectLongPolling: true
+    });
+    status();
+})();
+
+async function status() {
+    await initPromise;
     let userStatus = document.getElementById("userStatus");
     let userName = document.getElementById("userName");
     let loginBtn = document.getElementById("login");
 
     onAuthStateChanged(auth, async (user) => {
-        if (location.href.includes("https://fftdareka.github.io/ototetsu_memory/member/")) checkMember();
+        if (location.href.includes("https://fftdareka.github.io/ototetsu_memory/member/")) {
+            import("./mhome.js").then((m) => m.checkMember());
+        }
         if (user) {
             uid = user.uid;
             let uData = await loadUserdata(uid, true);
@@ -156,7 +161,7 @@ function status() {
 
                 document.getElementById("setStatus").innerText = "";
 
-                memberS.style.display - "none";
+                memberS.style.display = "none";
                 setNameS.style.display = "none";
                 updateBtnS.removeEventListener("click", updateUser);
                 delS.style.display = "none";
@@ -192,7 +197,7 @@ function status() {
 
                 document.getElementById("setStatus").innerText = "";
 
-                memberS.style.display - "none";
+                memberS.style.display = "none";
                 setNameS.style.display = "none";
                 updateBtnS.removeEventListener("click", updateUser);
                 delS.style.display = "none";
@@ -209,20 +214,23 @@ function status() {
     });
 }
 
-function userLogin() {
+async function userLogin() {
+    await initPromise;
     let provider = new GoogleAuthProvider();
     signInWithPopup(auth, provider)
         .then((res) => console.log("ログイン成功:", res.user))
         .catch((er) => console.error("ログイン失敗:", er.code, er.message));
 }
 
-function userLogout() {
+async function userLogout() {
+    await initPromise;
     signOut(auth)
         .then(() => showNotice("ログアウトが完了しました。", "user", true))
         .catch(() => showNotice("ログアウト中にエラーが発生しました。", "user", true));
 }
 
-function userDelete() {
+async function userDelete() {
+    await initPromise;
     let user = auth.currentUser;
     if (!user) return;
     if (!confirm("本当に退会しますか?この操作は取り消せません。")) return;
@@ -248,7 +256,8 @@ function userDelete() {
         });
 }
 
-function loadUserdata(uid = "guest", tf = false) {
+async function loadUserdata(uid = "guest", tf = false) {
+    await initPromise;
     return getDoc(doc(db, "user", uid))
         .then((snap) => {
             if (snap.exists()) {
@@ -277,7 +286,8 @@ function loadUserdata(uid = "guest", tf = false) {
         });
 }
 
-function updateUser() {
+async function updateUser() {
+    await initPromise;
     let newNameE = document.getElementById("newName");
     if (newNameE) {
         setDoc(doc(db, "user", uid), {
@@ -410,6 +420,7 @@ async function getRec1(id) {
 }
 
 async function getNewsData(n = -1, id = null) {
+    await initPromise;
     if (id != null) {
         const snap = await getDoc(doc(db, "news", String(id)));
         if (!snap.exists()) return null;
