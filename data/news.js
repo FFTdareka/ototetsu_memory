@@ -21,8 +21,9 @@ async function getNews(n = -1, e = "newsSpace", tf = false, id = null) {
         }
     } catch (er) {
         console.error("ニュース取得失敗:", er);
-        if (tf) return "ニュースの取得に失敗しました。";
-        if (statusEl) statusEl.innerText = "ニュースの取得に失敗しました。";
+        const detail = `${er.code ?? er.name}: ${er.message}`;
+        if (tf) return "ニュースの取得に失敗しました。" + detail;
+        if (statusEl) statusEl.innerText = "ニュースの取得に失敗しました。" + detail;
     }
 }
 
