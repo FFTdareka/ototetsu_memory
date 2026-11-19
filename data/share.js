@@ -299,14 +299,16 @@ async function editRec() {
             getRec();
         } else {
             check.checked = false;
-            editButton.disabled = true;
+            editButton.disabled = false;
+            document.getElementById("delRecBtn").disabled = false;
             editButton.innerText = btnText;
     }
     } catch(e) {
         console.error("鳴動記録編集失敗:", e);
         showNotice("エラー:編集に失敗しました。", "statusR", false);
         check.checked = false;
-        editButton.disabled = true;
+        editButton.disabled = false;
+        document.getElementById("delRecBtn").disabled = false;
         editButton.innerText = btnText;
     }
 }
@@ -314,7 +316,7 @@ async function editRec() {
 async function delRec() {
     if (!confirm("本当に記録を削除しますか?この操作は取り消せません。")) return;
     let btnText = document.getElementById("delRecBtn").innerText;
-    document.getElementById("editRecBtn").disabled = true;
+    editButton.disabled = true;
     document.getElementById("delRecBtn").disabled = true;
     document.getElementById("delRecBtn").innerText = "削除中...";
 
@@ -328,14 +330,14 @@ async function delRec() {
             location.href = "https://fftdareka.github.io/ototetsu_memory/";
         } else {
             showNotice(message, "addRec", false);
-            document.getElementById("editRecBtn").disabled = false;
+            editButton.disabled = false;
             document.getElementById("delRecBtn").disabled = false;
             document.getElementById("delRecBtn").innerText = btnText;
         }
     } catch(e) {
         console.error("鳴動記録削除失敗:", e);
         showNotice("エラー:削除に失敗しました。", "statusR", false);
-        document.getElementById("editRecBtn").disabled = false;
+        editButton.disabled = false;
         document.getElementById("delRecBtn").disabled = false;
         document.getElementById("delRecBtn").innerText = btnText;
     }
