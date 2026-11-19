@@ -299,7 +299,6 @@ async function editRec() {
             getRec();
         } else {
             check.checked = false;
-            editButton.disabled = false;
             document.getElementById("delRecBtn").disabled = false;
             editButton.innerText = btnText;
     }
@@ -307,7 +306,6 @@ async function editRec() {
         console.error("鳴動記録編集失敗:", e);
         showNotice("エラー:編集に失敗しました。", "statusR", false);
         check.checked = false;
-        editButton.disabled = false;
         document.getElementById("delRecBtn").disabled = false;
         editButton.innerText = btnText;
     }
