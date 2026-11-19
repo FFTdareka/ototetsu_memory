@@ -1,5 +1,5 @@
 {
-    "status": false,
+    "status": true,
     "firebase": {
         "apiKey": "AIzaSyCx0xxbgLL3N2JPjU6NWnMycqoAYcCiMZg",
         "authDomain": "ototetsu-memory.firebaseapp.com",
