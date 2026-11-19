@@ -272,29 +272,40 @@ async function editRec() {
         id,
     };
 
-    const result = await editRecord(data);
-    showNotice(result.message, "statusR", true);
-
-    document.getElementById('addRec_cho').value = "";
-    document.getElementById('addRec_trk').value = "";
-    document.getElementById('addRec_com').value = "";
-    document.getElementById('addRec_log').value = "";
-    document.getElementById('addRec_oldlog').value = "";
-    document.getElementById('addRec_oldlogA').style.display = "none";
-    document.getElementById('addRec_oldlog').disabled = false;
-    check.checked = false;
-    editButton.disabled = true;
-    document.getElementById('addRec_date').value = "";
-    document.getElementById('addRec_del').value = "";
-    document.getElementById('addRec_line').value = "-1_-1";
-    document.getElementById('addRec_sta').value = "-1_-1";
-    document.getElementById('addRec_trn').value = "";
-    document.getElementById('addRec_for').value = "";
-    setSta({
-        value: "-1_-1"
-    });
-    document.getElementById("recSpace").innerHTML = "";
-    getRec();
+    try {
+        const result = await editRecord(data);
+        showNotice(result.message, "statusR", true);
+        if (result.message.indexOf("エラー:") != 0) {
+            document.getElementById('addRec_cho').value = "";
+            document.getElementById('addRec_trk').value = "";
+            document.getElementById('addRec_com').value = "";
+            document.getElementById('addRec_log').value = "";
+            document.getElementById('addRec_oldlog').value = "";
+            document.getElementById('addRec_oldlogA').style.display = "none";
+            document.getElementById('addRec_oldlog').disabled = false;
+            check.checked = false;
+            editButton.disabled = true;
+            document.getElementById('addRec_date').value = "";
+            document.getElementById('addRec_del').value = "";
+            document.getElementById('addRec_line').value = "-1_-1";
+            document.getElementById('addRec_sta').value = "-1_-1";
+            document.getElementById('addRec_trn').value = "";
+            document.getElementById('addRec_for').value = "";
+            setSta({
+                value: "-1_-1"
+            });
+            document.getElementById("recSpace").innerHTML = "";
+            getRec();
+        } else {
+            check.checked = false;
+            editButton.disabled = true;
+        }
+    } catch(e) {
+        console.error("鳴動記録編集失敗:", e);
+        showNotice("エラー:編集に失敗しました。", "addRec", false);
+        check.checked = false;
+        editButton.disabled = true;
+    }
 }
 
 async function delRec() {
