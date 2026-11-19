@@ -253,8 +253,9 @@ async function editRec() {
     }
     let oldlog = document.getElementById("addRec_oldlog").value;
     let dateN = new Date();
-    document.getElementById("editRecBtn").disabled = true;
-    document.getElementById("editRecBtn").innerText = "編集中...";
+    let btnText = editButton.innerText;
+    editButton.disabled = true;
+    editButton.innerText = "編集中...";
     document.getElementById("delRecBtn").disabled = true;
     const data = {
         date,
@@ -299,33 +300,44 @@ async function editRec() {
         } else {
             check.checked = false;
             editButton.disabled = true;
-        }
+            editButton.innerText = btnText;
+    }
     } catch(e) {
         console.error("鳴動記録編集失敗:", e);
-        showNotice("エラー:編集に失敗しました。", "addRec", false);
+        showNotice("エラー:編集に失敗しました。", "statusR", false);
         check.checked = false;
         editButton.disabled = true;
+        editButton.innerText = btnText;
     }
 }
 
 async function delRec() {
     if (!confirm("本当に記録を削除しますか?この操作は取り消せません。")) return;
+    let btnText = document.getElementById("delRecBtn").innerText;
     document.getElementById("editRecBtn").disabled = true;
     document.getElementById("delRecBtn").disabled = true;
     document.getElementById("delRecBtn").innerText = "削除中...";
 
-    const result = await deleteRecord({
-        id
-    });
-    const message = result.message;
+    try {
+        const result = await deleteRecord({
+            id
+        });
+        const message = result.message;
 
-    if (message === null) {
-        location.href = "https://fftdareka.github.io/ototetsu_memory/";
-    } else {
-        showNotice(message, "addRec", false);
+        if (message === null) {
+            location.href = "https://fftdareka.github.io/ototetsu_memory/";
+        } else {
+            showNotice(message, "addRec", false);
+            document.getElementById("editRecBtn").disabled = false;
+            document.getElementById("delRecBtn").disabled = false;
+            document.getElementById("delRecBtn").innerText = btnText;
+        }
+    } catch(e) {
+        console.error("鳴動記録削除失敗:", e);
+        showNotice("エラー:削除に失敗しました。", "statusR", false);
         document.getElementById("editRecBtn").disabled = false;
         document.getElementById("delRecBtn").disabled = false;
-        document.getElementById("delRecBtn").innerText = "削除";
+        document.getElementById("delRecBtn").innerText = btnText;
     }
 }
 
