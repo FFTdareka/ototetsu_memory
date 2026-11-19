@@ -32,7 +32,6 @@ async function init() {
     });
 
     if (id != null) {
-        // URLにidパラメータがある場合は編集・削除モード
         btnS.innerText = "更新";
         if (delS) {
             delS.style.display = "inline-block";
@@ -61,7 +60,6 @@ async function init() {
 
         btnS.addEventListener("click", onUpdate);
     } else {
-        // URLにidパラメータがない場合は新規作成モード
         btnS.innerText = "作成";
         if (delS) delS.style.display = "none";
         btnS.addEventListener("click", onCreate);

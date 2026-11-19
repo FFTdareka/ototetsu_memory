@@ -181,43 +181,57 @@ async function recordData() {
         uid: await getUid(),
     };
 
-    const result = await setRecord(data);
-    showNotice(result.message, "addRec", false);
+    try {
+        const result = await setRecord(data);
+        showNotice(result.message, "addRec", false);
+        if (result.message.indexOf("エラー:") != 0) {
+            document.getElementById('addRec_cho').value = "";
+            document.getElementById('addRec_trk').value = "";
+            document.getElementById('addRec_com').value = "";
+            check.checked = false;
+            addButton.disabled = true;
+            addButton.innerText = "送信";
 
-    document.getElementById('addRec_cho').value = "";
-    document.getElementById('addRec_trk').value = "";
-    document.getElementById('addRec_com').value = "";
-    check.checked = false;
-    addButton.disabled = true;
-    addButton.innerText = "送信";
+            if (mode.value === "sameT") {
+                document.getElementById('addRec_sta').value = "-1_-1";
+            } else if (mode.value === "sameS") {
+                document.getElementById('addRec_del').value = "";
+                document.getElementById('addRec_trn').value = "";
+                document.getElementById('addRec_for').value = "";
+            } else {
+                document.getElementById('addRec_date').value = "";
+                document.getElementById('addRec_del').value = "";
+                document.getElementById('addRec_line').value = "-1_-1";
+                document.getElementById('addRec_sta').value = "-1_-1";
+                document.getElementById('addRec_trn').value = "";
+                document.getElementById('addRec_for').value = "";
+                setSta({
+                    value: "-1_-1"
+                });
+            }
 
-    if (mode.value === "sameT") {
-        document.getElementById('addRec_sta').value = "-1_-1";
-    } else if (mode.value === "sameS") {
-        document.getElementById('addRec_del').value = "";
-        document.getElementById('addRec_trn').value = "";
-        document.getElementById('addRec_for').value = "";
-    } else {
-        document.getElementById('addRec_date').value = "";
-        document.getElementById('addRec_del').value = "";
-        document.getElementById('addRec_line').value = "-1_-1";
-        document.getElementById('addRec_sta').value = "-1_-1";
-        document.getElementById('addRec_trn').value = "";
-        document.getElementById('addRec_for').value = "";
-        setSta({
-            value: "-1_-1"
-        });
+            getRecord(10, 1, {
+                filter: {},
+                sort: {
+                    data: {
+                        ids: "d"
+                    },
+                    rank: ["ids"]
+                }
+            });
+        } else {
+            check.checked = false;
+            addButton.disabled = true;
+            addButton.innerText = "送信";
+        }
+    } catch(e) {
+        console.error("鳴動記録投稿失敗:", e);
+        showNotice("エラー:投稿に失敗しました。", "addRec", false);
+        check.checked = false;
+        addButton.disabled = true;
+        addButton.innerText = "送信";
     }
 
-    getRecord(10, 1, {
-        filter: {},
-        sort: {
-            data: {
-                ids: "d"
-            },
-            rank: ["ids"]
-        }
-    });
 }
 
 addButton.addEventListener("click" ,recordData);
