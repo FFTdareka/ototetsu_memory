@@ -275,8 +275,8 @@ async function editRec() {
 
     try {
         const result = await editRecord(data);
-        showNotice(result.message, "statusR", true);
         if (result.message.indexOf("エラー:") != 0) {
+            showNotice(result.message, "statusR", false);
             document.getElementById('addRec_cho').value = "";
             document.getElementById('addRec_trk').value = "";
             document.getElementById('addRec_com').value = "";
@@ -298,13 +298,14 @@ async function editRec() {
             document.getElementById("recSpace").innerHTML = "";
             getRec();
         } else {
+            showNotice(result.message, "statusR", false, "", true);
             check.checked = false;
             document.getElementById("delRecBtn").disabled = false;
             editButton.innerText = btnText;
-    }
+        }
     } catch(e) {
         console.error("鳴動記録編集失敗:", e);
-        showNotice("エラー:編集に失敗しました。", "statusR", false);
+        showNotice("エラー:編集に失敗しました。", "statusR", false, "", true);
         check.checked = false;
         document.getElementById("delRecBtn").disabled = false;
         editButton.innerText = btnText;
