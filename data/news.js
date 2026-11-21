@@ -17,7 +17,7 @@ async function getNews(n = -1, e = "newsSpace", tf = false, id = null) {
         if (statusEl) {
             statusEl.innerText = data.length === 0 ?
                 "ニュースはありません。" :
-                `全${data.length}件`;
+                "";
         }
     } catch (er) {
         console.error("ニュース取得失敗:", er);

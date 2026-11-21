@@ -183,8 +183,8 @@ async function recordData() {
 
     try {
         const result = await setRecord(data);
-        showNotice(result.message, "addRec", false);
         if (result.message.indexOf("エラー:") != 0) {
+            showNotice(result.message, "addRec", false);
             document.getElementById('addRec_cho').value = "";
             document.getElementById('addRec_trk').value = "";
             document.getElementById('addRec_com').value = "";
@@ -220,13 +220,14 @@ async function recordData() {
                 }
             });
         } else {
+            showNotice(result.message, "addRec", false, "", true);
             check.checked = false;
             addButton.disabled = true;
             addButton.innerText = "送信";
         }
     } catch(e) {
         console.error("鳴動記録投稿失敗:", e);
-        showNotice("エラー:投稿に失敗しました。", "addRec", false);
+        showNotice("エラー:投稿に失敗しました。", "addRec", false, "", true);
         check.checked = false;
         addButton.disabled = true;
         addButton.innerText = "送信";
